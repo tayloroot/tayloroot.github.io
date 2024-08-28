@@ -1,0 +1,681 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第十二章】并行编程-补充阅读与总结【转载】 | 东方欲晓</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-12-zhang-bing-fa-bian-cheng 学习目标  理解并行的几个层次：进程、事件、线程 了解 Posix 标准 了解同步问题产生的背景，以及信号量的工作机制 了解『生产者-消费者问题』和『读者-写者问题』 理解线程安全和一致性问题  并行方法 首先一定要清楚地意识到：『并行编程不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP-【第十二章】并行编程-补充阅读与总结【转载】">
+<meta property="og:url" content="http://example.com/2021/02/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-12-zhang-bing-fa-bian-cheng 学习目标  理解并行的几个层次：进程、事件、线程 了解 Posix 标准 了解同步问题产生的背景，以及信号量的工作机制 了解『生产者-消费者问题』和『读者-写者问题』 理解线程安全和一致性问题  并行方法 首先一定要清楚地意识到：『并行编程不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-02-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-27T06:16:49.066Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="计算机基础">
+<meta property="article:tag" content="深入理解计算机系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/02/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CSAPP-【第十二章】并行编程-补充阅读与总结【转载】',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-27 14:16:49'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第十二章】并行编程-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-02-05T16:00:00.000Z" title="发表于 2021-02-06 00:00:00">2021-02-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">书籍阅读-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/02/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/02/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>补充阅读材料：<br>
+<a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-12-zhang-bing-fa-bian-cheng">https://fengmuzi2003.gitbook.io/csapp3e/di-12-zhang-bing-fa-bian-cheng</a></p>
+<h2 id="学习目标">学习目标</h2>
+<ol>
+<li>理解并行的几个层次：进程、事件、线程</li>
+<li>了解 Posix 标准</li>
+<li>了解同步问题产生的背景，以及信号量的工作机制</li>
+<li>了解『生产者-消费者问题』和『读者-写者问题』</li>
+<li>理解线程安全和一致性问题</li>
+</ol>
+<h2 id="并行方法">并行方法</h2>
+<p>首先一定要清楚地意识到：『并行编程不简单』！最主要的原因恐怕就是我们自己的大脑，人脑实际上是一个非常精妙的系统，所采取的并行策略是一明一暗两条线，但是对于明线来说，是线性的，于是就和计算机中并行的概念冲突了。另外时间这个概念也是线性的，这就导致了想要处理好并行程序可能出现的各种问题几乎是不可能的（或者常常要出错）。</p>
+<p>常见的错误有仨：竞争条件[2]、死锁[3]和活锁[4]，尤其是在现在的多核处理器架构中，更容易出现这类并行问题。</p>
+<p>我们前面实现的服务器，一次只能处理一个请求，只有当前的请求处理完了，才能继续处理下一个。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14620201714327.jpg" alt=""></p>
+<p>这里具体讲解一下：Client 1 向 Server 发送连接请求(connect)，Server 接受(accept)之后开始等待 Client 1 发送请求（也就是开始 read），这之后 Client 1 发送具体的内容(write)后转为等待响应(call read)，Server 的 read 接收到了内容之后，发送响应(write) 后仅需进入等待(read)，而 Client 1 接收到了响应(ret read)，最后根据用户指令退出(close)。</p>
+<p>而只有当 Client 1 断开之后，Server 才会处理 Client 2 的请求，从图中也可以看到这一点。具体是在哪里等待呢？因为 TCP 会缓存，所以实际上 Client 2 在 <code>ret read</code> 之前进行等待，为了解决这个问题，我们可以使用并行的策略，同时处理不同客户端发来的请求。</p>
+<p>总体来说，根据系统机制的层级和实现方式，有下面三大类方法：</p>
+<ol>
+<li>基于进程
+<ul>
+<li>内核自动管理多个逻辑流</li>
+<li>每个进程有其私有的地址空间（也就是说进程切换的时候需要保存和载入数据）</li>
+</ul>
+</li>
+<li>基于事件
+<ul>
+<li>由程序员手动控制多个逻辑流</li>
+<li>所有的逻辑流共享同一个地址空间</li>
+<li>这个技术称为 I/O multiplexing</li>
+</ul>
+</li>
+<li>基于线程
+<ul>
+<li>内核自动管理多个逻辑流</li>
+<li>每个线程共享地址空间</li>
+<li>属于基于进程和基于事件的混合体</li>
+</ul>
+</li>
+</ol>
+<h3 id="基于进程">基于进程</h3>
+<p>为每个客户端分离出一个单独的进程，是建立了连接之后才开始并行，连接的建立还是串行的。</p>
+<p>具体的代码为</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br></pre></td><td><pre><span></span><br><span><span><span>void</span> <span>sigchld_handler</span><span>(<span>int</span> sig)</span></span>{</span><br><span>    <span>while</span> (waitpid(<span>-1</span>, <span>0</span>, WNOHANG) &gt; <span>0</span>)</span><br><span>        ;</span><br><span>    <span>return</span>;</span><br><span>    </span><br><span>}</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>(<span>int</span> argc, <span>char</span> **argv)</span> </span>{</span><br><span>    <span>int</span> listenfd, connfd;</span><br><span>    <span>socklen_t</span> clientlen;</span><br><span>    <span><span>struct</span> <span>sockaddr_storage</span> <span>clientaddr</span>;</span></span><br><span>    </span><br><span>    Signal(SIGCHLD, sigchld_handler);</span><br><span>    listenfd = Open_listenfd(argv[<span>1</span>]);</span><br><span>    <span>while</span> (<span>1</span>) {</span><br><span>        clientlen = <span>sizeof</span>(struct sockaddr_storage);</span><br><span>        connfd = Accept(listenfd, (SA *) &amp;clientaddr, &amp;clientlen);</span><br><span>        <span>if</span> (Fork() == <span>0</span>) {</span><br><span>            Close(listenfd); </span><br><span>            echo(connfd); </span><br><span>            Close(connfd); </span><br><span>            <span>exit</span>(<span>0</span>); </span><br><span>        }</span><br><span>        Close(connfd); </span><br><span>    }</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>这里用文字描述一下流程：首先，服务器在 <code>accept</code> 函数中（对应 <code>listenfd</code>）等待连接请求，然后客户端通过调用 <code>connect</code> 函数发送连接请求，最后服务器在 <code>accept</code> 中返回 <code>connfd</code> 并且 fork 一个子进程来处理客户端连接，连接建立在 <code>listenfd</code> 和 <code>connfd</code> 间。</p>
+<p>整个执行模型中：</p>
+<ul>
+<li>每个客户端由独立子进程处理
+<ul>
+<li>必须回收僵尸进程，来避免严重的内存泄露</li>
+</ul>
+</li>
+<li>不同进程之间不共享数据</li>
+<li>父进程和子进程都有 <code>listenfd</code> 和 <code>connfd</code>，所以在父进程中需要关闭 <code>connfd</code>，在子进程中需要关闭 <code>listenfd</code>
+<ul>
+<li>内核会保存每个 socket 的引用计数，在 fork 之后 <code>refcnt(connfd) = 2</code>，所以在父进程需要关闭 connfd，这样在子进程结束后引用计数才会为零</li>
+</ul>
+</li>
+</ul>
+<p>基于进程的方式可以并行处理连接，除了共享已打开的 file table 外，无论是 descriptor 还是全局变量都不共享，不大容易造成同步问题，比较简单粗暴。但是带来了额外的进程管理开销，并且进程间通讯不便，需要使用 IPC (interprocess communication)。</p>
+<h3 id="基于事件">基于事件</h3>
+<p>服务器会维护一个 connection 数组，包含若干 <code>connfd</code>，每个输入请求都被当做事件，然后每次从已有的事件中选取一个进行处理。</p>
+<p>基于实践的好处在于只使用一个逻辑控制流和地址空间，可以利用调试器进行单步调试（其他的方法因为并行的缘故基本没办法调试），也不会有进程/线程控制的开销。但是相比之下，代码的逻辑复杂度会比较高，很难进行精细度比较高的并行，也无法发挥多核处理器的全部性能。</p>
+<h3 id="基于线程">基于线程</h3>
+<p>和基于进程的方法非常相似，唯一的区别是这里用线程。进程其实是比较『重』的，一个进程包括进程上下文、代码、数据和栈。如果从线程的角度来描述，一个进程则包括线程、代码、数据和上下文。也就是说，线程作为单独可执行的部分，被抽离出来了，一个进程可以有多个线程。</p>
+<p>每个线程有自己的线程 id，有自己的逻辑控制流，也有自己的用来保存局部变量的栈（其他线程可以修改）但是会共享所有的代码、数据以及内核上下文。</p>
+<p>和进程不同的是，线程没有一个明确的树状结构（使用 <code>fork</code> 是有明确父进程子进程区分的）。和进程中『并行』的概念一样，如果两个线程的控制流在时间上有『重叠』（或者说有交叉），那么就是并行的。</p>
+<p>进程和线程的差别已经被说了太多次，这里简单提一下。相同点在于，它们都有自己的逻辑控制流，可以并行，都需要进行上下文切换。不同点在于，线程共享代码和数据（进程通常不会），线程开销比较小（创建和回收）</p>
+<p><strong>POSIX Threads</strong></p>
+<p>Pthreads 是一个线程库，基本上只要是 C 程序能跑的平台，都会支持这个标准。Pthreads定义了一套C语言的类型、函数与常量，它以 <code>pthread.h</code> 头文件和一个线程库实现。</p>
+<p>Pthreads API 中大致共有 100 个函数调用，全都以 <code>pthread_</code> 开头，并可以分为四类：</p>
+<ol>
+<li>线程管理，例如创建线程，等待(join)线程，查询线程状态等。</li>
+<li>Mutex：创建、摧毁、锁定、解锁、设置属性等操作</li>
+<li>条件变量（Condition Variable）：创建、摧毁、等待、通知、设置与查询属性等操作</li>
+<li>使用了读写锁的线程间的同步管理</li>
+</ol>
+<p>POSIX 的 Semaphore API 可以和 Pthreads 协同工作，但这并不是 Pthreads 的标准。因而这部分API是以 <code>sem_</code> 打头，而非 <code>pthread_</code>。</p>
+<p>我们用线程的方式重写一次之前的 Echo Server</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br></pre></td><td><pre><span></span><br><span><span><span>void</span> *<span>thread</span><span>(<span>void</span> *vargp)</span></span>{</span><br><span>    <span>int</span> connf = *((<span>int</span> *)vargp);</span><br><span>    </span><br><span>    Pthread_detach(pthread_self());</span><br><span>    Free(vargp);</span><br><span>    echo(connfd);</span><br><span>    </span><br><span>    Close(connfd);</span><br><span>    <span>return</span> <span>NULL</span>;</span><br><span>}</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>(<span>int</span> argc, <span>char</span> **argv)</span> </span>{</span><br><span>    <span>int</span> listenfd, *connfdp;</span><br><span>    <span>socklen_t</span> clientlen;</span><br><span>    <span><span>struct</span> <span>sockaddr_storage</span> <span>clientaddr</span>;</span></span><br><span>    <span>pthread_t</span> tid;</span><br><span>    </span><br><span>    listenfd = Open_listenfd(argv[<span>1</span>]);</span><br><span>    <span>while</span> (<span>1</span>) {</span><br><span>        clientlen = <span>sizeof</span>(struct sockaddr_storage);</span><br><span>        </span><br><span>        connfdp = Malloc(<span>sizeof</span>(<span>int</span>));</span><br><span>        *connfdp = Accept(listenfd, (SA *) &amp; clientaddr, &amp;clientlen);</span><br><span>        Pthread_create(&amp;tid, <span>NULL</span>, thread, connfdp);</span><br><span>    }</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>在这个模型中，每个客户端由单独的线程进行处理，这些线程除了线程 id 之外，共享所有的进程状态（但是每个线程有自己的局部变量栈）。</p>
+<p>使用线程并行，能够在不同的线程见方便地共享数据，效率也比进程高，但是共享变量可能会造成比较难发现的程序问题，很难调试和测试。</p>
+<h3 id="小结">小结</h3>
+<p>这里简单归纳下三种并行方法的特点：</p>
+<ul>
+<li>基于进程
+<ul>
+<li>难以共享资源，但同时也避免了可能带来的共享问题</li>
+<li>添加/移除进程开销较大</li>
+</ul>
+</li>
+<li>基于事件
+<ul>
+<li>非常底层的实现机制</li>
+<li>使用全局控制而非调度</li>
+<li>开销比较小</li>
+<li>但是无法提供精细度较高的并行</li>
+<li>无法充分利用多核处理器</li>
+</ul>
+</li>
+<li>基于线程
+<ul>
+<li>容易共享资源，但也容易出现问题</li>
+<li>开销比进程小</li>
+<li>对于具体的调度可控性较低</li>
+<li>难以调试（因为事件发生的顺序不一致）</li>
+</ul>
+</li>
+</ul>
+<h2 id="同步">同步</h2>
+<h3 id="共享变量">共享变量</h3>
+<p>在介绍同步之前，我们需要弄清楚一个定义，什么是 Shared variable（共享变量）？</p>
+<blockquote>
+<p>A variable <code>x</code> is <em>shared</em> if and only if multiple threads reference some instance of <code>x</code></p>
+</blockquote>
+<p>另外一个需要注意的是线程的内存模型，因为概念上的模型和实际的模型有一些差异，非常容易导致错误。</p>
+<p>在概念上的模型中：</p>
+<ul>
+<li>多个线程在一个单独进程的上下文中运行</li>
+<li>每个线程有单独的线程上下文（线程 ID，栈，栈指针，PC，条件码，GP 寄存器）</li>
+<li>所有的线程共享剩下的进程上下文
+<ul>
+<li>Code, data, heap, and shared library segments of the process virtual address space</li>
+<li>Open files and installed handlers</li>
+</ul>
+</li>
+</ul>
+<p>在实际的模型中，寄存器的值虽然是隔离且被保护的，但是在栈中的值并不是这样的（其他线程也可以访问）。</p>
+<p>我们来看一个简单的例子：</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br></pre></td><td><pre><span><span>char</span> **ptr; </span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>long</span> i;</span><br><span>    <span>pthread_t</span> tid;</span><br><span>    <span>char</span> *msgs[<span>2</span>] = {</span><br><span>        <span>"Good Day!"</span>,</span><br><span>        <span>"Bad Day!"</span></span><br><span>    };</span><br><span>}</span><br><span></span><br><span>ptr = msgs;</span><br><span><span>for</span> (i = <span>0</span>; i &lt; <span>2</span>; i++)</span><br><span>    Pthread_create(&amp;tid, <span>NULL</span>, thread, (<span>void</span> *)i);</span><br><span>Pthread_exit(<span>NULL</span>);</span><br><span>}</span><br><span></span><br><span><span><span>void</span> *<span>thread</span><span>(<span>void</span> *vargp)</span></span></span><br><span><span></span>{</span><br><span>    <span>long</span> myid = (<span>long</span>)vargp;</span><br><span>    <span>static</span> <span>int</span> cnt = <span>0</span>;</span><br><span>    </span><br><span>    </span><br><span>    <span>printf</span>(<span>"[%ld]: %s (cnt=%d)\n"</span>, myid, ptr[myid], ++cnt);</span><br><span>    <span>return</span> <span>NULL</span>;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>这里有几个不同类型的变量，我们一一来看一下：</p>
+<ul>
+<li>全局变量：在函数外声明的变量
+<ul>
+<li>虚拟内存中有全局唯一的一份实例</li>
+</ul>
+</li>
+<li>局部变量：在函数内声明，且没有用 static 关键字
+<ul>
+<li>每个线程的栈中都保存着对应线程的局部变量</li>
+</ul>
+</li>
+<li>局部静态变量：在函数内用 static 关键字声明的变量
+<ul>
+<li>虚拟内存中有全局唯一的一份实例</li>
+</ul>
+</li>
+</ul>
+<p>具体来分析下，一个变量只有在被多个线程引用的时候才算是共享，在这个例子中，共享变量有 <code>ptr</code>, <code>cnt</code> 和 <code>msgs</code>；非共享变量有 <code>i</code> 和 <code>myid</code>。</p>
+<h3 id="关键区域-Critical-Section">关键区域 Critical Section</h3>
+<p>这一部分我们用一个具体的例子来进行讲解，看看如何用多个线程来计数：</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br></pre></td><td><pre><span></span><br><span><span>volatile</span> <span>long</span> cnt = <span>0</span>; </span><br><span></span><br><span><span><span>int</span> <span>main</span><span>(<span>int</span> argc, <span>char</span> **argv)</span></span></span><br><span><span></span>{</span><br><span>    <span>long</span> niters;</span><br><span>    <span>pthread_t</span> tid1, tid2;</span><br><span>    </span><br><span>    niter2 = atoi(argv[<span>1</span>]);</span><br><span>    Pthread_create(&amp;tid1, <span>NULL</span>, thread, &amp;niters);</span><br><span>    Pthread_create(&amp;tid2, <span>NULL</span>, thread, &amp;niters);</span><br><span>    Pthread_join(tid1, <span>NULL</span>);</span><br><span>    Pthread_join(tid2, <span>NULL</span>);</span><br><span>    </span><br><span>    </span><br><span>    <span>if</span> (cnt != (<span>2</span> * niters))</span><br><span>        <span>printf</span>(<span>"Wrong! cnt=%ld\n"</span>, cnt);</span><br><span>    <span>else</span></span><br><span>        <span>printf</span>(<span>"Correct! cnt=%ld\n"</span>, cnt);</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>运行之后发现不是每次都出现同样的结果，我们把操作 <code>cnt</code> 的部分抽出来单独看一看：</p>
+<p>线程中循环部分的代码为：</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br></pre></td><td><pre><span><span>for</span> (i = <span>0</span>; i &lt; niters; i++)</span><br><span>    cnt++;</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>对应的汇编代码为</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br></pre></td><td><pre><span>    # 以下四句为 Head 部分，记为 H</span><br><span>    movq    (%rdi), %rcx</span><br><span>    testq   %rcx, %rcx</span><br><span>    jle     .L2</span><br><span>    movl    $0, %eax</span><br><span>.L3:</span><br><span>    movq    cnt(%rip), %rdx # 载入 cnt，记为 L</span><br><span>    addq    $1, %rdx        # 更新 cnt，记为 U</span><br><span>    movq    %rdx, cnt(%rip) # 保存 cnt，记为 S</span><br><span>    # 以下为 Tail 部分，记为 T</span><br><span>    addq    $1, %rax</span><br><span>    cmpq    %rcx, %rax</span><br><span>    jne     .L3</span><br><span>.L2:</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>这里有一点需要注意，<code>cnt</code> 使用了 <code>volatile</code> 关键字声明，意思是不要在寄存器中保存值，无论是读取还是写入，都要对内存操作（还记得 write-through 吗？）。这里把具体的步骤分成 5 步：HLUST，尤其要注意 LUS 这三个操作，这三个操作必须在一次执行中完成，一旦次序打乱，就会出现问题，不同线程拿到的值就不一定是最新的。</p>
+<p>更多相关内容，可以参考<a target="_blank" rel="noopener" href="http://wdxtub.com/vault/csapp-23.html">Synchronization - Basics</a>，其中提到了利用图表来描述关键区域的方法，感兴趣可以看一下。</p>
+<h3 id="信号量">信号量</h3>
+<p>针对关键区域的问题，我们可以考虑用信号量来限制程序的执行顺序。计数信号量具备两种操作动作，称为 V（又称signal()）与 P（wait()）。 V 操作会增加信号量 S 的数值，P 操作会减少。运作方式：</p>
+<ol>
+<li>初始化，给与它一个非负数的整数值。</li>
+<li>运行 P，信号量 S 的值将被减少。企图进入临界区块的进程，需要先运行 P。当信号量 S 减为负值时，进程会被挡住，不能继续；当信号量S不为负值时，进程可以获准进入临界区块。</li>
+<li>运行 V，信号量 S 的值会被增加。结束离开临界区块的进程，将会运行 V。当信号量 S 不为负值时，先前被挡住的其他进程，将可获准进入临界区块。</li>
+</ol>
+<p>我们来看看如何修改可以使得前面我们的计数程序正确运行。</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br></pre></td><td><pre><span></span><br><span><span>volatile</span> <span>long</span> cnt = <span>0</span>;</span><br><span><span>sem_t</span> mutex;</span><br><span></span><br><span>Sem_init(&amp;mutex, <span>0</span>, <span>1</span>);</span><br><span></span><br><span></span><br><span></span><br><span><span>for</span> (i = <span>0</span>; i &lt; niters; i++)</span><br><span>{</span><br><span>    P(&amp;mutex);</span><br><span>    cnt++;</span><br><span>    V(&amp;mutex);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>在使用线程时，脑中需要有一个清晰的分享变量的概念，共享变量需要互斥访问，而 Semaphores 是一个基础的机制。</p>
+<h2 id="生产者-消费者问题">生产者-消费者问题</h2>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14620251080738.jpg" alt=""></p>
+<p>具体的同步模型为：</p>
+<ul>
+<li>生产者等待空的 slot，把 item 存储到 buffer，并通知消费者</li>
+<li>消费整等待 item，从 buffer 中移除 item，并通知生产者</li>
+</ul>
+<p>主要用于</p>
+<ul>
+<li>多媒体处理
+<ul>
+<li>生产者生成 MPEG 视频帧，消费者进行渲染</li>
+</ul>
+</li>
+<li>事件驱动的图形用户界面
+<ul>
+<li>生产者检测到鼠标点击、移动和键盘输入，并把对应的事件插入到 buffer 中</li>
+<li>消费者从 buffer 中获取事件，并绘制到到屏幕上</li>
+</ul>
+</li>
+</ul>
+<p>接下来我们实现一个有 n 个元素 buffer，为此，我们需要一个 mutex 和两个用来计数的 semaphore：</p>
+<ul>
+<li><code>mutex</code>: 用来保证对 buffer 的互斥访问</li>
+<li><code>slots</code>: 统计 buffer 中可用的 slot 数目</li>
+<li><code>items</code>: 统计 buffer 中可用的 item 数目</li>
+</ul>
+<p>我们直接来看代码，就比较清晰了</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br></pre></td><td><pre><span></span><br><span></span><br><span><span>#<span>include</span> <span>"csapp.h"</span></span></span><br><span></span><br><span><span>typedef</span> <span><span>struct</span> {</span></span><br><span>    <span>int</span> *buf;    </span><br><span>    <span>int</span> n;       </span><br><span>    <span>int</span> front;   </span><br><span>    <span>int</span> rear;    </span><br><span>    <span>sem_t</span> mutex; </span><br><span>    <span>sem_t</span> slots; </span><br><span>    <span>sem_t</span> items; </span><br><span>} <span>sbuf_t</span>;</span><br><span></span><br><span><span><span>void</span> <span>sbuf_init</span><span>(<span>sbuf_t</span> *sp, <span>int</span> n)</span></span>;</span><br><span><span><span>void</span> <span>sbuf_deinit</span><span>(<span>sbuf_t</span> *sp)</span></span>;</span><br><span><span><span>void</span> <span>sbuf_insert</span><span>(<span>sbuf_t</span> *sp, <span>int</span> item)</span></span>;</span><br><span><span><span>int</span> <span>sbuf_remove</span><span>(<span>sbuf_t</span> *sp)</span></span>;</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>然后是具体的实现</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br><span>36</span><br></pre></td><td><pre><span></span><br><span></span><br><span></span><br><span><span><span>void</span> <span>sbuf_init</span><span>(<span>sbuf_t</span> *sp, <span>int</span> n)</span> </span>{</span><br><span>    sp-&gt;buf = Calloc(n, <span>sizeof</span>(<span>int</span>));</span><br><span>    sp-&gt;n = n;                  </span><br><span>    sp-&gt;front = sp-&gt;rear = <span>0</span>;   </span><br><span>    Sem_init(&amp;sp-&gt;mutex, <span>0</span>, <span>1</span>); </span><br><span>    Sem_init(&amp;sp-&gt;slots, <span>0</span>, n); </span><br><span>    Sem_init(&amp;sp-&gt;items, <span>0</span>, <span>0</span>); </span><br><span>}</span><br><span></span><br><span></span><br><span><span><span>void</span> <span>sbuf_deinit</span><span>(<span>sbuf_t</span> *sp)</span></span>{</span><br><span>    Free(sp-&gt;buf);</span><br><span>}</span><br><span></span><br><span></span><br><span><span><span>void</span> <span>sbuf_insert</span><span>(<span>sbuf_t</span> *sp, <span>int</span> item)</span> </span>{</span><br><span>    P(&amp;sp-&gt;slots);                        </span><br><span>    P(&amp;sp-&gt;mutext);                       </span><br><span>    sp-&gt;buf[(++sp-&gt;rear)%(sp-&gt;n)] = item; </span><br><span>    V(&amp;sp-&gt;mutex);                        </span><br><span>    V(&amp;sp-&gt;items);                        </span><br><span>}</span><br><span></span><br><span></span><br><span><span><span>int</span> <span>sbuf_remove</span><span>(sbuf_f *sp)</span> </span>{</span><br><span>    <span>int</span> item;</span><br><span>    P(&amp;sp-&gt;items);                         </span><br><span>    P(&amp;sp-&gt;mutex);                         </span><br><span>    item = sp-&gt;buf[(++sp-&gt;front)%(sp-&gt;n)]; </span><br><span>    V(&amp;sp-&gt;mutex);                         </span><br><span>    V(&amp;sp-&gt;slots);                         </span><br><span>    <span>return</span> item;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h2 id="读者-写者问题">读者-写者问题</h2>
+<p>是互斥问题的通用描述，具体为：</p>
+<ul>
+<li>读者线程只读取对象</li>
+<li>写者线程修改对象</li>
+<li>写者对于对象的访问是互斥的</li>
+<li>多个读者可以同时读取对象</li>
+</ul>
+<p>常见的应用场景是：</p>
+<ul>
+<li>在线订票系统</li>
+<li>多线程缓存 web 代理</li>
+</ul>
+<p>根据不同的读写策略，又两类读者写者问题，需要注意的是，这两种情况都可能出现 starvation。</p>
+<blockquote>
+<p>第一类读者写者问题（读者优先）</p>
+</blockquote>
+<ul>
+<li>如果写者没有获取到使用对象的权限，不应该让读者等待</li>
+<li>在等待的写者之后到来的读者应该在写者之前处理</li>
+<li>也就是说，只有没有读者的情况下，写者才能工作</li>
+</ul>
+<blockquote>
+<p>第二类读者写者问题（写者优先）</p>
+</blockquote>
+<ul>
+<li>一旦写者可以处理的时候，就不应该进行等待</li>
+<li>在等待的写者之后到来的读者应该在写者之后处理</li>
+</ul>
+<p>具体的代码为</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br><span>36</span><br><span>37</span><br><span>38</span><br><span>39</span><br><span>40</span><br><span>41</span><br><span>42</span><br><span>43</span><br><span>44</span><br><span>45</span><br><span>46</span><br><span>47</span><br><span>48</span><br><span>49</span><br><span>50</span><br><span>51</span><br><span>52</span><br><span>53</span><br><span>54</span><br><span>55</span><br></pre></td><td><pre><span><span>sbuf_t</span> sbuf; </span><br><span></span><br><span></span><br><span><span>static</span> <span>int</span> byte_cnt;  </span><br><span><span>static</span> <span>sem_t</span> mutex;   </span><br><span></span><br><span></span><br><span><span><span>void</span> <span>echo_cnt</span><span>(<span>int</span> connfd)</span></span>{</span><br><span>    <span>int</span> n;</span><br><span>    <span>char</span> buf[MAXLINE];</span><br><span>    <span>rio_t</span> rio;</span><br><span>    <span>static</span> <span>pthread_once_t</span> once = PTHREAD_ONCE_INIT;</span><br><span>    </span><br><span>    Pthread_once(&amp;once, init_echo_cnt);</span><br><span>    Rio_readinitb(&amp;rio, connfd);</span><br><span>    <span>while</span> ((n = Rio_readlineb(&amp;rio, buf, MAXLINE)) != <span>0</span>) {</span><br><span>        P(&amp;mutex);</span><br><span>        byte_cnt += n;</span><br><span>        <span>printf</span>(<span>"thread %d received %d (%d total) bytes on fd %d\n"</span>,</span><br><span>                    (<span>int</span>) pthread_self(), n, byte_cnt, connfd);</span><br><span>        V(&amp;mutex);</span><br><span>        Rio_writen(connfd, buf, n);</span><br><span>    }</span><br><span>}</span><br><span></span><br><span><span><span>static</span> <span>void</span> <span>init_echo_cnt</span><span>(<span>void</span>)</span></span>{</span><br><span>    Sem_init(&amp;mutex, <span>0</span>, <span>1</span>);</span><br><span>    byte_cnt = <span>0</span>;</span><br><span>}</span><br><span></span><br><span><span><span>void</span> *<span>thread</span><span>(<span>void</span> *vargp)</span></span>{</span><br><span>    Pthread_detach(pthread_self());</span><br><span>    <span>while</span> (<span>1</span>) {</span><br><span>        <span>int</span> connfd = sbuf_remove(&amp;sbuf); </span><br><span>        echo_cnt(connfd);                </span><br><span>        Close(connfd);</span><br><span>    }</span><br><span>}</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>(<span>int</span> argc, <span>char</span> **argv)</span> </span>{</span><br><span>    <span>int</span> i, listenfd, connfd;</span><br><span>    <span>socklen_t</span> clientlen;</span><br><span>    <span><span>struct</span> <span>sockaddr_storage</span> <span>clientaddr</span>;</span></span><br><span>    <span>pthread_t</span> tid;</span><br><span>    </span><br><span>    listenfd = Open_listenfd(argv[<span>1</span>]);</span><br><span>    sbuf_init(&amp;sbuf, SBUFSIZE);</span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; NTHREADS; i++) </span><br><span>        Pthread_create(&amp;tid, <span>NULL</span>, thread, <span>NULL</span>);</span><br><span>    <span>while</span> (<span>1</span>) {</span><br><span>        clientlen = <span>sizeof</span>(struct sockaddr_storage);</span><br><span>        connfd = Accept(listenfd, (SA *)&amp;clientaddr, &amp;clientlen);</span><br><span>        sbuf_insert(&amp;sbuf, connfd); </span><br><span>    }</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h2 id="线程安全">线程安全</h2>
+<p>在线程中调用的函数必须是线程安全的，定义为：</p>
+<blockquote>
+<p>A function is thread-safe iff it will always produce correct results when called repeatedly from multiple concurrent threads</p>
+</blockquote>
+<p>主要有 4 类线程不安全的函数</p>
+<ol>
+<li>不保护共享变量的函数
+<ul>
+<li>解决办法：使用 P 和 V semaphore 操作</li>
+<li>问题：同步操作会影响性能</li>
+</ul>
+</li>
+<li>在多次调用间保存状态的函数
+<ul>
+<li>解决办法：把状态当做传入参数</li>
+</ul>
+</li>
+<li>返回指向静态变量的指针的函数
+<ul>
+<li>解决办法1：重写函数，传地址用以保存</li>
+<li>解决办法2：上锁，并且进行复制</li>
+</ul>
+</li>
+<li>调用线程不安全函数的函数
+<ul>
+<li>解决办法：只调用线程安全的函数</li>
+</ul>
+</li>
+</ol>
+<p>另一个重要的概念是 Reentrant Function，定义为：</p>
+<blockquote>
+<p>A function is <strong>reentrant</strong> iff it accesses no shared variables when called by multiple threads</p>
+</blockquote>
+<p>Reentrant Functions 是线程安全函数非常重要的子集，不需要同步操作，对于第二类的函数来说（上面提到的），唯一的办法就是把他们修改成 reentrant 的。</p>
+<p>标准 C 库中的函数都是线程安全的（如 <code>malloc</code>, <code>free</code>, <code>printf</code>, <code>scanf</code>），大多数 Unix 的系统调用也都是线程安全的。</p>
+<p>总结来看，并行编程需要注意的是：</p>
+<ul>
+<li>要有并行策略，可以把一个大任务分成若干个独立的子任务，或者用分而治之的方式来解决</li>
+<li>内循环最好不要有任何同步机制</li>
+<li>注意 Amdahl’s Law</li>
+<li>一致性是个大问题，无论是计算一致性还是存储一致性，都需要仔细考虑</li>
+</ul>
+<h2 id="超线程">超线程</h2>
+<p>回想一下，我们之前是如何处理 I/O 的延迟的呢？一个办法是每个客户端都由一个线程来处理，这样就不需要互相等待。现在的多核/超线程处理器提供了另外一种可能。我们不但可以并行执行多个线程，更好的是这些都是自动进行的，当然，我们也可以通过把大任务分成小任务来加速运算。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14620327073816.jpg" alt=""></p>
+<p>上图是典型的多核处理器架构，这里需要注意的是 L3 缓存（图上没有显示）和主内存都是共享的。而具体的执行计算的架构，基本的乱序执行处理器的架构为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14601450728106.jpg" alt="Out-of-Order Processor Structure"></p>
+<p>指令控制器会动态把程序转换成操作流，操作会被映射到 Functional Unit 上进行并行处理。这种情况下，一个核心处理一个线程。而在超线程的设计中，一个核心可以处理若干个线程，秘诀在于多出来了若干套指令控制流，如下图：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14601452084625.jpg" alt="Hyperthreading Implementation"></p>
+<p>如果我们想要了解机器的相关信息，可以访问 <code>/proc/cpuinfo</code></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14601453998378.jpg" alt=""></p>
+<p>随后老师提及了两个例子，一个是并行求和，一个是并行快排，这里不赘述，如果感兴趣的话，可以自己思考一下。</p>
+<h2 id="总结">总结</h2>
+<p>这一讲是本系列的最后一部分了，我们首先学习了并行的几个层次：进程、事件、线程，并了解 Posix 标准。在此基础上，针对并行编程可能产生的同步问题，使用信号量给出了简单的解决办法。之后通过『生产者-消费者问题』和『读者-写者问题』对并行和同步进行更加深入的探讨，最后介绍了线程安全和一致性问题。</p>
+<p>终于赶在五月前完成了『读薄』系列，希望大家喜欢。</p>
+<h2 id="参考资料">参考资料</h2>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97">并行计算</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%AB%B6%E7%88%AD%E5%8D%B1%E5%AE%B3">竞争条件</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%AD%BB%E9%94%81">死锁</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Deadlock">Deadlock</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/POSIX_Threads">Posix Thread</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cs.cmu.edu/afs/cs/academic/class/15492-f07/www/pthreads.html">POSIX thread (pthread) libraries</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">小土刀</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">https://wdxtub.com/work/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/01/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/MIT-%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/MIT-%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/" title="MIT-算法导论-写在后面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MIT-算法导论-写在后面</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/31/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="CSAPP-【第十一章】网络-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSAPP-【第十一章】网络-补充阅读与总结【转载】</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/01/27/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E7%AB%A0-%E7%B3%BB%E7%BB%9F%E7%BA%A7IO/" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-27</div><div class="title">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div><div><a href="/2021/01/09/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC7%E7%AB%A0-%E9%93%BE%E6%8E%A5/" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-09</div><div class="title">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div><div><a href="/2021/01/23/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98/" title="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-23</div><div class="title">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</div></div></a></div><div><a href="/2021/01/02/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%86%85%E5%AD%98%E4%B8%8E%E7%BC%93%E5%AD%98/" title="CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-02</div><div class="title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</div></div></a></div><div><a href="/2020/12/10/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E8%A1%A5%E5%85%85%E9%98%85%E8%AF%BB%E4%B8%8E%E6%80%BB%E7%BB%93-%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA/" title="CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-10</div><div class="title">CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】</div></div></a></div><div><a href="/2021/01/31/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="CSAPP-【第十一章】网络-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-31</div><div class="title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><span id="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E8%A1%8C%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">并行方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E8%BF%9B%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">基于进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E4%BA%8B%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">基于事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E7%BA%BF%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">基于线程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">2.4.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5"><span class="toc-number">3.</span> <span class="toc-text">同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%8F%98%E9%87%8F"><span class="toc-number">3.1.</span> <span class="toc-text">共享变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%8C%BA%E5%9F%9F-Critical-Section"><span class="toc-number">3.2.</span> <span class="toc-text">关键区域 Critical Section</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="toc-number">3.3.</span> <span class="toc-text">信号量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">生产者-消费者问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">读者-写者问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">6.</span> <span class="toc-text">线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%85%E7%BA%BF%E7%A8%8B"><span class="toc-number">7.</span> <span class="toc-text">超线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'http://example.com/2021/02/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B/'
+    this.page.identifier = '/2021/02/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E5%B9%B6%E8%A1%8C%E7%BC%96%E7%A8%8B/'
+    this.page.title = 'CSAPP-【第十二章】并行编程-补充阅读与总结【转载】'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Valine' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div></div><script src="/js/category.js"></script></body></html>

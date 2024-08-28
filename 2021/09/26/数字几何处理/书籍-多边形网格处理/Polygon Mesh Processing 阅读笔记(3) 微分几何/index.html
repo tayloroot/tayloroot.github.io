@@ -1,0 +1,589 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PMP-多边形网格处理-微分几何【转载】 | 东方欲晓</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="曲线 曲线是二维空间上可微分的一维流形。曲线可以用参数方程表示为如下形式： p(u)&#x3D;(x(u)y(u)),u∈[a,b]⊂R 其中x和y分别是关于u的可微函数，那么曲线在某一点的切向量则为各分量的一阶导数组成的向量，即： p′(u)&#x3D;(x′(u)y′(u)),u∈[a,b]⊂R 借由上式，如果p′(u)在u处不为0，则把这一点成为曲线的 正则点 。曲线上的点处处正则的曲线称为 正则曲线 (Reg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PMP-多边形网格处理-微分几何【转载】">
+<meta property="og:url" content="http://example.com/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(3)%20%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="曲线 曲线是二维空间上可微分的一维流形。曲线可以用参数方程表示为如下形式： p(u)&#x3D;(x(u)y(u)),u∈[a,b]⊂R 其中x和y分别是关于u的可微函数，那么曲线在某一点的切向量则为各分量的一阶导数组成的向量，即： p′(u)&#x3D;(x′(u)y′(u)),u∈[a,b]⊂R 借由上式，如果p′(u)在u处不为0，则把这一点成为曲线的 正则点 。曲线上的点处处正则的曲线称为 正则曲线 (Reg">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-09-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-27T08:14:52.136Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="图形学">
+<meta property="article:tag" content="数字几何处理">
+<meta property="article:tag" content="多边形网格处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(3)%20%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PMP-多边形网格处理-微分几何【转载】',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-27 16:14:52'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">PMP-多边形网格处理-微分几何【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-09-25T16:00:00.000Z" title="发表于 2021-09-26 00:00:00">2021-09-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/PMP-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/">PMP-多边形网格处理</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(3)%20%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(3)%20%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="曲线">曲线</h2>
+<p>曲线是二维空间上可微分的一维流形。曲线可以用参数方程表示为如下形式：</p>
+<p>p(u)=(x(u)y(u)),u∈[a,b]⊂R</p>
+<p>其中x和y分别是关于u的可微函数，那么曲线在某一点的切向量则为各分量的一阶导数组成的向量，即：</p>
+<p>p′(u)=(x′(u)y′(u)),u∈[a,b]⊂R</p>
+<p>借由上式，如果p′(u)在u处不为0，则把这一点成为曲线的 <strong>正则点</strong> 。曲线上的点处处正则的曲线称为 <strong>正则曲线</strong> (Regular Curve)。</p>
+<p>下式可以求曲线在某一点的法向量的值：</p>
+<p>n(u)=p′(u)⊥‖p′(u)⊥‖</p>
+<p>同样的曲线是可以通过参数变换使用不同的参数来表示的。曲线的微分几何关注诸如 <strong>弧长</strong> 、<strong>曲率</strong> 之类的，独立于特定参数之外的属性，也就是说无论参数如何变换，这些属性的值都是相等的。</p>
+<h3 id="弧长">弧长</h3>
+<p>对于上述曲线，起始点a到曲线上任意点u之间的弧长可以表示为：</p>
+<p>s(u)=∫au‖p′(s)‖du,u∈[a,b]</p>
+<p>即弧长是切向量长度对曲线参数的积分。可以发现，<strong>弧长</strong> 独立与特定参数，并且将参数u从区间[a,b]映射到了区间[0,L]，其中L是曲线的弧长。</p>
+<p>可以发现这是一个变上限积分函数，对两侧同时求导得到：</p>
+<p>dsdu=‖p′(u)‖</p>
+<p>当切向量的模为1，即曲线的切向量为单位向量场的时候，参数u就是曲线的弧长参数了</p>
+<h3 id="曲率">曲率</h3>
+<p>曲线的 <strong>曲率</strong> (curvature)就是针对曲线上某个点的切线方向角对弧长的转动率，即单位弧长内曲线转过的角度。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-0.jpeg" alt=""></p>
+<p>假设正则曲线的参数方程的参数为其弧长，图像如上图所示，α表示是曲线上的切向量(即p(s)的导数p′(s))，根据定义曲线的曲率为：</p>
+<p>κ(s)=‖α′(s)‖=limΔs→0|ΔθΔs|</p>
+<p>其中θ表示的是α(s)和α(s+Δs)两个向量的夹角，要证明这个式子只需要按照导数定义展开即可：</p>
+<p>κ(s)=limΔs→0|α(s+Δs)−α(s)||Δs|</p>
+<p>κ(s)=limΔs→02| sin(Δθ2)||Δs|</p>
+<p>κ(s)=limΔs→0|ΔθΔs|</p>
+<p>对于曲率还有另外一个很重要且相关的属性，即 <strong>曲率半径</strong> ，即把那一段曲线尽可能地微分，直到最后近似为一个圆弧，此圆弧所对应的半径即为曲线上该点的曲率半径。这个圆弧所对应的圆一般称作：Osculating Circle(密切圆)。</p>
+<p>我们知道弧长与半径的比值是弧度。对于这一段圆弧 <strong>曲率</strong> 的值为弧度于弧长的比值，而半径的值为弧长于弧度的比值。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-1.jpeg" alt=""></p>
+<p>对于 <strong>曲率</strong> 和 <strong>曲率半径</strong> ，可以得到下面的关系：</p>
+<p>κ=1R</p>
+<h2 id="曲面">曲面</h2>
+<h3 id="曲面的参数化表示">曲面的参数化表示</h3>
+<p>以地球地图的展开为例，地球表面是一个闭合的曲面，为了印刷地图，一般需要将其表面进行展开。</p>
+<p>展开之前，首先沿着子午线将其“切开”，然后按下面这个样子进行展开：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-2.jpeg" alt=""></p>
+<p>可以发现，北极点被变换为了线段AC，而南极点被变换了线段BD</p>
+<p>这样的一个球面，假设半径为R，有两种坐标表示的方法，分别是：(x,y,z)和(θ,ϕ)</p>
+<p>前一种非常好理解，即球面某一点在3维笛卡尔坐标系下的坐标，那么球面的可以用下列隐式方程表示：</p>
+<p>x2+y2+z2=R2</p>
+<p>通过该方程能够很快速地判断空间中某个点与球面地位置关系。</p>
+<p>后一种坐标中有两个参数θ和ϕ，其意义可以通过下面这张图来理解(和球坐标非常类似)</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-3.jpeg" alt=""></p>
+<p>理解后就不难得出两种坐标的转换方法：</p>
+<p>x(θ,ϕ)=(x(θ,ϕ)y(θ,ϕ)z(θ,ϕ))=(R cos(θ)cos(ϕ)R sin(θ)cos(ϕ)R sin(ϕ))</p>
+<p>其中θ的取值范围为[0,2π]，ϕ的取值范围为[−0.5π,0.5π]，可以发现通过这张表示方法将“方形”区域映射到了一个球面上。</p>
+<p>通过θ和ϕ这两个参数，可以画出两组类似经纬度的平行线，通过这些平行线，可以清楚的观察出球面不同部分被扭曲的程度。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-4.jpeg" alt=""></p>
+<h3 id="度量性质-Metric-Property">度量性质(Metric Property)</h3>
+<p>假设一个三维曲面的参数方程如下</p>
+<p>x(θ,ϕ)=(x(u,v)y(u,v)z(u,v)),(u,v)∈Ω⊂R2</p>
+<p>其中x,y,z是关于参数u,v的可微函数，Ω是参数u,v的定义域。</p>
+<p>同曲线类似，曲面的度量是由它的一阶导数决定。x关于参数u, v的偏导数如下</p>
+<p>xu(u0,v0):=∂x∂u(u0,v0)</p>
+<p>xv(u0,v0):=∂x∂v(u0,v0)</p>
+<p>这两个偏导数表示的是如下两条曲线上的切向量</p>
+<p>Cu(t)=x(u0+t,v0)</p>
+<p>Cv(t)=x(u0,v0+t)</p>
+<p>很明显这两个方程分别是当曲面方程的某个参数固定后，以另一个参数为参数的方程。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-5.jpeg" alt=""></p>
+<p>通过上面这张图，能够很清晰的看出Cv, Cu, xv, xu的具体含义。</p>
+<p>如果想要表示表示在平面某一点的法向量也很简单，曲线方程在某一点关于参数 <em>u</em> ， <em>v</em> 的偏导数确定了两条切向量xv, xu，将这两个向量做叉积即可得到曲面在这一点的法向量</p>
+<p>n=xu×xv‖xu×xv‖</p>
+<p>上面的导数方向只有沿两个参数的方向，如果要求曲面关于某一点在任意方向的导数，可以引入 <strong>方向导数</strong> 的概念。</p>
+<p>在求解方向导数的时候需要给定一个方向向量，由于曲面方程以参数方程的形式给出，先定义一个在曲线方程参数空间u, v下的方向向量</p>
+<p>w¯=(uw,vw)</p>
+<p>那么曲面通过这一点，在参数空间上沿上述方向前进的曲线方程可以表示为</p>
+<p>Cw(t)=x(u0+tuw,v0+tvw)</p>
+<p>这时曲面在点(u0,v0)处，w方向的方向导数为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-6.jpeg" alt=""></p>
+<p>向量w是定义在三维空间下的，而已知的方向向量是在二维参数空间上的，现在要将其从参数空间变换为曲面上的切向量：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-7.jpeg" alt=""></p>
+<p>只需要应用到雅可比矩阵即可完成这个变换：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-8.jpeg" alt=""></p>
+<p>此时雅可比矩阵的值为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-9.jpeg" alt=""></p>
+<h3 id="曲面的第一基本型">曲面的第一基本型</h3>
+<p>通过上面求解方向导数的过程可以发现，雅可比矩阵代表了一种从参数的定义域空间到曲面坐标空间的变换。通过雅可比矩阵可以知道一些量，诸如角度、距离和面积等，在这两个空间之间的映射关系。</p>
+<p>假设又两个单位向量w1, w2，这两个向量之间夹角的余弦值等于两向量的内积。</p>
+<p>向量在曲面空间和参数空间下的表示形式不同，单数可以明确的一点是，无论如何表示，向量之间的夹角是不会变的。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-10.jpeg" alt=""></p>
+<p>在上面的等式中，J乘以JT这一部分就被称为 <strong>曲面的第一基本型</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-11.jpeg" alt=""></p>
+<p>借由Ⅰ，要通过参数来表示下面曲线的弧长：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-12.jpeg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-13.jpeg" alt=""></p>
+<p>首先观察曲面的弧长公式：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-14.jpeg" alt=""></p>
+<p>接下来，用参数t来表示切向量w(ut,vt)，则其模长为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-15.jpeg" alt=""></p>
+<p>最后带入计算可以得到弧长公式：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-16.jpeg" alt=""></p>
+<p>同理，可以用下面的方法求得曲面的面积：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-17.jpeg" alt=""></p>
+<h3 id="曲面的曲率">曲面的曲率</h3>
+<p>曲面的曲率的定义是由曲线的曲率的定义扩充而来的，对于曲面上的一点，存在无数个切向量。对于曲面上的一点p，以及一条切向量t，这时可以定义曲率为：切向量t和曲面在这一点的法向量所成平面与曲面相交形成的直线在点p处的曲率。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-18.jpeg" alt=""></p>
+<p>将这个曲率写成式子为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-19.jpeg" alt=""></p>
+<p>其中Ⅱ为第二基本型</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-20.jpeg" alt=""></p>
+<p>上面关于曲面曲率的函数在切线方向变化的时候会有两个极值(极大值和极小值)，一般称它们为 <strong>主曲率(principal curvatures)</strong> ，如果两极值不相等，就把取这两个极值时的两个切向量称为 <strong>主方向(principal directions)</strong> 。如果两极值相等，则曲面上这一点称为 <strong>脐点(umbilical)</strong> ，曲面上这一点的所有切向量都可以称为 <strong>主方向(principal directions)</strong> ，并且曲面这一点各方向的曲率相等。特殊地，当且仅当曲面为球面或平面时，其上所有的点都是 <strong>脐点(umbilical)</strong> 。</p>
+<hr>
+<p>对于曲面的两个 <strong>主曲率</strong> 和其在同一点任意方向的曲率，有如下的关系：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-21.jpeg" alt=""></p>
+<p>其中ϕ为 <strong>主方向</strong> t1和指定方向t的夹角。可以看出，曲面的曲率仅仅由其两个 <strong>主曲率</strong> 决定，这一点任意方向的法曲率都是这两个 <strong>主曲率</strong> 的凸组合(convex combination)，另外还能得出的一点是 <strong>主方向</strong> 永远是相互正交的。</p>
+<hr>
+<p>曲面的某个区域内的性质同样可以用 <strong>曲率张量</strong> 来表示，<strong>曲率张量</strong> C可以用下面的方法得到：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-22.jpeg" alt=""></p>
+<p>其中D是对角线元素为κ1, κ2, 0的三阶方阵，P也为三阶方阵，由t1, t2 , n1三个列向量组成。</p>
+<hr>
+<p>另外，还有两种广泛使用的描述曲率的方式：</p>
+<ul>
+<li><strong>平均曲率</strong></li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-23.jpeg" alt=""></p>
+<ul>
+<li><strong>高斯曲率</strong></li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-24.jpeg" alt=""></p>
+<p>高斯曲率可以将曲面上的点分为3类：</p>
+<ul>
+<li>
+<p><strong>椭圆点(elliptical point)</strong> K&gt;0：椭圆点在其附近的区域上通常是凸出的</p>
+</li>
+<li>
+<p><strong>双曲线点(hyperbolic point)</strong> K&lt;0：双曲点在其附近的区域上通常是马鞍形</p>
+</li>
+<li>
+<p><strong>抛物线点(parabolic point)</strong> K=0：抛物线点通常在椭圆曲线和双曲线区域的分界线处</p>
+</li>
+</ul>
+<p>高斯曲率和平均曲率通常用在曲面的可视化分析上</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-25.jpeg" alt="左图为平均曲率，右图为高斯曲率"></p>
+<h3 id="内蕴几何学-Intrinsic-geometry">内蕴几何学(Intrinsic geometry)</h3>
+<p>在微分几何中，那些只依赖于 <strong>第一基本型</strong> 的属性被称为是 <strong>内蕴的(Intrinsic)</strong>。直观上来说它们可以仅仅通过曲面二维特征来导出。例如曲面上曲线的长度，角度等都是 <strong>内蕴的(Intrinsic)</strong>。</p>
+<p>对于 <strong>高斯曲率</strong> 和 <strong>平均曲率</strong> ，前者在等距变换下是不变的，所以它是 <strong>内蕴的(Intrinsic)</strong> ，即 <strong>高斯曲率</strong> 是可以由 <strong>第一基本型</strong> 直接决定的；而后者则不是，它依赖于曲面。</p>
+<p><strong>内蕴的(Intrinsic)</strong> 通常被用来取表示参数的独立性。</p>
+<h3 id="拉普拉斯算子">拉普拉斯算子</h3>
+<p>一般称某函数梯度的散度为 <strong>拉普拉斯算子</strong>，对于二元函数f(u,v)，其在欧式空间上的二阶差分算子(拉普拉斯算子)可以写为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-26.jpeg" alt=""></p>
+<p>拉普拉斯算子还可以推广到二阶流形曲面S上，其推广形式称为 <strong>拉普拉斯-贝尔特拉米算子</strong> ，定义为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-27.jpeg" alt=""></p>
+<p>对于曲面上某一个具体的点x，其 <strong>拉普拉斯-贝尔特拉米算子</strong> 和其 <strong>平均曲率</strong> 存在下面的关系：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-28.jpeg" alt=""></p>
+<p>虽然这个式子说明 <strong>平均曲率</strong> (非内蕴的)和 <strong>拉普拉斯-贝尔特拉米算子</strong> 之间存在某种关系，但是 <strong>拉普拉斯-贝尔特拉米算子</strong> 本身仅取决于 <strong>第一基本型</strong>，是内蕴的。</p>
+<h2 id="离散微分算子">离散微分算子</h2>
+<p>由于3D网格并不是连续的，而上面的讨论是建立在曲面是光滑的基础之上的。要将上述算子运用到3D网格上，需要将网格看作一个很粗糙的曲面，然后通过网格数据去计算这个近似曲面的微分属性。</p>
+<h3 id="局部平均区域">局部平均区域</h3>
+<p>一般的想法就是计算网格某个点以及与其相邻点的微分属性的平均值。</p>
+<p>当网格某个点以及与其相邻点组成这个区域的面积较大的时候，通过计算平均值得到的微分属性会很稳定；而面积较小的时候，精细的变化则会被更好的保留。</p>
+<p>常用的由下面三种定义这个面积的方法，其区别主要是在顶点周围的三角形中取点的方式不同：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-29.jpeg" alt=""></p>
+<h4 id="重心-左图-，外心-中图-，混合点-右图">重心(左图)，外心(中图)，混合点(右图)</h4>
+<p>其中右图中，当三角形为钝角三角形时则取中心点对边的中点，否则取三角形的外心。</p>
+<h3 id="法向量">法向量</h3>
+<p>在3D网格中，要计算某个三角面的法向量是比较容易的，只需要取两条边向量坐叉乘即可：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-30.jpeg" alt=""></p>
+<p>如果要计算某个顶点的法向量，同样考虑对顶点周围相邻的三角形的法向量做加权平均：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-31.jpeg" alt=""></p>
+<p>权值αT的取法，一般常用的有下面几种：</p>
+<ul>
+<li>
+<p>αT取常数1，这样计算的时候就忽略了邻边的长度，三角形的面积，角度。对于不规则的网格，计算的结果一般都是违反直觉的。</p>
+</li>
+<li>
+<p>αT取三角形的面积，这样取的好处是便于计算(只需要进行叉乘运算就可以了，还不用对向量进行单位化)，不过这种方法得到的结果有的时候也会出现违反直觉的情况。</p>
+</li>
+<li>
+<p>αT取邻边的夹角，不过由于计算过程涉及到了三角函数，效率上相对要低一些，不过效果比前两者好。</p>
+</li>
+</ul>
+<h3 id="梯度">梯度</h3>
+<p>同样是基于加权平均的方法，求解网格中某个三角形上某一点的坐标可以由三个顶点的梯度根据重心坐标的三个权值做加权平均。</p>
+<p>对于分段线性函数f来说，其在三角形顶点上有对应的值。可以考虑用拉格朗日插值法来表示三角上任意一点的函数值(u是二维参数)：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-32.jpeg" alt=""></p>
+<p>由于拉格朗日插值公式的基函数B具有下面的性质</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-33.jpeg" alt=""></p>
+<p>两边同时做梯度运算可以得到</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-34.jpeg" alt=""></p>
+<p>消去Bi后原来的式子为</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-35.jpeg" alt=""></p>
+<p>顶点i处基函数的梯度为从顶点i处沿着对边上高的方向的向量，且向量的模长为高的倒数，化简后(向量旋转90度后除以底边的长得到单位向量，再除以高度的结果，其中底边长乘以高度整好为面积的两倍)为：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-36.jpeg" alt=""></p>
+<p>代入后可以得到三角形上分段线性函数的梯度为</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-37.jpeg" alt=""></p>
+<h3 id="离散形式的拉普拉斯算子">离散形式的拉普拉斯算子</h3>
+<ul>
+<li>Uniform形式的拉普拉斯算子</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-38.jpeg" alt=""></p>
+<p>这一种形式直观上来说就是以中心点i为起点，相邻顶点平均值为终点的向量。</p>
+<p>由于平面的平均曲率H为0，这时算子的结果应该是0，不过上式的结果并不一定是非0的，所以这种方法不太适合用在非等距网格上。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-28.jpeg" alt=""></p>
+<p>这种方法只考虑了网格的连接性，所以使用范围有限。</p>
+<ul>
+<li>余切形式的拉普拉斯算子</li>
+</ul>
+<p>这种形式更加的精准，直接计算顶点vi周围的平均区域(之前提到过，有若干种取法)，然后对其梯度的散度进行曲面积分，然后使用 <em>散度定理(高斯公式)</em> 进行展开计算，最后可以得到：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-40.jpeg" alt=""></p>
+<ul>
+<li>离散散度</li>
+</ul>
+<p>因为拉普拉斯算子的定义为是梯度的散度，对于每一个三角形T给定一个向量w(如个给定分段线性函数f下的梯度向量)，则其散度为</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-41.png" alt=""></p>
+<h3 id="离散曲率">离散曲率</h3>
+<p>根据上面的式子，可以得到在离散形式下的 <strong>平均曲率</strong> ：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-42.jpeg" alt=""></p>
+<p>书中引用 <strong>Meyer et al. 03</strong> 这篇文章中提到了离散形式下 <strong>高斯曲率</strong> 的表示方式：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-43.jpeg" alt=""></p>
+<p>根据 <strong>高斯曲率</strong> 、<strong>平均曲率</strong> 和两个 <strong>主曲率</strong> 的关系，可以得到 <strong>主曲率</strong> 的计算方法：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-44.jpeg" alt=""></p>
+<h3 id="离散形式的曲率张量">离散形式的曲率张量</h3>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/pmp/Polygon-Mesh-Processing-note3-Geometry/img-45.jpeg" alt=""></p>
+<p>其中β(e)表示和边e相邻三角形所在平面的有方向的二面角，e∩A(v)表示边e在区域A中的长度，e¯指边e的单位向量。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://blauhimmel.github.io/tags/polygon-mesh-processing/">blauhimmel</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://blauhimmel.github.io/tags/polygon-mesh-processing/">https://blauhimmel.github.io/tags/polygon-mesh-processing/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/">多边形网格处理</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B8%AD%E7%A7%91%E5%A4%A7-%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/8/" title="中科大-数字几何处理-模型变形技术"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">中科大-数字几何处理-模型变形技术</div></div></a></div><div class="next-post pull-right"><a href="/2021/09/17/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B8%AD%E7%A7%91%E5%A4%A7-%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/6/" title="中科大-数字几何处理-参数化与变形"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">中科大-数字几何处理-参数化与变形</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/01/23/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/PMP-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/" title="PMP-多边形网格处理-写在后面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-23</div><div class="title">PMP-多边形网格处理-写在后面</div></div></a></div><div><a href="/2021/08/28/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(1)%20%E6%9B%B2%E9%9D%A2%E7%9A%84%E8%A1%A8%E7%A4%BA/" title="PMP-多边形网格处理-曲面的表示【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-08-28</div><div class="title">PMP-多边形网格处理-曲面的表示【转载】</div></div></a></div><div><a href="/2021/09/01/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(2)%20%E7%BD%91%E6%A0%BC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="PMP-多边形网格处理-网格数据结构 【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-09-01</div><div class="title">PMP-多边形网格处理-网格数据结构 【转载】</div></div></a></div><div><a href="/2021/10/16/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(4)%20%E6%9B%B2%E9%9D%A2%E7%9A%84%E5%B9%B3%E6%BB%91(Smoothing)/" title="PMP-多边形网格处理-曲面平滑【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">PMP-多边形网格处理-曲面平滑【转载】</div></div></a></div><div><a href="/2021/11/07/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(5)%20%E5%8F%82%E6%95%B0%E5%8C%96(Parameterization)/" title="PMP-多边形网格处理-参数化【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-07</div><div class="title">PMP-多边形网格处理-参数化【转载】</div></div></a></div><div><a href="/2021/11/28/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(6)%20%E7%BD%91%E6%A0%BC%E9%87%8D%E5%88%92%E5%88%86(Remeshing)/" title="PMP-多边形网格处理-Remeshing【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-28</div><div class="title">PMP-多边形网格处理-Remeshing【转载】</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><span id="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B2%E7%BA%BF"><span class="toc-number">1.</span> <span class="toc-text">曲线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%A7%E9%95%BF"><span class="toc-number">1.1.</span> <span class="toc-text">弧长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E7%8E%87"><span class="toc-number">1.2.</span> <span class="toc-text">曲率</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B2%E9%9D%A2"><span class="toc-number">2.</span> <span class="toc-text">曲面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E9%9D%A2%E7%9A%84%E5%8F%82%E6%95%B0%E5%8C%96%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.1.</span> <span class="toc-text">曲面的参数化表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%A6%E9%87%8F%E6%80%A7%E8%B4%A8-Metric-Property"><span class="toc-number">2.2.</span> <span class="toc-text">度量性质(Metric Property)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E9%9D%A2%E7%9A%84%E7%AC%AC%E4%B8%80%E5%9F%BA%E6%9C%AC%E5%9E%8B"><span class="toc-number">2.3.</span> <span class="toc-text">曲面的第一基本型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B2%E9%9D%A2%E7%9A%84%E6%9B%B2%E7%8E%87"><span class="toc-number">2.4.</span> <span class="toc-text">曲面的曲率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E8%95%B4%E5%87%A0%E4%BD%95%E5%AD%A6-Intrinsic-geometry"><span class="toc-number">2.5.</span> <span class="toc-text">内蕴几何学(Intrinsic geometry)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90"><span class="toc-number">2.6.</span> <span class="toc-text">拉普拉斯算子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E5%BE%AE%E5%88%86%E7%AE%97%E5%AD%90"><span class="toc-number">3.</span> <span class="toc-text">离散微分算子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%B9%B3%E5%9D%87%E5%8C%BA%E5%9F%9F"><span class="toc-number">3.1.</span> <span class="toc-text">局部平均区域</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%BF%83-%E5%B7%A6%E5%9B%BE-%EF%BC%8C%E5%A4%96%E5%BF%83-%E4%B8%AD%E5%9B%BE-%EF%BC%8C%E6%B7%B7%E5%90%88%E7%82%B9-%E5%8F%B3%E5%9B%BE"><span class="toc-number">3.1.1.</span> <span class="toc-text">重心(左图)，外心(中图)，混合点(右图)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%95%E5%90%91%E9%87%8F"><span class="toc-number">3.2.</span> <span class="toc-text">法向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A2%AF%E5%BA%A6"><span class="toc-number">3.3.</span> <span class="toc-text">梯度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E5%BD%A2%E5%BC%8F%E7%9A%84%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E7%AE%97%E5%AD%90"><span class="toc-number">3.4.</span> <span class="toc-text">离散形式的拉普拉斯算子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E6%9B%B2%E7%8E%87"><span class="toc-number">3.5.</span> <span class="toc-text">离散曲率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E5%BD%A2%E5%BC%8F%E7%9A%84%E6%9B%B2%E7%8E%87%E5%BC%A0%E9%87%8F"><span class="toc-number">3.6.</span> <span class="toc-text">离散形式的曲率张量</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'http://example.com/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(3)%20%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95/'
+    this.page.identifier = '/2021/09/26/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/Polygon%20Mesh%20Processing%20%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0(3)%20%E5%BE%AE%E5%88%86%E5%87%A0%E4%BD%95/'
+    this.page.title = 'PMP-多边形网格处理-微分几何【转载】'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Valine' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div></div><script src="/js/category.js"></script></body></html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-随机过程-泊松过程中的独立增量和平稳增量 | 东方欲晓</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="探讨了泊松过程中的独立增量和平稳增量的性质，尤其关注事件间隔的分布问题。通过对事件发生时间和间隔的分析，教授指出在给定事件发生次数的情况下，事件时刻服从均匀分布的顺序统计量。这堂课还强调了微元法和对称函数在解决复杂概率问题中的重要性，并通过案例展示了如何设计发车间隔来最小化乘客等待时间。 1. 泊松过程的基本概念 1.1 独立增量和平稳增量 泊松过程的两个关键特性为：  叠加性：在非重叠区间内，事">
+<meta property="og:type" content="article">
+<meta property="og:title" content="国科大-随机过程-泊松过程中的独立增量和平稳增量">
+<meta property="og:url" content="http://example.com/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="探讨了泊松过程中的独立增量和平稳增量的性质，尤其关注事件间隔的分布问题。通过对事件发生时间和间隔的分析，教授指出在给定事件发生次数的情况下，事件时刻服从均匀分布的顺序统计量。这堂课还强调了微元法和对称函数在解决复杂概率问题中的重要性，并通过案例展示了如何设计发车间隔来最小化乘客等待时间。 1. 泊松过程的基本概念 1.1 独立增量和平稳增量 泊松过程的两个关键特性为：  叠加性：在非重叠区间内，事">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2024-01-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-26T03:22:31.803Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="随机过程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '国科大-随机过程-泊松过程中的独立增量和平稳增量',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-26 11:22:31'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-随机过程-泊松过程中的独立增量和平稳增量</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2024-01-08T16:00:00.000Z" title="发表于 2024-01-09 00:00:00">2024-01-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/">数学与优化方法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">国科大-随机过程</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>探讨了泊松过程中的独立增量和平稳增量的性质，尤其关注事件间隔的分布问题。通过对事件发生时间和间隔的分析，教授指出在给定事件发生次数的情况下，事件时刻服从均匀分布的顺序统计量。这堂课还强调了微元法和对称函数在解决复杂概率问题中的重要性，并通过案例展示了如何设计发车间隔来最小化乘客等待时间。</p>
+<h2 id="1-泊松过程的基本概念">1. 泊松过程的基本概念</h2>
+<h3 id="1-1-独立增量和平稳增量">1.1 独立增量和平稳增量</h3>
+<p>泊松过程的两个关键特性为：</p>
+<ul>
+<li><strong>叠加性</strong>：在非重叠区间内，事件的增量相互独立。</li>
+<li><strong>平稳增量</strong>：增量的分布不随时间变化。这意味着事件发生的规律在任何时间段内都是一致的。</li>
+</ul>
+<p>此性质使得泊松过程能够被有效地用于建模不同时刻的独立事件，比如业务电话的接入或顾客的到达。</p>
+<h3 id="1-2-指数分布">1.2 指数分布</h3>
+<p>在泊松过程中，任意两个事件之间的间隔遵循指数分布，具有以下概率密度函数：<br>
+\[ f(t; \lambda) = \lambda e^{-\lambda t}, \quad t \geq 0 \]<br>
+其中，\(\lambda\) 是单位时间内的事件发生率。</p>
+<h2 id="2-条件概率及其重要性">2. 条件概率及其重要性</h2>
+<h3 id="2-1-条件概率的概念">2.1 条件概率的概念</h3>
+<p>条件概率用于描述事件 \(A\) 在事件 \(B\) 已发生的前提下的发生概率，表示为：<br>
+\[ P(A | B) = \frac{P(A \cap B)}{P(B)} \]<br>
+这一概念对于准确预测和分析随机变量间的关系至关重要。</p>
+<h3 id="2-2-全概率公式">2.2 全概率公式</h3>
+<p>全概率公式为：<br>
+\[ P(A) = \sum_{i} P(A | B_i) P(B_i) \]<br>
+此公式有助于在已知条件下计算事件的概率，提供了一种系统的方式来处理复杂问题。</p>
+<h3 id="2-3-生活中的应用">2.3 生活中的应用</h3>
+<p>通过生活实例可以更直观地理解条件概率的影响。例如，如果得到某人将在半小时内到达的信息，这将改变对他到达时间的预期分布，这反映了条件信息的重要作用。</p>
+<h2 id="3-事件发生的分布">3. 事件发生的分布</h2>
+<h3 id="3-1-事件数量分析">3.1 事件数量分析</h3>
+<p>在泊松过程中，事件在给定时段内的出现次数 \(N(t)\) 的分布为：<br>
+\[ P(N(t) = k) = \frac{(\lambda t)^k e^{-\lambda t}}{k!} \]<br>
+该公式帮助理解在特定时间段内可能发生的事件次数。</p>
+<h3 id="3-2-时间确定性对分布的影响">3.2 时间确定性对分布的影响</h3>
+<p>分析发现，事件间隔的随机性与时间的确定性之间存在直接关系。这表明观察时间间隔可能会显著影响其概率分布，例如在某些情况下，时间的确定性会改变事件发生的概率结构。</p>
+<h2 id="4-微元法与对称函数在概率中的应用">4. 微元法与对称函数在概率中的应用</h2>
+<h3 id="4-1-微元法的作用">4.1 微元法的作用</h3>
+<p>微元法是一种将问题精细化分析的方法，通常用于简化复杂的概率计算。通过将变量进行细分，可以更清楚地描述随机变量的行为。</p>
+<p>在使用微元法时，有效的策略是设定 \(dX\) 或 \(dY\) 来描述变化量，这样能够避免计算中的不必要复杂性。</p>
+<h3 id="4-2-对称函数的性质">4.2 对称函数的性质</h3>
+<p>在多维空间中，对称函数显示出独特性，即在不同排列下，函数的值不变。这种特性在进行多维积分时非常重要，可以有效地提高计算效率，帮助理解复杂函数的属性。</p>
+<h2 id="5-多元概率与计算">5. 多元概率与计算</h2>
+<h3 id="5-1-变量变换">5.1 变量变换</h3>
+<p>在解决多元概率问题时，适当的变量变换能够显著简化问题。例如，设定某些变量为零可以简化公式的计算，从而更快得出结论。</p>
+<h3 id="5-2-联合分布的理解">5.2 联合分布的理解</h3>
+<p>联合分布是描述多个随机变量同时发生的概率分布，掌握这一概念对高阶统计分析至关重要。</p>
+<h2 id="6-平稳增量与独立增量的应用">6. 平稳增量与独立增量的应用</h2>
+<h3 id="6-1-平稳增量的定义">6.1 平稳增量的定义</h3>
+<p>平稳增量指在随机过程中，任何时间增量都有相同的分布，而不受时间绝对位置的影响。这一特性便于在不同时间段进行事件合并和分析。</p>
+<h3 id="6-2-独立增量的重要性">6.2 独立增量的重要性</h3>
+<p>独立增量是泊松过程的核心，表示各增量间不受其他增量的影响。这允许在计算概率时，使用独立事件的特点进行简化。</p>
+<h3 id="6-3-在精算学中的应用">6.3 在精算学中的应用</h3>
+<p>精算师在进行风险评估和数据分析时，需深刻理解泊松过程及其性质。泊松过程为保险模型提供了强有力的工具，使得事件发生频率与赔偿金额的预测更加精准。</p>
+<h2 id="7-案例分析与总结">7. 案例分析与总结</h2>
+<h3 id="7-1-发车间隔的优化">7.1 发车间隔的优化</h3>
+<p>通过借用公交车发车间隔的设计案例，展示了如何通过泊松过程的模型来最小化乘客的等待时间，从而提高服务效率。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">MrMatrix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/">http://example.com/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">东方欲晓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/">随机过程</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">国科大-随机过程-马尔可夫链的特性及其简化</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/31/%E9%9A%8F%E7%AC%94/2023%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" title="2023年度总结"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2023年度总结</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-29</div><div class="title">国科大-随机过程-写在后面</div></div></a></div><div><a href="/2023/10/01/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/" title="国科大-随机过程-写在前面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-01</div><div class="title">国科大-随机过程-写在前面</div></div></a></div><div><a href="/2023/10/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%A6%82%E5%BF%B51/" title="国科大-随机过程-随机过程概念及其分类"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-15</div><div class="title">国科大-随机过程-随机过程概念及其分类</div></div></a></div><div><a href="/2023/10/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%A6%82%E5%BF%B52/" title="国科大-随机过程-随机过程及其相关函数详解"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-21</div><div class="title">国科大-随机过程-随机过程及其相关函数详解</div></div></a></div><div><a href="/2023/10/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%A6%82%E5%BF%B53/" title="国科大-随机过程-随机过程及其相关函数详解"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-10-29</div><div class="title">国科大-随机过程-随机过程及其相关函数详解</div></div></a></div><div><a href="/2023/11/05/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%A4%9A%E5%85%83%E7%9B%B8%E5%85%B3/" title="国科大-随机过程-多元相关性"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-11-05</div><div class="title">国科大-随机过程-多元相关性</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><span id="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B3%8A%E6%9D%BE%E8%BF%87%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">1. 泊松过程的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E7%8B%AC%E7%AB%8B%E5%A2%9E%E9%87%8F%E5%92%8C%E5%B9%B3%E7%A8%B3%E5%A2%9E%E9%87%8F"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 独立增量和平稳增量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%8C%87%E6%95%B0%E5%88%86%E5%B8%83"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 指数分布</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%8F%8A%E5%85%B6%E9%87%8D%E8%A6%81%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">2. 条件概率及其重要性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 条件概率的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%85%A8%E6%A6%82%E7%8E%87%E5%85%AC%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 全概率公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%94%9F%E6%B4%BB%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 生活中的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BA%8B%E4%BB%B6%E5%8F%91%E7%94%9F%E7%9A%84%E5%88%86%E5%B8%83"><span class="toc-number">3.</span> <span class="toc-text">3. 事件发生的分布</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E4%BA%8B%E4%BB%B6%E6%95%B0%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 事件数量分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%97%B6%E9%97%B4%E7%A1%AE%E5%AE%9A%E6%80%A7%E5%AF%B9%E5%88%86%E5%B8%83%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 时间确定性对分布的影响</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%BE%AE%E5%85%83%E6%B3%95%E4%B8%8E%E5%AF%B9%E7%A7%B0%E5%87%BD%E6%95%B0%E5%9C%A8%E6%A6%82%E7%8E%87%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">4. 微元法与对称函数在概率中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%BE%AE%E5%85%83%E6%B3%95%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 微元法的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%AF%B9%E7%A7%B0%E5%87%BD%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 对称函数的性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%A4%9A%E5%85%83%E6%A6%82%E7%8E%87%E4%B8%8E%E8%AE%A1%E7%AE%97"><span class="toc-number">5.</span> <span class="toc-text">5. 多元概率与计算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%8F%98%E9%87%8F%E5%8F%98%E6%8D%A2"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 变量变换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E8%81%94%E5%90%88%E5%88%86%E5%B8%83%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 联合分布的理解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%B9%B3%E7%A8%B3%E5%A2%9E%E9%87%8F%E4%B8%8E%E7%8B%AC%E7%AB%8B%E5%A2%9E%E9%87%8F%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">6. 平稳增量与独立增量的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%B9%B3%E7%A8%B3%E5%A2%9E%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 平稳增量的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E7%8B%AC%E7%AB%8B%E5%A2%9E%E9%87%8F%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 独立增量的重要性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E5%9C%A8%E7%B2%BE%E7%AE%97%E5%AD%A6%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">6.3.</span> <span class="toc-text">6.3 在精算学中的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">7. 案例分析与总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E5%8F%91%E8%BD%A6%E9%97%B4%E9%9A%94%E7%9A%84%E4%BC%98%E5%8C%96"><span class="toc-number">7.1.</span> <span class="toc-text">7.1 发车间隔的优化</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'http://example.com/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/'
+    this.page.identifier = '/2024/01/09/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E6%B3%8A%E6%9D%BE4/'
+    this.page.title = '国科大-随机过程-泊松过程中的独立增量和平稳增量'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Valine' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div></div><script src="/js/category.js"></script></body></html>

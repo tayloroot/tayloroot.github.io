@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-BA优化引入 | 东方欲晓</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="详细探讨了多视图几何中的关键概念，特别是针对现实世界数据中的噪声问题。讨论了线性算法在两视图结构与运动重建中的局限性，并引入了“束调整”这一重要方法，旨在优化噪声数据的处理。束调整通过最小化非凸代价函数来解决三维重建问题，强调了高维非线性优化的挑战。还介绍了几种常用的非线性优化算法，包括梯度下降法和Levenberg-Marquardt算法，强调了这些方法在实际应用中的重要性和复杂性。 1. 噪声">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TUM-多视图几何-BA优化引入">
+<meta property="og:url" content="http://example.com/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="详细探讨了多视图几何中的关键概念，特别是针对现实世界数据中的噪声问题。讨论了线性算法在两视图结构与运动重建中的局限性，并引入了“束调整”这一重要方法，旨在优化噪声数据的处理。束调整通过最小化非凸代价函数来解决三维重建问题，强调了高维非线性优化的挑战。还介绍了几种常用的非线性优化算法，包括梯度下降法和Levenberg-Marquardt算法，强调了这些方法在实际应用中的重要性和复杂性。 1. 噪声">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2022-02-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-27T09:08:45.652Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="数字几何处理">
+<meta property="article:tag" content="多视图几何">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'TUM-多视图几何-BA优化引入',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-27 17:08:45'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">TUM-多视图几何-BA优化引入</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-02-08T16:00:00.000Z" title="发表于 2022-02-09 00:00:00">2022-02-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/TUM-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">TUM-多视图几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>详细探讨了多视图几何中的关键概念，特别是针对现实世界数据中的噪声问题。讨论了线性算法在两视图结构与运动重建中的局限性，并引入了“束调整”这一重要方法，旨在优化噪声数据的处理。束调整通过最小化非凸代价函数来解决三维重建问题，强调了高维非线性优化的挑战。还介绍了几种常用的非线性优化算法，包括梯度下降法和Levenberg-Marquardt算法，强调了这些方法在实际应用中的重要性和复杂性。</p>
+<h2 id="1-噪声对三维重建的影响">1. 噪声对三维重建的影响</h2>
+<p>在计算机视觉和三维重建中，现实世界的数据通常会受到噪声的影响，线性算法如八点算法（Eight-Point Algorithm）在这种情况下表现不佳。噪声会导致估算的旋转和位移参数偏离真实值，进而影响重建精度。因此，非线性优化技术和统计方法被广泛应用于处理噪声问题。</p>
+<h3 id="1-1-噪声与离群点">1.1 噪声与离群点</h3>
+<ul>
+<li><strong>噪声</strong>：数据点稍微偏离真实位置。</li>
+<li><strong>离群点</strong>：完全错误的测量值，对重建结果的准确性影响较大。</li>
+</ul>
+<p>线性算法在噪声条件下表现出不稳定性，而统计方法则通过建模噪声的概率分布来提高重建的鲁棒性。</p>
+<h2 id="2-最大化后验估计与三维重建">2. 最大化后验估计与三维重建</h2>
+<p>通过对二维观察数据的估计，我们可以推断出理想的三维坐标。该过程涉及最大化后验估计（MAP），并考虑旋转和位移的概率分布，以获得最佳重建结果。</p>
+<h3 id="2-1-最大化后验估计">2.1 最大化后验估计</h3>
+<ul>
+<li><strong>最大化后验估计</strong>结合了观察数据和先验知识，得到最有可能的三维重建结果。在结构运动（Structure from Motion, SfM）中，该步骤尤为关键。</li>
+<li><strong>均匀先验假设</strong>：在没有先验信息的情况下，简化问题为最大似然估计。</li>
+<li><strong>高斯噪声</strong>：假设数据中的噪声服从高斯分布，从而可以使用平方误差作为优化目标函数。</li>
+</ul>
+<h3 id="2-2-最小化重投影误差">2.2 最小化重投影误差</h3>
+<p>最小化重投影误差是提高多视图重建准确性的重要方法。通过最小化图像点与三维点的重投影误差，能够有效提升三维结构的精确度。</p>
+<h2 id="3-束调整在多视图几何中的应用">3. 束调整在多视图几何中的应用</h2>
+<p>在多视图设置中，并非每个三维点都会在每张图像中可见。通过使用变量 \(\theta_{ij}\) 来表示点 \(j\) 是否在图像 \(i\) 中可见，可以忽略那些不可见的点，从而简化成本函数，这一过程被称为束调整（Bundle Adjustment）。</p>
+<h3 id="3-1-束调整的基本概念">3.1 束调整的基本概念</h3>
+<ul>
+<li><strong>\(\theta_{ij}\) 变量</strong>：若点 \(j\) 在图像 \(i\) 中不可见，则将 \(\theta_{ij}\) 设置为0，从而忽略该点对成本函数的贡献。</li>
+<li><strong>束调整方法的多样性</strong>：文献中对束调整的不同参数化方法解释可能会导致混淆，尽管这些方法最终的成本函数形式相同。</li>
+</ul>
+<h3 id="3-2-坐标系统的选择">3.2 坐标系统的选择</h3>
+<ul>
+<li><strong>参考相机坐标系统</strong>的选择影响优化过程。通常选择第一个相机的坐标系统以简化计算，但在某些情况下，选择中央帧可能更有利。</li>
+</ul>
+<h3 id="3-3-优化问题中的非凸性">3.3 优化问题中的非凸性</h3>
+<p>优化问题的成本函数通常是简单的二次函数，然而旋转和位移的约束并非凸的，因此无约束优化更为常见。通过李代数将旋转和位移参数转化为简单的无约束优化问题，但这并不保证全局最优解。</p>
+<h2 id="4-非线性优化算法在三维重建中的应用">4. 非线性优化算法在三维重建中的应用</h2>
+<p>介绍了几种常用的非线性优化算法，包括梯度下降法、牛顿法和Levenberg-Marquardt算法，并探讨了这些算法在处理非线性最小二乘问题中的重要性。</p>
+<h3 id="4-1-梯度下降法">4.1 梯度下降法</h3>
+<ul>
+<li><strong>梯度下降法</strong>：通过计算成本函数的一阶导数来指导搜索方向，逐步逼近最优解。</li>
+<li><strong>步长选择</strong>：通过线搜索方法找到合适的步长，但在高维情况下，评估成本函数可能会变得非常昂贵。</li>
+<li><strong>收敛性</strong>：梯度下降法的收敛性受限于某些数学假设，可能会收敛到局部最小值。</li>
+</ul>
+<h3 id="4-2-自适应步长调整">4.2 自适应步长调整</h3>
+<ul>
+<li><strong>自适应步长调整技术</strong>可以逐步增大步长，并在能量上升时再降低步长，适用于不同的优化问题。</li>
+</ul>
+<h3 id="4-3-二阶方法">4.3 二阶方法</h3>
+<ul>
+<li><strong>牛顿法</strong>：通过计算二阶导数矩阵（Hessian）加速收敛。</li>
+<li><strong>高斯-牛顿算法</strong>：一种针对非线性最小二乘问题的变体，提高优化效率。</li>
+<li><strong>Levenberg-Marquardt算法</strong>：结合牛顿法与梯度下降法的优点，为非线性最小二乘问题提供有效解决方案，是当前最常用的束调整算法。</li>
+</ul>
+<h2 id="5-最小二乘法与其扩展">5. 最小二乘法与其扩展</h2>
+<p>最小二乘法是一种广泛使用的技术，尤其是在处理带有高斯噪声的数据时。该方法通过最小化观测值与模型预测值之间的差异，广泛应用于各种数据分析领域。</p>
+<h3 id="5-1-广义最小二乘法">5.1 广义最小二乘法</h3>
+<ul>
+<li><strong>广义最小二乘估计（GLS）</strong>：通过引入协方差矩阵和权重，处理非凸优化问题。若协方差矩阵为对角矩阵，GLS可以简化为加权最小二乘问题。</li>
+</ul>
+<h3 id="5-2-迭代加权最小二乘法">5.2 迭代加权最小二乘法</h3>
+<ul>
+<li><strong>迭代加权最小二乘法</strong>：通过迭代更新权重，将非线性问题转化为一系列凸问题，从而简化求解过程。</li>
+</ul>
+<h3 id="5-3-历史背景与影响">5.3 历史背景与影响</h3>
+<ul>
+<li><strong>历史背景</strong>：最小二乘法由高斯和勒让德在18世纪独立提出，产生了深远的影响。</li>
+<li><strong>高斯噪声假设</strong>：高斯发现，在某些噪声分布情况下，算术平均数是最优解，这一发现对统计学的发展至关重要。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">MrMatrix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/">http://example.com/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">东方欲晓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">多视图几何</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/02/10/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/14/" title="TUM-多视图几何-BA优化"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">TUM-多视图几何-BA优化</div></div></a></div><div class="next-post pull-right"><a href="/2022/02/08/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/12/" title="TUM-多视图几何-矩阵分解的应用"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">TUM-多视图几何-矩阵分解的应用</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/01/30/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/MVG-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" title="MVG-多视图几何-写在前面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-30</div><div class="title">MVG-多视图几何-写在前面</div></div></a></div><div><a href="/2022/01/28/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/1/" title="TUM-多视图几何-线性代数基础"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-28</div><div class="title">TUM-多视图几何-线性代数基础</div></div></a></div><div><a href="/2022/02/06/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/10/" title="TUM-多视图几何-未校准相机的重建"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-06</div><div class="title">TUM-多视图几何-未校准相机的重建</div></div></a></div><div><a href="/2022/02/07/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/11/" title="TUM-多视图几何-多视角重建"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">TUM-多视图几何-多视角重建</div></div></a></div><div><a href="/2022/02/08/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/12/" title="TUM-多视图几何-矩阵分解的应用"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-08</div><div class="title">TUM-多视图几何-矩阵分解的应用</div></div></a></div><div><a href="/2022/02/12/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/15/" title="TUM-多视图几何-直接法"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-12</div><div class="title">TUM-多视图几何-直接法</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><span id="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%99%AA%E5%A3%B0%E5%AF%B9%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-number">1.</span> <span class="toc-text">1. 噪声对三维重建的影响</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%99%AA%E5%A3%B0%E4%B8%8E%E7%A6%BB%E7%BE%A4%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 噪声与离群点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%9C%80%E5%A4%A7%E5%8C%96%E5%90%8E%E9%AA%8C%E4%BC%B0%E8%AE%A1%E4%B8%8E%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA"><span class="toc-number">2.</span> <span class="toc-text">2. 最大化后验估计与三维重建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9C%80%E5%A4%A7%E5%8C%96%E5%90%8E%E9%AA%8C%E4%BC%B0%E8%AE%A1"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 最大化后验估计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%80%E5%B0%8F%E5%8C%96%E9%87%8D%E6%8A%95%E5%BD%B1%E8%AF%AF%E5%B7%AE"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 最小化重投影误差</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%9D%9F%E8%B0%83%E6%95%B4%E5%9C%A8%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">3. 束调整在多视图几何中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%9D%9F%E8%B0%83%E6%95%B4%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 束调整的基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%9D%90%E6%A0%87%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 坐标系统的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E4%B8%AD%E7%9A%84%E9%9D%9E%E5%87%B8%E6%80%A7"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 优化问题中的非凸性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%9D%9E%E7%BA%BF%E6%80%A7%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E5%9C%A8%E4%B8%89%E7%BB%B4%E9%87%8D%E5%BB%BA%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">4. 非线性优化算法在三维重建中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 梯度下降法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E8%87%AA%E9%80%82%E5%BA%94%E6%AD%A5%E9%95%BF%E8%B0%83%E6%95%B4"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 自适应步长调整</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 二阶方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E4%B8%8E%E5%85%B6%E6%89%A9%E5%B1%95"><span class="toc-number">5.</span> <span class="toc-text">5. 最小二乘法与其扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E5%B9%BF%E4%B9%89%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 广义最小二乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E8%BF%AD%E4%BB%A3%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 迭代加权最小二乘法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%8E%86%E5%8F%B2%E8%83%8C%E6%99%AF%E4%B8%8E%E5%BD%B1%E5%93%8D"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 历史背景与影响</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'http://example.com/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/'
+    this.page.identifier = '/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/'
+    this.page.title = 'TUM-多视图几何-BA优化引入'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Valine' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div></div><script src="/js/category.js"></script></body></html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-矩阵变换和奇异值分解 | 东方欲晓</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="多视图几何在计算机视觉中扮演着关键角色，尤其是在3D重建中。矩阵变换和奇异值分解（SVD）是多视图几何中的重要工具。SVD不仅用于求解欠定的线性方程组，并找到最小范数解，还在3D重建、刚体运动、透视投影等问题中提供了重要帮助。 矩阵变换与特征值分解 矩阵表示旋转和平移 在三维空间中，矩阵通过齐次坐标系来表示旋转和平移。齐次坐标将3D点扩展为4D向量，使得旋转和平移操作可以统一为矩阵乘法。这种表述在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TUM-多视图几何-矩阵变换和奇异值分解">
+<meta property="og:url" content="http://example.com/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="多视图几何在计算机视觉中扮演着关键角色，尤其是在3D重建中。矩阵变换和奇异值分解（SVD）是多视图几何中的重要工具。SVD不仅用于求解欠定的线性方程组，并找到最小范数解，还在3D重建、刚体运动、透视投影等问题中提供了重要帮助。 矩阵变换与特征值分解 矩阵表示旋转和平移 在三维空间中，矩阵通过齐次坐标系来表示旋转和平移。齐次坐标将3D点扩展为4D向量，使得旋转和平移操作可以统一为矩阵乘法。这种表述在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2022-01-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-27T09:13:24.233Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="数字几何处理">
+<meta property="article:tag" content="多视图几何">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'TUM-多视图几何-矩阵变换和奇异值分解',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-27 17:13:24'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">TUM-多视图几何-矩阵变换和奇异值分解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-01-28T16:00:00.000Z" title="发表于 2022-01-29 00:00:00">2022-01-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/TUM-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">TUM-多视图几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>多视图几何在计算机视觉中扮演着关键角色，尤其是在3D重建中。矩阵变换和奇异值分解（SVD）是多视图几何中的重要工具。SVD不仅用于求解欠定的线性方程组，并找到最小范数解，还在3D重建、刚体运动、透视投影等问题中提供了重要帮助。</p>
+<h2 id="矩阵变换与特征值分解">矩阵变换与特征值分解</h2>
+<h3 id="矩阵表示旋转和平移">矩阵表示旋转和平移</h3>
+<p>在三维空间中，矩阵通过齐次坐标系来表示旋转和平移。齐次坐标将3D点扩展为4D向量，使得旋转和平移操作可以统一为矩阵乘法。这种表述在刚体运动中尤为重要，描述了相机在三维空间中的运动。</p>
+<ul>
+<li>
+<p><strong>刚体运动</strong>：刚体运动可以通过特殊欧几里得群 \(SE(3)\) 来表示，包括旋转矩阵和平移向量。这个表示展示了矩阵在三维空间中的变换和自由度。</p>
+</li>
+<li>
+<p><strong>特征值与特征向量</strong>：特征值与特征向量在复值矩阵中有重要意义。右特征向量在矩阵乘法后仅发生缩放，通过研究它们可以理解矩阵对向量的影响。这在应用线性代数处理图像中的矩阵运算时非常有用。</p>
+<p>\[<br>
+A\mathbf{v} = \lambda \mathbf{v}<br>
+\]<br>
+其中，\(\mathbf{v}\) 是特征向量，\(\lambda\) 是特征值。</p>
+</li>
+</ul>
+<h3 id="特征值方程与性质">特征值方程与性质</h3>
+<p>特征值和特征向量在矩阵代数中起着关键作用。特征值方程通过确定矩阵的特征值来帮助理解矩阵的行为。特征向量的线性无关性，以及特征值作为特征方程的根，都是基本概念。</p>
+<ul>
+<li>
+<p><strong>特征方程</strong>：通过行列式求解特征值方程，仅当行列式为零时，才存在非零特征向量。</p>
+<p>\[<br>
+\det(A - \lambda I) = 0<br>
+\]</p>
+</li>
+<li>
+<p><strong>对称矩阵的性质</strong>：对称矩阵具有实数特征值，不同特征值对应的特征向量彼此正交。对称矩阵可以对角化，转换为对角矩阵，从而简化对向量的作用。</p>
+<p>\[<br>
+A = Q\Lambda Q^T<br>
+\]<br>
+其中，\(Q\) 是正交矩阵，\(\Lambda\) 是对角矩阵。</p>
+</li>
+</ul>
+<h2 id="奇异值分解（SVD）">奇异值分解（SVD）</h2>
+<h3 id="SVD的基本概念">SVD的基本概念</h3>
+<p>奇异值分解是一种用于将矩阵分解为三个矩阵乘积的方法：两个正交矩阵 \(U\) 和 \(V\)，以及一个对角矩阵 \(\Sigma\)。SVD 是广义特征值分解的推广，适用于任意矩阵。</p>
+<ul>
+<li>
+<p><strong>公式表示</strong>：</p>
+<p>\[<br>
+A = U\Sigma V^T<br>
+\]<br>
+其中，\(U\) 和 \(V\) 是正交矩阵，\(\Sigma\) 是包含奇异值的对角矩阵。</p>
+</li>
+<li>
+<p><strong>几何解释</strong>：SVD 可以将单位球体映射为椭球体，这些椭球体的主轴方向由矩阵 \(U\) 和 \(V\) 决定，轴长由 \(\Sigma\) 中的奇异值给出。</p>
+</li>
+</ul>
+<h3 id="SVD在3D重建中的应用">SVD在3D重建中的应用</h3>
+<p>SVD 在多视图几何中有着广泛的应用，尤其是在处理矩阵操作的简化和理解矩阵作用方面。</p>
+<ul>
+<li>
+<p><strong>基变换与矩阵缩放</strong>：通过 SVD，矩阵的基变换和缩放效应可以被清晰地表达。SVD 的几何意义在于将原始空间中的基向量映射到新的基向量，并对其进行缩放，这在计算图像变换中尤为重要。</p>
+</li>
+<li>
+<p><strong>伪逆矩阵的应用</strong>：在处理欠定方程组时，广义逆矩阵（或称伪逆矩阵）提供了一种找到最小范数解的方法。SVD 是构造伪逆矩阵的核心工具。</p>
+<p>\[<br>
+A^+ = V\Sigma^+ U^T<br>
+\]<br>
+其中 \(\Sigma^+\) 是 \(\Sigma\) 的伪逆。</p>
+</li>
+</ul>
+<h2 id="多视图几何与SLAM">多视图几何与SLAM</h2>
+<h3 id="多视图几何的挑战">多视图几何的挑战</h3>
+<p>多视图几何是视觉SLAM（同时定位与地图构建）中的重要问题。通过两个或多个视角重建三维场景是一项复杂的任务，尤其是在处理刚体运动和透视投影时。</p>
+<ul>
+<li>
+<p><strong>透视投影的挑战</strong>：透视投影是三维场景投影到二维图像平面的过程中丢失深度信息的主要原因。这需要借助额外的场景假设来解决。例如，利用平行假设和已知的标定信息来恢复丢失的深度信息。</p>
+</li>
+<li>
+<p><strong>多视图几何的历史背景</strong>：多视图几何的研究可以追溯到20世纪初，并在近年来随着计算机视觉的发展成为重要的研究方向。在计算机出现之前，早在1950年代和1960年代，学者们就开始研究从图像中重建三维场景的技术。</p>
+</li>
+</ul>
+<h3 id="视觉SLAM中的应用">视觉SLAM中的应用</h3>
+<p>视觉SLAM 涵盖了同时定位和地图构建的概念，在机器人学和计算机视觉中有广泛应用。</p>
+<ul>
+<li>
+<p><strong>结构和运动问题</strong>：在计算机视觉中，结构和运动问题涉及对三维点位置和相机运动的重建。在机器人学中，这个问题通常与视觉SLAM相关，通过多视图的分析，帮助机器人在未知环境中定位和建图。</p>
+</li>
+<li>
+<p><strong>简化问题的方法</strong>：科学研究通常从简化问题开始，如从两个视角的情况逐渐过渡到多个视角的情况，进而理解多视图几何的复杂性。</p>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">MrMatrix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/">http://example.com/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">东方欲晓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">多视图几何</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/30/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/3/" title="TUM-多视图几何-刚体运动建模及其应用"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">TUM-多视图几何-刚体运动建模及其应用</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/28/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/1/" title="TUM-多视图几何-线性代数基础"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">TUM-多视图几何-线性代数基础</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/01/30/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/MVG-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" title="MVG-多视图几何-写在前面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-30</div><div class="title">MVG-多视图几何-写在前面</div></div></a></div><div><a href="/2022/01/28/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/1/" title="TUM-多视图几何-线性代数基础"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-28</div><div class="title">TUM-多视图几何-线性代数基础</div></div></a></div><div><a href="/2022/02/06/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/10/" title="TUM-多视图几何-未校准相机的重建"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-06</div><div class="title">TUM-多视图几何-未校准相机的重建</div></div></a></div><div><a href="/2022/02/07/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/11/" title="TUM-多视图几何-多视角重建"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">TUM-多视图几何-多视角重建</div></div></a></div><div><a href="/2022/02/08/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/12/" title="TUM-多视图几何-矩阵分解的应用"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-08</div><div class="title">TUM-多视图几何-矩阵分解的应用</div></div></a></div><div><a href="/2022/02/09/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/13/" title="TUM-多视图几何-BA优化引入"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-09</div><div class="title">TUM-多视图几何-BA优化引入</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><span id="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E5%8F%98%E6%8D%A2%E4%B8%8E%E7%89%B9%E5%BE%81%E5%80%BC%E5%88%86%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">矩阵变换与特征值分解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E8%A1%A8%E7%A4%BA%E6%97%8B%E8%BD%AC%E5%92%8C%E5%B9%B3%E7%A7%BB"><span class="toc-number">1.1.</span> <span class="toc-text">矩阵表示旋转和平移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E6%96%B9%E7%A8%8B%E4%B8%8E%E6%80%A7%E8%B4%A8"><span class="toc-number">1.2.</span> <span class="toc-text">特征值方程与性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3%EF%BC%88SVD%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">奇异值分解（SVD）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SVD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">SVD的基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SVD%E5%9C%A83D%E9%87%8D%E5%BB%BA%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">SVD在3D重建中的应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95%E4%B8%8ESLAM"><span class="toc-number">3.</span> <span class="toc-text">多视图几何与SLAM</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95%E7%9A%84%E6%8C%91%E6%88%98"><span class="toc-number">3.1.</span> <span class="toc-text">多视图几何的挑战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E8%A7%89SLAM%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.2.</span> <span class="toc-text">视觉SLAM中的应用</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'http://example.com/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/'
+    this.page.identifier = '/2022/01/29/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E6%85%95%E5%B0%BC%E9%BB%91%E5%B7%A5%E5%A4%A7-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/2/'
+    this.page.title = 'TUM-多视图几何-矩阵变换和奇异值分解'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Valine' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div></div><script src="/js/category.js"></script></body></html>

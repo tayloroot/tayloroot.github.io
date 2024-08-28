@@ -1,0 +1,468 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OSTEP-操作系统导论-文件系统与存储设备 | 东方欲晓</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="操作系统将物理资源抽象为虚拟资源，例如将内存抽象为虚拟内存、CPU和内存抽象为进程；而对于磁盘，操作系统则以文件的形式加以抽象。 文件是磁盘的抽象。应用程序不会直接读写挂载在计算机上的磁盘本身，操作系统中也是不允许的。在Unix中，与存储系统交互的唯一方式就是通过文件：可以命名文件、读写文件等。在这背后，操作系统负责决定如何将文件映射到磁盘块，确保一个磁盘块只属于一个文件，并确保用户A无法操作用户">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OSTEP-操作系统导论-文件系统与存储设备">
+<meta property="og:url" content="http://example.com/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="操作系统将物理资源抽象为虚拟资源，例如将内存抽象为虚拟内存、CPU和内存抽象为进程；而对于磁盘，操作系统则以文件的形式加以抽象。 文件是磁盘的抽象。应用程序不会直接读写挂载在计算机上的磁盘本身，操作系统中也是不允许的。在Unix中，与存储系统交互的唯一方式就是通过文件：可以命名文件、读写文件等。在这背后，操作系统负责决定如何将文件映射到磁盘块，确保一个磁盘块只属于一个文件，并确保用户A无法操作用户">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-06-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-23T12:55:50.466Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="计算机基础">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OSTEP-操作系统导论-文件系统与存储设备',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-23 20:55:50'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">OSTEP-操作系统导论-文件系统与存储设备</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-06-04T16:00:00.000Z" title="发表于 2021-06-05 00:00:00">2021-06-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">书籍阅读-操作系统导论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>操作系统将物理资源抽象为虚拟资源，例如将内存抽象为虚拟内存、CPU和内存抽象为进程；而对于磁盘，操作系统则以文件的形式加以抽象。</p>
+<p>文件是磁盘的抽象。应用程序不会直接读写挂载在计算机上的磁盘本身，操作系统中也是不允许的。在Unix中，与存储系统交互的唯一方式就是通过文件：可以命名文件、读写文件等。在这背后，操作系统负责决定如何将文件映射到磁盘块，确保一个磁盘块只属于一个文件，并确保用户A无法操作用户B的文件。</p>
+<p>用单一CPU抽象出无限个vCPU采用的是时分复用（time sharing），而用单一磁盘抽象出多个文件则是空分复用（space sharing）。</p>
+<p>文件系统的目标是使用下层的持久存储设备作为资源，为上层提供文件抽象及相应的读写操作。</p>
+<h2 id="1-1-抽象：文件和目录">1.1 抽象：文件和目录</h2>
+<p>文件是一个线性的字节数组。文件系统中，文件的抽象与inode对应，inode由inode号（inumber）标识，inode包含（一级或多级）索引，这些索引直接或间接指向文件对应的数据块。</p>
+<p>目录包含若干个文件或下级目录。文件系统中，目录的抽象也与inode对应，对应的inode同样有inumber，inode包含索引，指向目录数据块，目录数据块包含“所含文件或下级目录的名称-&gt;所含文件或下级目录的inode”的映射列表。</p>
+<p>最高级的目录是根目录。根目录包含文件或下级目录，递归地组成整个文件系统。根目录的inode号应是已知的，因此，通过根目录，可以查找文件系统中的任何文件。</p>
+<h3 id="Unix-文件系统的API">Unix 文件系统的API</h3>
+<ul>
+<li><strong>open</strong>: 从根目录开始，递归查找（或创建）指定文件路径，返回文件描述符fd（文件描述符由进程私有）。</li>
+<li><strong>read</strong>: 给定文件描述符，读取指定长度的数据，并隐式更新offset（由操作系统跟踪，与文件描述符绑定，即系统跟踪当前进程在打开的文件中下一个读写位置）。</li>
+<li><strong>write</strong>: 给定文件描述符，写入指定长度的数据（到内存缓冲区，并在适当时写回磁盘），并隐式更新offset。</li>
+<li><strong>lseek</strong>: 给定文件描述符，用参数指定的值（和方式）修改offset。</li>
+<li><strong>fsync</strong>: 立即将文件写入磁盘（write可能不会立即写入磁盘），成功后返回。</li>
+<li><strong>link(path1, path2)</strong>: 创建硬链接，在path2目录的映射列表中创建一个新条目，指向path1文件的inode，并增加inode中的引用计数。</li>
+<li><strong>unlink</strong>: 删除文件，即删除当前目录中文件与inode之间的映射条目，减少inode中的引用计数，inode和文件数据只有在引用计数为0时才会真正删除。</li>
+<li><strong>rename</strong>: 文件重命名。</li>
+<li><strong>stat/fstat</strong>: 查看文件元数据。</li>
+<li><strong>mkdir</strong>: 创建目录。</li>
+<li><strong>opendir/readdir/closedir</strong>: 打开/读取/关闭目录。</li>
+<li><strong>rmdir</strong>: 删除空目录。</li>
+<li><strong>mkfs</strong>: 创建文件系统。</li>
+<li><strong>mount</strong>: 挂载文件系统，将目录树复制粘贴。</li>
+</ul>
+<p>此外，还可以使用“ln -s”命令创建符号链接，符号链接实际上是一个特殊文件，指向已存在的文件。</p>
+<h2 id="1-2-存储设备：磁盘">1.2 存储设备：磁盘</h2>
+<h3 id="1-2-1-外部设备">1.2.1 外部设备</h3>
+<p>一个标准的外部设备包括硬件接口和内部实现。接口上一系列寄存器用于与系统交换状态、命令和数据，内部实现依赖于硬件本身，通常包含硬件的CPU、内存等芯片。</p>
+<p>硬件与系统的交互方式包括：轮询（polling, CPU询问硬件是否有数据要传输）、中断（interrupt, 硬件向CPU发出中断请求）、杂合（先轮询后中断）、DMA（直接内存存取，硬件数据直接复制至内存，无需CPU参与，完成后中断）。</p>
+<p>设备与系统通信的方法有：特权指令（使用in/out特权指令传输数据）、内存映射IO（MMIO，设备直接映射到虚拟内存中）。</p>
+<p>设备通过抽象接口连接到应用程序，例如文件系统栈中，应用程序使用文件系统提供的POSIX API（如上所述）。文件系统使用操作系统的通用块接口读取数据块，而操作系统通过设备驱动提供的具体块接口与硬件交互。</p>
+<h3 id="1-2-2-磁盘">1.2.2 磁盘</h3>
+<p>磁盘是一种常见的存储设备，广泛应用于计算机系统中。传统的机械硬盘（HDD）由旋转的磁盘盘片和读写磁头组成，数据通过磁头在盘片上的磁性表面进行读写操作。硬盘的性能主要由转速（RPM）、平均寻道时间和数据传输速率决定。</p>
+<ul>
+<li>
+<p><strong>分区与格式化</strong>: 磁盘通常被划分为多个分区，每个分区可以独立地被操作系统管理。在使用之前，磁盘需要经过格式化，创建文件系统，使其能够存储和管理文件。</p>
+</li>
+<li>
+<p><strong>存储结构</strong>: 磁盘存储数据的基本单位是扇区（sector），通常为512字节或4KB。多个扇区组成一个块（block），文件系统以块为单位进行管理。</p>
+</li>
+<li>
+<p><strong>寻道与延迟</strong>: 由于机械硬盘的物理特性，寻道时间（磁头移动到目标扇区的时间）和旋转延迟（等待目标扇区旋转到磁头下的时间）是影响磁盘性能的重要因素。</p>
+</li>
+</ul>
+<p>随着技术的发展，固态硬盘（SSD）逐渐普及。SSD没有机械部件，数据存储在闪存芯片上，具有更高的读写速度和更低的延迟。SSD通过控制器管理数据的读写，并采用磨损均衡（wear leveling）技术，延长闪存芯片的使用寿命。</p>
+<h2 id="1-3-文件系统实现方案">1.3 文件系统实现方案</h2>
+<h3 id="VSFS">VSFS</h3>
+<p>VSFS（Very Simple File System）是一种教学用途的文件系统，用于帮助理解文件系统的基本概念。它使用了一种非常简单的结构：</p>
+<ul>
+<li><strong>超级块</strong>: 存储文件系统的元数据，如文件系统的大小、空闲块数等。</li>
+<li><strong>inode表</strong>: 存储文件的元数据，如文件的大小、指向数据块的指针等。</li>
+<li><strong>数据块</strong>: 存储文件的实际数据。</li>
+</ul>
+<p>VSFS的设计非常简单，缺乏现代文件系统的一些特性，如日志（journaling）和多级索引，但其简单性有助于学习文件系统的基本工作原理。</p>
+<h3 id="FFS">FFS</h3>
+<p>FFS（Fast File System）是Unix系统中的一种重要文件系统，针对性能进行了优化。它采用了以下几个关键技术：</p>
+<ul>
+<li><strong>块分组（block grouping）</strong>: 将文件系统划分为多个块组，每个块组包含若干个连续的数据块、inode表和一个超级块副本。这种结构减少了磁头的移动，提升了性能。</li>
+<li><strong>多级索引（multi-level indexing）</strong>: FFS使用了直接、间接、双重间接和三重间接索引，支持存储非常大的文件。</li>
+<li><strong>文件系统碎片管理</strong>: 通过合理分配数据块，减少文件系统碎片，提高磁盘利用率。</li>
+</ul>
+<h3 id="LFS">LFS</h3>
+<p>LFS（Log-Structured File System）是一种针对写操作进行了优化的文件系统。其主要特点包括：</p>
+<ul>
+<li><strong>日志结构</strong>: 所有数据和元数据都以日志形式追加到磁盘的末尾，从而避免了频繁的磁盘寻道操作，提升了写性能。</li>
+<li><strong>清理机制（cleaning mechanism）</strong>: 由于日志结构会导致旧数据块的存在，LFS通过清理机制回收这些旧块，确保磁盘空间的有效利用。</li>
+</ul>
+<p>LFS适用于写操作频繁的应用场景，如数据库系统和高性能计算。</p>
+<h3 id="Linux的方案：Ext3-4">Linux的方案：Ext3/4</h3>
+<p>Ext3/4是Linux操作系统中的主流文件系统，继承了Ext2的设计，并引入了一些现代文件系统的特性：</p>
+<ul>
+<li><strong>日志（journaling）</strong>: Ext3/4支持日志记录，有效提高了文件系统的可靠性。日志记录可以在崩溃后快速恢复文件系统状态。</li>
+<li><strong>延迟分配（delayed allocation）</strong>: Ext4引入了延迟分配策略，数据块的实际分配推迟到写入磁盘前，从而优化了磁盘布局，减少了碎片。</li>
+<li><strong>扩展属性（extended attributes）</strong>: 支持为文件和目录存储额外的元数据，如访问控制列表（ACLs）。</li>
+<li><strong>大文件支持</strong>: Ext4支持更大的文件和分区，并且通过多级索引，能够高效地管理大文件。</li>
+</ul>
+<h1>多核心</h1>
+<h2 id="多核心调度">多核心调度</h2>
+<p>多核心调度是现代操作系统中的一个重要挑战，涉及如何有效地将任务分配给多个处理器核心。常见的多核心调度策略包括：</p>
+<ul>
+<li><strong>负载均衡（load balancing）</strong>: 通过在核心之间均匀分配任务，避免某些核心过载，而其他核心空闲。操作系统可以使用全局队列或每个核心的本地队列来管理任务。</li>
+<li><strong>亲和性调度（affinity scheduling）</strong>: 将任务分配给最近执行过该任务的核心，利用缓存的局部性，提升性能。亲和性调度可以分为软亲和性和硬亲和性，软亲和性允许任务在不同核心之间迁移，而硬亲和性则限制任务只能在指定核心上执行。</li>
+<li><strong>抢占式调度（preemptive scheduling）</strong>: 在多任务环境中，操作系统可以强制切换任务，以确保高优先级任务及时得到执行。</li>
+</ul>
+<h2 id="多核心并发">多核心并发</h2>
+<p>多核心并发涉及如何在多个处理器核心之间安全地共享数据和资源。常见的多核心并发控制机制包括：</p>
+<ul>
+<li><strong>锁（lock）</strong>: 用于保护临界区，确保同一时间只有一个核心可以访问共享资源。常见的锁机制包括自旋锁（spinlock）和互斥锁（mutex）。</li>
+<li><strong>原子操作（atomic operation）</strong>: 硬件支持的原子操作能够在多核心环境中安全地修改共享变量，避免竞争条件。</li>
+<li><strong>内存屏障（memory barrier）</strong>: 保证在多核心系统中，指令的执行顺序不会因硬件优化而乱序，确保并发操作的正确性。</li>
+<li><strong>并行编程模型</strong>: 常见的并行编程模型包括线程（thread）、任务（task）和消息传递（message passing）。这些模型通过不同的方式管理并发执行的任务，提升程序的性能。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">MrMatrix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/">http://example.com/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">东方欲晓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/06/06/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/30%E8%AF%BE%E7%A8%8B%E6%80%BB%E7%BB%93/" title="南京大学-操作系统-课程总结 (从逻辑门到计算机系统)"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">南京大学-操作系统-课程总结 (从逻辑门到计算机系统)</div></div></a></div><div class="next-post pull-right"><a href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/29%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7/" title="南京大学-操作系统-持久数据的可靠性 (RAID; 日志文件系统)"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">南京大学-操作系统-持久数据的可靠性 (RAID; 日志文件系统)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/05/02/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/CPU%E8%99%9A%E6%8B%9F%E5%8C%96/" title="OSTEP-操作系统导论-CPU虚拟化"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-02</div><div class="title">OSTEP-操作系统导论-CPU虚拟化</div></div></a></div><div><a href="/2021/04/10/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E5%B9%B6%E5%8F%91/" title="OSTEP-操作系统导论-并发"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-10</div><div class="title">OSTEP-操作系统导论-并发</div></div></a></div><div><a href="/2021/05/30/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="OSTEP-操作系统导论-写在后面"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-30</div><div class="title">OSTEP-操作系统导论-写在后面</div></div></a></div><div><a href="/2021/05/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/18Linux%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="南京大学-操作系统--虚拟化-Linux 操作系统 (initramfs; 最小 Linux 世界)"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-05</div><div class="title">南京大学-操作系统--虚拟化-Linux 操作系统 (initramfs; 最小 Linux 世界)</div></div></a></div><div><a href="/2021/05/11/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/19%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%EF%BC%9A%E9%9D%99%E6%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E5%8A%A0%E8%BD%BD/" title="南京大学-操作系统-可执行文件：静态链接和加载 (Funny Little Executable; ELF 文件的静态加载)"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-11</div><div class="title">南京大学-操作系统-可执行文件：静态链接和加载 (Funny Little Executable; ELF 文件的静态加载)</div></div></a></div><div><a href="/2021/05/15/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/20%E5%8A%A8%E6%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E5%8A%A0%E8%BD%BD/" title="南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接)"><img class="cover" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-15</div><div class="title">南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接)</div></div></a></div></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div><div class="comment-switch"><span class="first-comment">Valine</span><span id="switch-btn"></span><span class="second-comment">Disqus</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E6%8A%BD%E8%B1%A1%EF%BC%9A%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">1.1 抽象：文件和目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unix-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84API"><span class="toc-number">1.1.</span> <span class="toc-text">Unix 文件系统的API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%AD%98%E5%82%A8%E8%AE%BE%E5%A4%87%EF%BC%9A%E7%A3%81%E7%9B%98"><span class="toc-number">2.</span> <span class="toc-text">1.2 存储设备：磁盘</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%E5%A4%96%E9%83%A8%E8%AE%BE%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">1.2.1 外部设备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%E7%A3%81%E7%9B%98"><span class="toc-number">2.2.</span> <span class="toc-text">1.2.2 磁盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88"><span class="toc-number">3.</span> <span class="toc-text">1.3 文件系统实现方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VSFS"><span class="toc-number">3.1.</span> <span class="toc-text">VSFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FFS"><span class="toc-number">3.2.</span> <span class="toc-text">FFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LFS"><span class="toc-number">3.3.</span> <span class="toc-text">LFS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux%E7%9A%84%E6%96%B9%E6%A1%88%EF%BC%9AExt3-4"><span class="toc-number">3.4.</span> <span class="toc-text">Linux的方案：Ext3&#x2F;4</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number"></span> <span class="toc-text">多核心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B8%E5%BF%83%E8%B0%83%E5%BA%A6"><span class="toc-number">1.</span> <span class="toc-text">多核心调度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E6%A0%B8%E5%BF%83%E5%B9%B6%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">多核心并发</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const initValine = () => {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  const loadValine = async () => {
+    if (typeof Valine === 'function') initValine()
+    else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js')
+      initValine()
+    }
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'http://example.com/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/'
+    this.page.identifier = '/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/'
+    this.page.title = 'OSTEP-操作系统导论-文件系统与存储设备'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Valine' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      GLOBAL_CONFIG_SITE.isPost && getCount()
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div></div><script src="/js/category.js"></script></body></html>

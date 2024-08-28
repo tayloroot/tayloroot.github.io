@@ -1,0 +1,471 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>东方欲晓 - 莫道君行早</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="123123">
+<meta property="og:type" content="website">
+<meta property="og:title" content="东方欲晓">
+<meta property="og:url" content="http://example.com/page/12/index.html">
+<meta property="og:site_name" content="东方欲晓">
+<meta property="og:description" content="123123">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:author" content="MrMatrix">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/page/12/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '东方欲晓',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-08-28 22:31:05'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page fixed" id="page-header" style="background-image: url('/img/h3.png')"><nav id="nav"><span id="blog-info"><a href="/" title="东方欲晓"><span class="site-name">东方欲晓</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">东方欲晓</h1><div id="site-subtitle"><span id="subtitle"></span></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left"><a href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/" title="OSTEP-操作系统导论-文件系统与存储设备"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OSTEP-操作系统导论-文件系统与存储设备"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/" title="OSTEP-操作系统导论-文件系统与存储设备">OSTEP-操作系统导论-文件系统与存储设备</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-06-04T16:00:00.000Z" title="发表于 2021-06-05 00:00:00">2021-06-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">书籍阅读-操作系统导论</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/#post-comment"><span class="valine-comment-count" data-xid="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%8C%81%E4%B9%85%E5%8C%96/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">操作系统将物理资源抽象为虚拟资源，例如将内存抽象为虚拟内存、CPU和内存抽象为进程；而对于磁盘，操作系统则以文件的形式加以抽象。
+文件是磁盘的抽象。应用程序不会直接读写挂载在计算机上的磁盘本身，操作系统中也是不允许的。在Unix中，与存储系统交互的唯一方式就是通过文件：可以命名文件、读写文件等。在这背后，操作系统负责决定如何将文件映射到磁盘块，确保一个磁盘块只属于一个文件，并确保用户A无法操作用户B的文件。
+用单一CPU抽象出无限个vCPU采用的是时分复用（time sharing），而用单一磁盘抽象出多个文件则是空分复用（space sharing）。
+文件系统的目标是使用下层的持久存储设备作为资源，为上层提供文件抽象及相应的读写操作。
+1.1 抽象：文件和目录
+文件是一个线性的字节数组。文件系统中，文件的抽象与inode对应，inode由inode号（inumber）标识，inode包含（一级或多级）索引，这些索引直接或间接指向文件对应的数据块。
+目录包含若干个文件或下级目录。文件系统中，目录的抽象也与inode对应，对应的inode同样有inumber，inode包含索引，指向目 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/29%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7/" title="南京大学-操作系统-持久数据的可靠性 (RAID; 日志文件系统)"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="南京大学-操作系统-持久数据的可靠性 (RAID; 日志文件系统)"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/29%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7/" title="南京大学-操作系统-持久数据的可靠性 (RAID; 日志文件系统)">南京大学-操作系统-持久数据的可靠性 (RAID; 日志文件系统)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-06-04T16:00:00.000Z" title="发表于 2021-06-05 00:00:00">2021-06-05</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/29%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7/#post-comment"><span class="valine-comment-count" data-xid="/2021/06/05/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/29%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">在今天的课程中，深入探讨了持久数据的可靠性，重点介绍了RAID技术和日志文件系统在数据保护中的作用。
+持久数据的重要性
+
+数据持久性：确保数据不会在意外情况下丢失是至关重要的，特别是在设备损坏或紧急情况下。备份策略能避免学业或工作的被动影响。
+
+数据丢失风险及其影响
+当今社会高度依赖信息系统，任何系统故障都可能造成严重后果。没有任何存储设备是绝对可靠的，必须认识到这些潜在的风险。
+
+信息依赖的危险性：比如，丢失手机或银行账户信息会严重影响个人生活。
+存储设备的故障：即使有纠错码（ECC）帮助缓解问题，设备在高负载或高温下仍可能损坏。无论是HDD还是SSD，都易受此困扰，因此需预防性备份。
+
+RAID技术与数据存储的可靠性
+RAID技术通过虚拟化多块磁盘来大幅提升系统可靠性和性能。这种反向虚拟化理念为1980年代的系统带来了重要变革。
+
+RAID基本原理：通过多盘块冗余和独立性，确保即使一个磁盘失效，系统仍能正常工作。这种设计增加了数据存储的安全性和效率。
+应用与优势：RAID技术为计算机系统的虚拟化奠定了基础，尤其体现在虚拟地址空间的设计中。
+RAID 1与RAID 0的对比：RAID ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/06/01/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="CSAPP-深入理解计算机系统-写在后面"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSAPP-深入理解计算机系统-写在后面"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/06/01/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="CSAPP-深入理解计算机系统-写在后面">CSAPP-深入理解计算机系统-写在后面</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-31T16:00:00.000Z" title="发表于 2021-06-01 00:00:00">2021-06-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">书籍阅读-深入理解计算机系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/06/01/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/#post-comment"><span class="valine-comment-count" data-xid="/2021/06/01/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-CSAPP/CSAPP-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">大概在今年二月初的时候就完成了这本书的阅读，个人感觉大概只吸收了不到50%，因为大部分的习题没有做，而且CMU课程的课后实验压根就没有开始(听说这部分也是精华)。总结拖到现在才写总结是因为后面又马不停蹄的开始了对于南京大学jyy老师开设的操作系统课程的学习以及对OSTEP书本的阅读，正好两个都是关于计算机基础与体系结构的相关内容，于是趁热打铁。
+CSAPP一旦读进去了，就会感觉到这本书写的有多好了。特别是他的第二、三、五、六章，写的特别细，特别考虑读者的感受，很多的提示词感觉就是作者在猜测读者读到这里可能会有疑问，于是便会展开说明，这种作者写到心坎里的感觉太妙了(没想到会在一本技术书籍里遇到这种共鸣)。如果一定要挑刺的话，第四章写的其实也挺好，但是没想明白为何要自己定义个简化版的汇编语言Y86(大概是为了和他们的实验匹配？)，直接将X86不就挺好，CMU的课堂他们也没讲这章；第七章的链接和第九章的虚拟内存感觉讲的稍稍有点生硬(第七章可以配合&lt;程序员的自我修养&gt;这本书阅读(这本书我还没看，同事安利的:)，第九章虚拟内存OSTEP中讲的更明白透彻些。)
+还有就是这个中文书名的翻 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/05/30/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="OSTEP-操作系统导论-写在后面"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OSTEP-操作系统导论-写在后面"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/30/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="OSTEP-操作系统导论-写在后面">OSTEP-操作系统导论-写在后面</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-29T16:00:00.000Z" title="发表于 2021-05-30 00:00:00">2021-05-30</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">书籍阅读-操作系统导论</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/30/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/30/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">《操作系统导论》是我读过的关于计算机相关的书籍中写的最好的一本，没有之一，写的比CSAPP还要好(感谢jyy老师的安利)。整体读下来非常的流畅，深入浅出(感觉这个成语是对于这种技术书籍的最高赞语)。配合jyy老师的操作系统课程，简直相得益彰，第一次感觉到上课和看书(技术类的)是一种享受。写的一点都不学究，非常易懂，幽默诙谐，里面真的有很多让人会心一笑的段子。作者的功力一看就非常深厚，查了下作者好像是夫妻，羡慕了，学技术还要被撒狗粮。一开始担心认为可能翻译会有点不好，要不要直接上手英文版，看下来后翻译的也还行，除了个别地方&quot;class&quot;翻译成了类，实际上应该是课，还有个地方也有较大出入，但是已经忘记了，反正是瑕不掩瑜。
+该书提出操作系统的三大话题是：virtualization, concurrency 和 persistency；细分下来，分别对应了操作系统中的数个组件（或技术）。
+
+
+
+三大话题
+对应技术 - 抽象
+技术目标
+
+
+
+
+虚拟化（virtualization）
+CPU虚拟化- 进程
+对每个程序提供“该系统拥有无限数量的CPU”的假象
+
+
+虚拟化（vir ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/05/29/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/27%E6%96%87%E4%BB%B6%E4%B8%8E%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/" title="南京大学-操作系统-文件与设备驱动程序 (驱动核弹发射器)"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="南京大学-操作系统-文件与设备驱动程序 (驱动核弹发射器)"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/29/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/27%E6%96%87%E4%BB%B6%E4%B8%8E%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/" title="南京大学-操作系统-文件与设备驱动程序 (驱动核弹发射器)">南京大学-操作系统-文件与设备驱动程序 (驱动核弹发射器)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-28T16:00:00.000Z" title="发表于 2021-05-29 00:00:00">2021-05-29</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/29/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/27%E6%96%87%E4%BB%B6%E4%B8%8E%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/29/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/27%E6%96%87%E4%BB%B6%E4%B8%8E%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">在本次课中，深入探讨了操作系统的文件和设备驱动程序，重点介绍“万物皆文件”的理念。强调了考试的主要内容将来自课程幻灯片和示例代码，要求学生重视理解基本原理，而非细节上的记忆。
+文件描述符与系统调用
+
+文件描述符：它们是进程访问和操作文件的关键工具。文件描述符作为一个简单的整数，实际上指向操作系统的各种对象，并支持灵活的文件处理操作。
+系统调用：通过如open、read、write的系统调用，应用程序可以与文件和设备进行交互。这些调用是在UNIX和其他操作系统中实现硬件与软件桥接的重要手段。
+
+设备驱动程序的设计与实现
+
+操作复杂性：设备驱动程序的实现需考虑I/O控制、虚拟机管理等复杂性，展示了操作系统设计中的挑战。
+设备与操作系统的互动：通过系统调用和驱动程序，操作系统能够有效管理文件和设备，实现对硬件资源的高效利用。
+
+系统调用的实际应用
+
+实际应用分析：通过分析工具和真实程序示例，如GLIBC和ExecTrace，展示系统调用是如何在程序中被实用和实现，提供有力的理解支撑。
+效率提升：openat调用简化了复杂路径的文件操作，提升了实际编程中的效率。
+
+操作系统内部运作
+
+系统配置 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/05/28/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/26%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/" title="南京大学-操作系统-输入输出设备原理 (I/O 设备、总线、中断控制器、DMA 和加速器)"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="南京大学-操作系统-输入输出设备原理 (I/O 设备、总线、中断控制器、DMA 和加速器)"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/28/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/26%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/" title="南京大学-操作系统-输入输出设备原理 (I/O 设备、总线、中断控制器、DMA 和加速器)">南京大学-操作系统-输入输出设备原理 (I/O 设备、总线、中断控制器、DMA 和加速器)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-27T16:00:00.000Z" title="发表于 2021-05-28 00:00:00">2021-05-28</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/28/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/26%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/28/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/26%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E8%AE%BE%E5%A4%87%E5%8E%9F%E7%90%86/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">这次课程详细探讨了输入输出（I/O）设备在计算机系统中的作用，涵盖I/O设备及其虚拟化、总线、中断控制器、直接内存访问（DMA）以及加速器等重要组件。随着技术的进步，显卡（GPU）和其他加速器的出现进一步提升了计算机的处理能力。本次课程涉及的主题贯穿计算机与外部环境的互动，以及如何通过不同的硬件接口提升操作和处理效率。
+输入输出设备的基础功能
+计算机系统中的输入输出设备是与外部世界交互的关键途径。这些设备使计算机能够接收和执行外部指令来完成操作。
+
+输入设备：诸如键盘和鼠标，作为用户与计算机的互动工具，承担了信息输入的角色。
+输出设备：显示器和打印机等，用来向用户呈现信息或结果。
+历史简述：早期的I/O设备通过直接的导线与CPU连接。现今复杂的接口（如树莓派的GPIO接口）使计算机可以更轻松地与外设进行互动。
+
+CPU与设备的交互方式
+在执行诸如Load和Store指令时，中央处理器（CPU）不直接关心数据的传输，而由底层硬件电路和接口来完成。
+
+GPIO接口：在开发树莓派等硬件项目时十分实用，可通过简单的控制指令操作外部设备。
+寄存器模型：I/O设备基本遵循寄存器模型，与CPU进行数 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/05/27/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/25%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86/" title="南京大学-操作系统-持久数据存储原理"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="南京大学-操作系统-持久数据存储原理"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/27/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/25%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86/" title="南京大学-操作系统-持久数据存储原理">南京大学-操作系统-持久数据存储原理</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-26T16:00:00.000Z" title="发表于 2021-05-27 00:00:00">2021-05-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/27/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/25%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/27/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/25%E6%8C%81%E4%B9%85%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">本次探讨了持久数据存储的基本原理，着重分析文件系统在操作系统中的重要性。文件是计算机操作的基本单位，其持久化确保了数据在关机后仍然存在。此外，课程还回顾了图灵机的基础知识，讨论了如何实现数据的持久存储，并探讨了不同存储介质的发展历程，包括磁带、机械硬盘和固态硬盘（SSD）的优缺点。最终，强调了现代SSD在性能方面的显著提升及其在数据存储中的广泛应用。
+文件系统的作用与持久化
+
+
+持久化的关键性:
+
+文件作为操作系统中的核心对象，使数据管理更为简便，通过简单的操作即可实现数据的创建、修改和移动。
+数据以比特形式进行持久保存，需要理解存储器与图灵机的原理，这为理解文件系统的实现提供了基础。
+
+
+
+图灵机的贡献:
+
+图灵机作为一个计算模型，对理解计算机的数据持久化及其强大能力有基本指导意义。
+它帮助我们构建有效的存储设备，同时揭示了计算的无穷可能性。
+
+
+
+存储器的基本原理
+
+
+电磁存储技术:
+
+数据通过电磁感应被存储和读取，存储器常采用二维网格结构，利用电容来代表二进制数据。
+动态随机存取存储器（DRAM）通过定期刷新机制，补偿电容漏电以确保数据的持续性。
+
+
+
+持久存储的意义:
+
+即便在 ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/05/22/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/24%E7%8A%B6%E6%80%81%E6%9C%BA%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BA%94%E7%94%A8/" title="南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/22/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/24%E7%8A%B6%E6%80%81%E6%9C%BA%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BA%94%E7%94%A8/" title="南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)">南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-21T16:00:00.000Z" title="发表于 2021-05-22 00:00:00">2021-05-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/22/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/24%E7%8A%B6%E6%80%81%E6%9C%BA%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BA%94%E7%94%A8/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/22/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/24%E7%8A%B6%E6%80%81%E6%9C%BA%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BA%94%E7%94%A8/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。
+1. 状态机与计算机科学的核心观点
+
+
+一切皆为状态机:
+
+课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。
+状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运行和管理。
+
+
+
+图灵机的启示:
+
+作为计算机科学的奠基模型，图灵机揭示了计算的基本可能性。通过学习图灵机，学生可以更好地理解计算的本质。
+将图灵机与现代计算机进行比较，使得学生更深入地体会计算模型的演变，从中获益。
+
+
+
+2. 状态机模型的现代应用
+
+
+数学化与物理世界的联系:
+
+状态机作为数学对象，为我们提供了观察和理解世界的新视角。这种视角体现于约翰·康威的生命游戏，其中展示了简单规则下的复杂行为。
+状态机通过扩展至多维模型，更真实地模拟了物理世界的行为，为我们更好理解自然提供了工具。
+
+
+
+现代计算和智能探索:
+
+通过基本逻辑门构建复杂系统，展示了计算机科学的广度。此方法使我们能理解智能行为及 ...</div></div></div><div class="recent-post-item"><div class="post_cover left"><a href="/2021/05/21/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/23%E5%A4%84%E7%90%86%E5%99%A8%E8%B0%83%E5%BA%A6/" title="南京大学-操作系统--虚拟化-处理器调度 (xv6 上下文切换；处理器调度：机制和策略)"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="南京大学-操作系统--虚拟化-处理器调度 (xv6 上下文切换；处理器调度：机制和策略)"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/21/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/23%E5%A4%84%E7%90%86%E5%99%A8%E8%B0%83%E5%BA%A6/" title="南京大学-操作系统--虚拟化-处理器调度 (xv6 上下文切换；处理器调度：机制和策略)">南京大学-操作系统--虚拟化-处理器调度 (xv6 上下文切换；处理器调度：机制和策略)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-20T16:00:00.000Z" title="发表于 2021-05-21 00:00:00">2021-05-21</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/21/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/23%E5%A4%84%E7%90%86%E5%99%A8%E8%B0%83%E5%BA%A6/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/21/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/23%E5%A4%84%E7%90%86%E5%99%A8%E8%B0%83%E5%BA%A6/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">本节课重点讨论了操作系统中的处理器调度机制，涵盖了上下文切换、调度策略及多处理器环境下的挑战。通过讲解和示例，帮助理解操作系统是如何有效管理进程和分配系统资源的。
+1. 处理器调度与上下文切换
+
+
+上下文切换:
+
+上下文切换是在处理中断或系统调用时保存和恢复进程状态的关键机制。操作系统通过将寄存器状态封存到内存中，再切换到另一个进程，确保多个进程高效运行。
+这项技术对于实现多任务运行至关重要，尽管其耗时较长，但设计良好的调度算法可以最小化其对系统性能的影响。
+
+
+
+调度策略:
+
+调度策略决定了系统如何选择下一个执行的进程。操作系统使用这些策略来管理CPU资源，例如优先级调度和公平分享策略，以便在用户体验和资源分配之间找到平衡。
+
+
+
+2. 虚拟内存与分页机制
+
+
+分页机制:
+
+操作系统使用分页机制将虚拟地址映射到物理地址，支持按需加载和高效内存管理。通过页表，这种机制实现了虚拟内存的灵活使用，从而提高了系统的稳定性和安全性。
+
+
+
+ERF文件与错误管理:
+
+在加载新进程时，操作系统从文件系统读取Executable and Linkable Format（ELF）文件，并验证其magi ...</div></div></div><div class="recent-post-item"><div class="post_cover right"><a href="/2021/05/20/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" title="OSTEP-操作系统导论-内存虚拟化"><img class="post-bg" src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OSTEP-操作系统导论-内存虚拟化"></a></div><div class="recent-post-info"><a class="article-title" href="/2021/05/20/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/" title="OSTEP-操作系统导论-内存虚拟化">OSTEP-操作系统导论-内存虚拟化</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2021-05-19T16:00:00.000Z" title="发表于 2021-05-20 00:00:00">2021-05-20</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">书籍阅读-操作系统导论</a></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-comments"></i><a href="/2021/05/20/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/#post-comment"><span class="valine-comment-count" data-xid="/2021/05/20/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/%E5%86%85%E5%AD%98%E8%99%9A%E6%8B%9F%E5%8C%96/"><i class="fa-solid fa-spinner fa-spin"></i></span></a><span class="article-meta-label"> 条评论</span></span></div><div class="content">内存虚拟化的目的是为进程创造独享大量虚拟内存的错觉，通过地址映射（Address Mapping）将进程的虚拟地址空间转换为硬件的物理地址。
+1.1 虚拟地址空间的抽象
+地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，Memory Management Unit, MMU）和操作系统协同实现的地址转换机制，将虚拟地址转换为物理地址（Physical Address, PA）。
+物理地址结构与平台相关，通常不仅包括RAM，还包括I/O设备的内存映射和启动ROM。内核虚拟地址空间由内核设计，包含内核代码、数据、内核栈及可分配给用户程序的内存等；而用户进程的虚拟地址空间由内核提供，涵盖了用户代码、数据、栈和堆等。
+在C语言中，变量直接声明使用栈内存，而堆内存则需要使用内存分配函数手动管理，如：
+
+malloc()：申请指定大小的堆内存，成功时返回地址，失败时返回NULL。
+free()：释放已申请的内存。
+
+上述 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/11/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#content-inner">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/#content-inner">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/#content-inner">18</a><a class="extend next" rel="next" href="/page/13/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">123123</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/29/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B-%E5%86%99%E5%9C%A8%E5%90%8E%E9%9D%A2/" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/28/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB4/" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/21/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB3/" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/16/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB2/" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/15/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB1/" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+            </div>
+            <ul class="card-category-list expandBtn" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/leetcode/"><span class="card-category-list-name">leetcode</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/"><span class="card-category-list-name">数字几何处理</span><span class="card-category-list-count">56</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="card-category-list-name">书籍阅读</span><span class="card-category-list-count">12</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/PMP-%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/"><span class="card-category-list-name">PMP-多边形网格处理</span><span class="card-category-list-count">10</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/"><span class="card-category-list-name">书籍阅读-多视图几何</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E8%A7%86%E8%A7%89SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2/"><span class="card-category-list-name">书籍阅读-视觉SLAM十四讲</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E5%85%AC%E5%BC%80%E8%AF%BE/"><span class="card-category-list-name">公开课</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E5%85%AC%E5%BC%80%E8%AF%BE/GAMES101-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E6%A6%82%E8%AE%BA/"><span class="card-category-list-name">GAMES101-计算机图形学概论</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E5%85%AC%E5%BC%80%E8%AF%BE/GAMES102-%E5%87%A0%E4%BD%95%E5%BB%BA%E6%A8%A1%E4%B8%8E%E5%A4%84%E7%90%86/"><span class="card-category-list-name">GAMES102-几何建模与处理</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/"><span class="card-category-list-name">高校课程</span><span class="card-category-list-count">42</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/TUM-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/"><span class="card-category-list-name">TUM-多视图几何</span><span class="card-category-list-count">18</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E4%B8%AD%E7%A7%91%E5%A4%A7-%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/"><span class="card-category-list-name">中科大-数字几何处理</span><span class="card-category-list-count">23</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E4%B8%AD%E7%A7%91%E5%A4%A7-%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"><span class="card-category-list-name">中科大-计算机图形学</span><span class="card-category-list-count">1</span></a></li></ul></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/"><span class="card-category-list-name">数学与优化方法</span><span class="card-category-list-count">43</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="card-category-list-name">书籍阅读</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E5%87%B8%E4%BC%98%E5%8C%96/"><span class="card-category-list-name">书籍阅读-凸优化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="card-category-list-name">书籍阅读-贝叶斯数据分析</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/"><span class="card-category-list-name">高校课程</span><span class="card-category-list-count">41</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/MIT-%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/"><span class="card-category-list-name">MIT-线性代数</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E4%B8%AD%E7%A7%91%E5%A4%A7-%E5%87%B8%E4%BC%98%E5%8C%96/"><span class="card-category-list-name">中科大-凸优化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/"><span class="card-category-list-name">北京大学-最优化方法</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/"><span class="card-category-list-name">国科大-模式识别</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/"><span class="card-category-list-name">国科大-随机过程</span><span class="card-category-list-count">21</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E5%AD%A6%E4%B8%8E%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6-%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/"><span class="card-category-list-name">清华大学-数学建模</span><span class="card-category-list-count">1</span></a></li></ul></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">机器学习</span><span class="card-category-list-count">6</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="card-category-list-name">书籍阅读</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">书籍阅读-机器学习</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/"><span class="card-category-list-name">书籍阅读-机器学习方法</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%80%E8%AF%BE/"><span class="card-category-list-name">公开课</span><span class="card-category-list-count">4</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%80%E8%AF%BE/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BC%95%E8%AE%BA/"><span class="card-category-list-name">南京大学-机器学习引论</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%80%E8%AF%BE/%E5%90%B4%E6%81%A9%E8%BE%BE-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">吴恩达-深度学习</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%80%E8%AF%BE/%E6%9D%8E%E6%B2%90-%E5%8A%A8%E6%89%8B%E5%AD%A6%E4%B9%A0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">李沐-动手学习深度学习</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E5%85%AC%E5%BC%80%E8%AF%BE/%E6%B7%B1%E8%93%9D%E5%AD%A6%E9%99%A2-%E7%82%B9%E4%BA%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">深蓝学院-点云深度学习</span><span class="card-category-list-count">1</span></a></li></ul></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/"><span class="card-category-list-name">编程与算法</span><span class="card-category-list-count">65</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="card-category-list-name">书籍阅读</span><span class="card-category-list-count">24</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-UNIX-LINUX%E5%A4%A7%E5%AD%A6%E6%95%99%E7%A8%8B/"><span class="card-category-list-name">书籍阅读-UNIX&LINUX大学教程</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-UNIX%E7%8E%AF%E5%A2%83%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/"><span class="card-category-list-name">书籍阅读-UNIX环境高级编程</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E4%BC%98%E5%8C%96%E5%BB%BA%E6%A8%A1/"><span class="card-category-list-name">书籍阅读-优化建模</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E5%89%91%E6%8C%87OFFER2/"><span class="card-category-list-name">书籍阅读-剑指OFFER2</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/"><span class="card-category-list-name">书籍阅读-操作系统导论</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/"><span class="card-category-list-name">书籍阅读-深入理解计算机系统</span><span class="card-category-list-count">11</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/"><span class="card-category-list-name">书籍阅读-算法导论</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">书籍阅读-算法设计</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/"><span class="card-category-list-name">书籍阅读-计算几何</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/"><span class="card-category-list-name">高校课程</span><span class="card-category-list-count">41</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/MIT-%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/"><span class="card-category-list-name">MIT-算法导论</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"><span class="card-category-list-name">南京大学-操作系统</span><span class="card-category-list-count">31</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">南京大学-算法设计</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%88%86%E6%9E%90/"><span class="card-category-list-name">国科大-算法设计与分析</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"><span class="card-category-list-name">清华大学-数据结构与算法</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6-%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/"><span class="card-category-list-name">清华大学-计算几何</span><span class="card-category-list-count">6</span></a></li></ul></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/"><span class="card-category-list-name">随笔</span><span class="card-category-list-count">6</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/"><span class="card-category-list-name">年度总结</span><span class="card-category-list-count">6</span></a></li></ul></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/leetcode/" style="font-size: 1.2em; color: rgb(169, 143, 128)">leetcode</a><a href="/tags/%E5%B9%B4%E5%BA%A6%E6%80%BB%E7%BB%93/" style="font-size: 1.22em; color: rgb(81, 72, 191)">年度总结</a><a href="/tags/%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" style="font-size: 1.15em; color: rgb(10, 122, 148)">贝叶斯数据分析</a><a href="/tags/%E5%87%B8%E4%BC%98%E5%8C%96/" style="font-size: 1.2em; color: rgb(200, 96, 86)">凸优化</a><a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" style="font-size: 1.15em; color: rgb(71, 162, 46)">最优化方法</a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.15em; color: rgb(198, 20, 166)">数学</a><a href="/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" style="font-size: 1.15em; color: rgb(175, 63, 150)">数学建模</a><a href="/tags/%E4%BC%98%E5%8C%96%E5%BB%BA%E6%A8%A1/" style="font-size: 1.15em; color: rgb(175, 160, 101)">优化建模</a><a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 1.31em; color: rgb(1, 176, 42)">机器学习</a><a href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/" style="font-size: 1.29em; color: rgb(61, 186, 119)">模式识别</a><a href="/tags/%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B/" style="font-size: 1.33em; color: rgb(135, 44, 129)">随机过程</a><a href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/" style="font-size: 1.38em; color: rgb(141, 54, 131)">图形学</a><a href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/" style="font-size: 1.43em; color: rgb(18, 136, 76)">数字几何处理</a><a href="/tags/%E5%87%A0%E4%BD%95%E5%BB%BA%E6%A8%A1/" style="font-size: 1.15em; color: rgb(84, 144, 150)">几何建模</a><a href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/" style="font-size: 1.31em; color: rgb(46, 33, 185)">多视图几何</a><a href="/tags/%E5%A4%9A%E8%BE%B9%E5%BD%A2%E7%BD%91%E6%A0%BC%E5%A4%84%E7%90%86/" style="font-size: 1.27em; color: rgb(105, 184, 33)">多边形网格处理</a><a href="/tags/%E8%A7%86%E8%A7%89SLAM/" style="font-size: 1.15em; color: rgb(119, 25, 165)">视觉SLAM</a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.17em; color: rgb(29, 32, 150)">深度学习</a><a href="/tags/%E7%82%B9%E4%BA%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.15em; color: rgb(127, 133, 193)">点云深度学习</a><a href="/tags/%E7%BC%96%E7%A8%8B/" style="font-size: 1.45em; color: rgb(85, 192, 32)">编程</a><a href="/tags/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/" style="font-size: 1.15em; color: rgb(119, 45, 22)">算法导论</a><a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/" style="font-size: 1.4em; color: rgb(153, 47, 173)">计算机基础</a><a href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/" style="font-size: 1.24em; color: rgb(8, 4, 70)">深入理解计算机系统</a><a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 1.36em; color: rgb(63, 150, 167)">操作系统</a><a href="/tags/%E7%AE%97%E6%B3%95%E8%AE%BE%E8%AE%A1/" style="font-size: 1.17em; color: rgb(23, 62, 119)">算法设计</a><a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.15em; color: rgb(196, 126, 196)">算法</a><a href="/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/" style="font-size: 1.22em; color: rgb(184, 82, 87)">计算几何</a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.22em; color: rgb(38, 181, 54)">数据结构</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">一月 2024</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">9</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">十一月 2023</span><span class="card-archive-list-count">6</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">十月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">九月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/08/"><span class="card-archive-list-date">八月 2023</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/07/"><span class="card-archive-list-date">七月 2023</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><span class="card-archive-list-count">4</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">180</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">263.5k</div></div></div></div><div class="card-widget user-map" id="user-map"><div class="item-headline"><i class="fas fa-heartbeat"></i><span>访客地图</span></div><div class="item-content"><script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=CLJYAb9SENlbnWJfPf9sd1EJ1qttRiHAQA514yK4AVU"></script></div></div></div></div></main><footer id="footer" style="background-image: url('/img/h3.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  function loadValine () {
+    function initValine () {
+      let initData = {
+        el: '#vcomment',
+        appId: '',
+        appKey: '',
+        serverURLs: ''
+      }
+      
+      const valine = new Valine(initData)
+    }
+
+    if (typeof Valine === 'function') initValine() 
+    else btf.getScript('https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js').then(initValine)
+  }
+
+  window.pjax ? loadValine() : window.addEventListener('load', loadValine)
+})()</script><script>window.typedJSFn = {
+  init: (str) => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, null))
+  },
+  run: (subtitleType) => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
+    }
+  }
+}
+btf.addGlobalFn('pjaxSend', () => { typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  if (true) {
+    typedJSFn.init(["莫道君行早"])
+  } else {
+    document.getElementById("subtitle").textContent = "莫道君行早"
+  }
+}
+typedJSFn.run(subtitleType)</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div></div><script src="/js/category.js"></script></body></html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第十一章】网络-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-11-zhang-wang-luo-bian-cheng 学习目标  了解网络的基本架构 了解常见的网络协议 掌握基本的网络相关编程技巧 学会编写 web 服务器  网络架构 计算机网络的知识可谓是非常『保值』的，因为这么多基础设备还在运行着，基本机制在短时间内很难改变，关于网络的相关的讲解还有参">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP-【第十一章】网络-补充阅读与总结【转载】">
+<meta property="og:url" content="http://mmwiki.cn/posts/f41e98fa.html">
+<meta property="og:site_name" content="MM&#39;s Journal of Technology">
+<meta property="og:description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-11-zhang-wang-luo-bian-cheng 学习目标  了解网络的基本架构 了解常见的网络协议 掌握基本的网络相关编程技巧 学会编写 web 服务器  网络架构 计算机网络的知识可谓是非常『保值』的，因为这么多基础设备还在运行着，基本机制在短时间内很难改变，关于网络的相关的讲解还有参">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mmwiki.cn/img/h.jpg">
+<meta property="article:published_time" content="2021-01-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-29T07:27:53.383Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="深入理解计算机系统">
+<meta property="article:tag" content="计算机基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mmwiki.cn/img/h.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://mmwiki.cn/posts/f41e98fa.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CSAPP-【第十一章】网络-补充阅读与总结【转载】',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-29 15:27:53'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/h.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-30T16:00:00.000Z" title="发表于 2021-01-31 00:00:00">2021-01-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">书籍阅读-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>补充阅读材料：<br>
+<a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-11-zhang-wang-luo-bian-cheng">https://fengmuzi2003.gitbook.io/csapp3e/di-11-zhang-wang-luo-bian-cheng</a></p>
+<h2 id="学习目标">学习目标</h2>
+<ol>
+<li>了解网络的基本架构</li>
+<li>了解常见的网络协议</li>
+<li>掌握基本的网络相关编程技巧</li>
+<li>学会编写 web 服务器</li>
+</ol>
+<h2 id="网络架构">网络架构</h2>
+<p>计算机网络的知识可谓是非常『保值』的，因为这么多基础设备还在运行着，基本机制在短时间内很难改变，关于网络的相关的讲解还有参考链接[1][2]，我觉得也非常不错，大家感兴趣可以看看。</p>
+<p>客户端-服务器模型是网络应用最广泛使用的模型，客户端进程发送请求给服务器进程，服务器进程获取所需资源并响应客户端进程的请求，客户端进程收到响应后展示给用户。网络相关的处理，都是通过网络适配器来完成的，具体在硬件上为（右下角）：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619458669883.jpg" alt=""></p>
+<p>根据网络的应用范围和架构层级，可以分成三个部分：</p>
+<ul>
+<li>SAN - System Area Network
+<ul>
+<li>Switched Ethernet, Quadrics QSW, …</li>
+</ul>
+</li>
+<li>LAN - Local Area Network
+<ul>
+<li>Ethernet, …</li>
+</ul>
+</li>
+<li>WAN - Wide Area Network
+<ul>
+<li>High speed point-to-point phone lines</li>
+</ul>
+</li>
+</ul>
+<h3 id="最底层-Ethernet-Segment">最底层 - Ethernet Segment</h3>
+<p>由若干主机(hosts)通过交换机(hub)连接，通常范围是房间或一层楼，如下图所示：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619464142056.jpg" alt=""></p>
+<ul>
+<li>每个 Ethernet 适配器有一个唯一的 48 位的地址（也就是 MAC 地址），例如 <code>00:16:ea:e3:54:e6</code></li>
+<li>不同主机间发送的数据称为帧(frame)</li>
+<li>Hub 会把每个端口发来的所有数据复制到其他的端口
+<ul>
+<li>所有的主机都可以看到所有的数据（注意安全问题）</li>
+</ul>
+</li>
+</ul>
+<h3 id="下一层-Bridged-Ethernet-Segment">下一层 - Bridged Ethernet Segment</h3>
+<p>通常范围是一层楼，通过不同的 bridge 来连接不同的 ethernet segment。Bridge 知道从某端口出发可达的主机，并有选择的在端口间复制数据。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619467342899.jpg" alt=""></p>
+<p>为了从概念上简化，我们可以认为，所有的 hub, bridge 可以抽象为一条线，如下图所示：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619469077741.jpg" alt=""></p>
+<h3 id="下一层-internets">下一层 - internets</h3>
+<p>不同的（也许不兼容）的 LAN 可以通过 router 来进行物理上的连接，这样连接起来的网络称为 internet（注意是小写，大写的 Internet 可以认为是最著名的 internet）</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619471233534.jpg" alt=""></p>
+<p>internet 的逻辑结构为：</p>
+<ul>
+<li>Ad hoc interconnection of networks
+<ul>
+<li>没有特定的拓扑结构</li>
+<li>不同的 router 和 link 差异可能很大</li>
+</ul>
+</li>
+<li>通过在不同的网络间跳转来传递 packet
+<ul>
+<li>Router 是不同网络间的连接</li>
+<li>不同的 packet 可能会走不同的路线</li>
+</ul>
+</li>
+</ul>
+<h2 id="网络协议">网络协议</h2>
+<p>在不同的 LAN 和 WAN 中传输数据，就要守规矩，这个规矩就是协议。协议负责做的事情有：</p>
+<ul>
+<li>提供 naming scheme
+<ul>
+<li>定义 host address 格式</li>
+<li>每个主机和路由器都至少有一个独立的 internet 地址</li>
+</ul>
+</li>
+<li>提供 delivery mechanism
+<ul>
+<li>定义了标准的传输单元 - packet</li>
+<li>Packet 包含 header 和 payload
+<ul>
+<li>header 包括 packet size, source 和 destination address</li>
+<li>payload 包括需要传输的数据</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在这样的协议下，具体的数据传输如下图所示，这里 PH = Internet packet header, FH = LAN frame header（具体名词解释可见参考文末参考资料）：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619781335872.jpg" alt=""></p>
+<p>Internet 是 internet 最为著名的例子。主要基于 TCP/IP 协议族：</p>
+<ul>
+<li>IP (Internet Protocal)
+<ul>
+<li>Provides <strong>basic naming scheme</strong> and unreliable <strong>delivery capability</strong> of packets (datagrams) from <strong>host-to-host</strong></li>
+</ul>
+</li>
+<li>UDP (Unreliable Datagram Protocol)
+<ul>
+<li>Uses IP to provide <strong>unreliable</strong> datagram delivery from <strong>process-to-process</strong></li>
+</ul>
+</li>
+<li>TCP (Transmission Control Protocol)
+<ul>
+<li>Uses IP to provide <strong>reliable</strong> byte streams from <strong>process-to-process</strong> over <strong>connections</strong></li>
+</ul>
+</li>
+</ul>
+<p>Accessed via a mix of Unix file I/O and functions from <strong>sockets interface</strong>.（很多东西不是很好翻译，用原文比较准确）</p>
+<ul>
+<li>主机有 32 位的 IP 地址 - 23.235.46.133
+<ul>
+<li>IPv4 - 32 位地址，IPv6 - 128 位地址</li>
+</ul>
+</li>
+<li>IP 地址被映射到域名 - 23.235.46.133 映射到 <a target="_blank" rel="noopener" href="http://www.wdxtub.com">www.wdxtub.com</a></li>
+<li>不同主机之间的进程，可以通过 connection 来交换数据</li>
+</ul>
+<h3 id="IP-地址">IP 地址</h3>
+<p>我们会用一个叫做 IP address struct 的东西来存储，并且 IP 地址是以 network byte order（也就是大端）来进行存储的</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></pre></td><td><pre><span></span><br><span><span><span>struct</span> <span>in_addr</span> {</span></span><br><span>    <span>uint32_t</span> s_addr;    </span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<p>为了方便读，一般用下面的形式来进行表示：</p>
+<p>IP 地址：<code>0x8002C2F2 = 128.2.194.242</code></p>
+<p>具体的转换可以使用 <code>getaddrinfo</code> 和 <code>getnameinfo</code> 函数</p>
+<h3 id="Internet-域名">Internet 域名</h3>
+<p>这里主要需要了解的就是 Domain Naming System(DNS) 的概念，用来做 IP 地址到域名的映射。具体可以用 <code>nslookup</code> 命令来查看，下面是一些例子</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br></pre></td><td><pre><span>$ hostname</span><br><span>wdxtub.local</span><br><span></span><br><span>$ nslookup www.wdxtub.com</span><br><span>Server:8.8.8.8</span><br><span>Address:8.8.8.8</span><br><span></span><br><span>Non-authoritative answer:</span><br><span>www.wdxtub.comcanonical name = wdxtub.github.io.</span><br><span>wdxtub.github.iocanonical name = github.map.fastly.net.</span><br><span>Name:github.map.fastly.net</span><br><span>Address: 23.235.39.133</span><br><span></span><br><span>$ nslookup www.twitter.com</span><br><span>Server:8.8.8.8</span><br><span>Address:8.8.8.8</span><br><span></span><br><span>Non-authoritative answer:</span><br><span>www.twitter.comcanonical name = twitter.com.</span><br><span>Name:twitter.com</span><br><span>Address: 199.16.156.6</span><br><span>Name:twitter.com</span><br><span>Address: 199.16.156.198</span><br><span>Name:twitter.com</span><br><span>Address: 199.16.156.230</span><br><span>Name:twitter.com</span><br><span>Address: 199.16.156.70</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h3 id="Internet-连接">Internet 连接</h3>
+<p>客户端和服务器通过连接(connection)来发送字节流，特点是：</p>
+<ul>
+<li>点对点: 连接一对进程</li>
+<li>全双工: 数据同时可以在两个方向流动</li>
+<li>可靠: 字节的发送的顺序和收到的一致</li>
+</ul>
+<p>Socket 则可以认为是 connection 的 endpoint，socket 地址是一个 <code>IPaddress:port</code> 对。</p>
+<p>Port（端口）是一个 16 位的整数，用来标识不同的进程，利用不同的端口来连接不同的服务：</p>
+<ul>
+<li>Ephemeral port: Assigned automatically by client kernel when client makes a connection request</li>
+<li>Well-known port: Associated with some <strong>service</strong> provided by a server（在 linux 系统上可以在 <code>/etc/services</code> 中查看具体的信息）
+<ul>
+<li>echo server: 7/echo</li>
+<li>ssh server: 22/ssh</li>
+<li>email server: 25/smtp</li>
+<li>web servers: 80/http</li>
+</ul>
+</li>
+</ul>
+<h3 id="Socket-接口">Socket 接口</h3>
+<p>一系列系统级的函数，和 Unix I/O 配合构造网络应用（在所有的现代操作系统上都可用）。</p>
+<p>对于 kernel 来说，socket 是 endpoint of communication；对于应用程序来说，socket 是 file descriptor，用来读写（回忆一下，STDIN 和 STDOUT 也是 file descriptor）。客户端和服务器通过读写对应的 socket descriptor 来进行。</p>
+<p>具体连接的过程可以参考下图，注意，这一讲不做过多细节探讨，相信相关信息请参考书本对应内容。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14619808912880.jpg" alt=""></p>
+<h2 id="简单服务器实现">简单服务器实现</h2>
+<h3 id="架构总览">架构总览</h3>
+<p>写服务器，最重要的就是理清思路，上节课我们介绍了诸多概念，尤其是最后提到的 <code>getaddrinfo</code> 和 <code>getnameinfo</code>，都是我们在搭建过程中必不可少的工具。参考上面的流程图，整个的工作流程有 5 步：</p>
+<ol>
+<li>开启服务器（<code>open_listenfd</code> 函数，做好接收请求的准备）
+<ul>
+<li><code>getaddrinfo</code>: 设置服务器的相关信息，具体可以参见 图1&amp;2</li>
+<li><code>socket</code>: 创建 socket descriptor，也就是之后用来读写的 file descriptor
+<ul>
+<li><code>int socket(int domain, int type, int protocol)</code></li>
+<li>例如 <code>int clientfd = socket(AF_INET, SOCK_STREAM, 0);</code></li>
+<li><code>AF_INET</code> 表示在使用 32 位 IPv4 地址</li>
+<li><code>SOCK_STREAM</code> 表示这个 socket 将是 connection 的 endpoint</li>
+<li>前面这种写法是协议相关的，建议使用 <code>getaddrinfo</code> 生成的参数来进行配置，这样就是协议无关的了</li>
+</ul>
+</li>
+<li><code>bind</code>: 请求 kernel 把 socket address 和 socket descriptor 绑定
+<ul>
+<li><code>int bind(int sockfd, SA *addr, socklen_t addrlen);</code></li>
+<li>The process can read bytes that arrive on the connection whose endpoint is <code>addr</code> by reading from descriptor <code>sockfd</code></li>
+<li>Similarly, writes to <code>sockfd</code> are transferred along connection whose endpoint is <code>addr</code></li>
+<li>最好是用 <code>getaddrinfo</code> 生成的参数作为 <code>addr</code> 和 <code>addrlen</code></li>
+</ul>
+</li>
+<li><code>listen</code>: 默认来说，我们从 <code>socket</code> 函数中得到的 descriptor 默认是 active socket（也就是客户端的连接），调用 <code>listen</code> 函数告诉 kernel 这个 socket 是被服务器使用的
+<ul>
+<li><code>int listen(int sockfd, int backlog);</code></li>
+<li>把 <code>sockfd</code> 从 active socket 转换成 listening socket，用来接收客户端的请求</li>
+<li><code>backlog</code> 的数值表示 kernel 在接收多少个请求之后（队列缓存起来）开始拒绝请求</li>
+</ul>
+</li>
+<li>[*]<code>accept</code>: 调用 <code>accept</code> 函数，开始等待客户端请求
+<ul>
+<li><code>int accept(int listenfd, SA *addr, int *addrlen);</code></li>
+<li>等待绑定到 <code>listenfd</code> 的连接接收到请求，然后把客户端的 socket address 写入到 <code>addr</code>，大小写入到 <code>addrlen</code></li>
+<li>返回一个 connected descriptor 用来进行信息传输（类似 Unix I/O）</li>
+<li>具体的过程可以参考 图3</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>开启客户端（<code>open_clientfd</code> 函数，设定访问地址，尝试连接）
+<ul>
+<li><code>getaddrinfo</code>: 设置客户端的相关信息，具体可以参见 图1&amp;2</li>
+<li><code>socket</code>: 创建 socket descriptor，也就是之后用来读写的 file descriptor</li>
+<li><code>connect</code>: 客户端调用 <code>connect</code> 来建立和服务器的连接
+<ul>
+<li><code>int connect(int clientfd, SA *addr, socklen_t addrlen);</code></li>
+<li>尝试与在 socker address <code>addr</code> 的服务器建立连接</li>
+<li>如果成功 <code>clientfd</code> 可以进行读写</li>
+<li>connection 由 socket 对描述 <code>(x:y, addr.sin_addr:addr.sin_port)</code></li>
+<li><code>x</code> 是客户端地址，<code>y</code> 是客户端临时端口，后面的两个是服务器的地址和端口</li>
+<li>最好是用 <code>getaddrinfo</code> 生成的参数作为 <code>addr</code> 和 <code>addrlen</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>交换数据（主要是一个流程循环，客户端向服务器写入，就是发送请求；服务器向客户端写入，就是发送响应）
+<ul>
+<li>[Client]<code>rio_writen</code>: 写入数据，相当于向服务器发送请求</li>
+<li>[Client]<code>rio_readlineb</code>: 读取数据，相当于从服务器接收响应</li>
+<li>[Server]<code>rio_readlineb</code>: 读取数据，相当于从客户端接收请求</li>
+<li>[Server]<code>rio_writen</code>: 写入数据，相当于向客户端发送响应</li>
+</ul>
+</li>
+<li>关闭客户端（主要是 <code>close</code>）
+<ul>
+<li>[Client]<code>close</code>: 关闭连接</li>
+</ul>
+</li>
+<li>断开客户端（服务接收到客户端发来的 EOF 消息之后，断开已有的和客户端的连接）
+<ul>
+<li>[Server]<code>rio_readlineb</code>: 收到客户端发来的关闭连接请求</li>
+<li>[Server]<code>close</code>: 关闭与客户端的连接</li>
+</ul>
+</li>
+</ol>
+<h3 id="Client-open-clientfd">Client <code>open_clientfd</code></h3>
+<p>用来建立和服务器的连接，协议无关</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br></pre></td><td><pre><span><span><span>int</span> <span>open_clientfd</span><span>(<span>char</span> *hostname, <span>char</span> *port)</span> </span>{</span><br><span>    <span>int</span> clientfd;</span><br><span>    <span><span>struct</span> <span>addrinfo</span> <span>hints</span>, *<span>listp</span>, *<span>p</span>;</span></span><br><span>    </span><br><span>    </span><br><span>    <span>memset</span>(&amp;hints, <span>0</span>, <span>sizeof</span>(struct addrinfo));</span><br><span>    hints.ai_socktype = SOCK_STREAM; </span><br><span>    hints.ai_flags = AI_NUMERICSERV; </span><br><span>    hints.ai_flags |= AI_ADDRCONFIG; </span><br><span>    getaddrinfo(hostname, port, &amp;hints, &amp;listp);</span><br><span>    </span><br><span>    </span><br><span>    </span><br><span>    <span>for</span> (p = listp; p; p = p-&gt;ai_next) {</span><br><span>        </span><br><span>        </span><br><span>        <span>if</span> ((clientfd = socket(p-&gt;ai_family, p-&gt;ai_socktype,</span><br><span>                               p-&gt;ai_protocol)) &lt; <span>0</span>)</span><br><span>            <span>continue</span>; </span><br><span>        </span><br><span>        </span><br><span>        </span><br><span>        <span>if</span> (<span>connect</span>(clientfd, p-&gt;ai_addr, p-&gt;ai_addrlen) != <span>-1</span>)</span><br><span>            <span>break</span>; </span><br><span>        </span><br><span>        <span>close</span>(clientfd); </span><br><span>    }</span><br><span>    </span><br><span>    </span><br><span>    freeaddrinfo(listp);</span><br><span>    <span>if</span> (!p) </span><br><span>        <span>return</span> <span>-1</span>;</span><br><span>    <span>else</span> </span><br><span>        <span>return</span> clientfd;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h3 id="Server-open-listenfd">Server <code>open_listenfd</code></h3>
+<p>创建 listening descriptor，用来接收来自客户端的请求，协议无关</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br><span>36</span><br><span>37</span><br><span>38</span><br><span>39</span><br><span>40</span><br><span>41</span><br><span>42</span><br><span>43</span><br><span>44</span><br></pre></td><td><pre><span><span><span>int</span> <span>open_listenfd</span><span>(<span>char</span> *port)</span></span>{</span><br><span>    <span><span>struct</span> <span>addrinfo</span> <span>hints</span>, *<span>listp</span>, *<span>p</span>;</span></span><br><span>    <span>int</span> listenfd, optval=<span>1</span>;</span><br><span>    </span><br><span>    </span><br><span>    <span>memset</span>(&amp;hints, <span>0</span>, <span>sizeof</span>(struct addrinfo));</span><br><span>    hints.ai_socktype = SOCK_STREAM; </span><br><span>    hints.ai_flags = AI_PASSIVE | AI_ADDRCONFIG; </span><br><span>    hints.ai_flags |= AI_NUMERICSERV; </span><br><span>    </span><br><span>    getaddrinfo(<span>NULL</span>, port, &amp;hints, &amp;listp); </span><br><span>    </span><br><span>    </span><br><span>    </span><br><span>    <span>for</span> (p = listp; p; p = p-&gt;ai_next) {</span><br><span>        </span><br><span>        </span><br><span>        <span>if</span> ((listenfd = socket(p-&gt;ai_family, p-&gt;ai_socktype,</span><br><span>                               p-&gt;ai_protocol)) &lt; <span>0</span>)</span><br><span>            <span>continue</span>; </span><br><span>        </span><br><span>        </span><br><span>        setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR), </span><br><span>                    (<span>const</span> <span>void</span> *)&amp;optval, <span>sizeof</span>(<span>int</span>));</span><br><span>        </span><br><span>        </span><br><span>        <span>if</span> (bind(listenfd, p-&gt;ai_addr, p-&gt;ai_addrlen) == <span>0</span>)</span><br><span>            <span>break</span>; </span><br><span>        </span><br><span>        <span>close</span>(listenfd); </span><br><span>    }</span><br><span>    </span><br><span>    </span><br><span>    freeaddrinfo(listp);</span><br><span>    <span>if</span> (!p) </span><br><span>        <span>return</span> <span>-1</span>;</span><br><span>    </span><br><span>    </span><br><span>    <span>if</span> (<span>listen</span>(listenfd, LISTENQ) &lt; <span>0</span>) {</span><br><span>        <span>close</span>(listenfd);</span><br><span>        <span>return</span> <span>-1</span>;</span><br><span>    }</span><br><span>    <span>return</span> listenfd;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h2 id="简单的-socket-服务器实例">简单的 socket 服务器实例</h2>
+<h3 id="客户端-Echo-Client">客户端 Echo Client</h3>
+<p>这个客户端做的事情很简单，就是把一段用户输入的文字发送到服务器，然后再把从服务器接收到的内容显示到输出中，具体可以参见注释</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br></pre></td><td><pre><span></span><br><span><span>#<span>include</span> <span>"csapp.h"</span></span></span><br><span></span><br><span><span><span>int</span> <span>main</span> <span>(<span>int</span> argc, <span>char</span> **argv)</span> </span>{</span><br><span>    <span>int</span> clientfd;</span><br><span>    <span>char</span> *host, *port, buf[MAXLINE];</span><br><span>    <span>rio_t</span> rio;</span><br><span>    </span><br><span>    host = argv[<span>1</span>];</span><br><span>    port = argv[<span>2</span>];</span><br><span>    </span><br><span>    </span><br><span>    clientfd = Open_clientfd(host, port);</span><br><span>    Rio_readinitb(&amp;rio, clientfd);</span><br><span>    </span><br><span>    <span>while</span> (Fgets(buf, MAXLINE, <span>stdin</span>) != <span>NULL</span>) {</span><br><span>        </span><br><span>        Rio_writen(clientfd, buf, <span>strlen</span>(buf));</span><br><span>        </span><br><span>        Rio_readlineb(&amp;rio, buf, MAXLINE);</span><br><span>        </span><br><span>        Fputs(buf, <span>stdout</span>);</span><br><span>    }</span><br><span>    Close(clientfd);</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h3 id="服务器-Iterative-Echo-Server">服务器 Iterative Echo Server</h3>
+<p>服务器做的工作也很简单，接收到从客户端发送的信息，然后返回一个一模一样的。具体参加注释。</p>
+<table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br><span>33</span><br><span>34</span><br><span>35</span><br><span>36</span><br><span>37</span><br><span>38</span><br><span>39</span><br><span>40</span><br><span>41</span><br></pre></td><td><pre><span></span><br><span><span>#<span>include</span> <span>"csapp.h"</span></span></span><br><span><span><span>void</span> <span>echo</span><span>(<span>int</span> connfd)</span></span>;</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>(<span>int</span> argc, <span>char</span> **argv)</span></span>{</span><br><span>    <span>int</span> listenfd, connfd;</span><br><span>    <span>socklen_t</span> clientlen;</span><br><span>    <span><span>struct</span> <span>sockaddr_storage</span> <span>clientaddr</span>;</span> </span><br><span>    <span>char</span> client_hostname[MAXLINE], client_port[MAXLINE];</span><br><span>    </span><br><span>    </span><br><span>    listenfd = Open_listenfd(argv[<span>1</span>]);</span><br><span>    <span>while</span> (<span>1</span>) {</span><br><span>        </span><br><span>        clientlen = <span>sizeof</span>(struct sockaddr_storage); </span><br><span>        </span><br><span>        connfd = Accept(listenfd, (SA *)&amp;clientaddr, &amp;clientlen);</span><br><span>        </span><br><span>        Getnameinfo((SA *) &amp;clientaddr, clientlen, client_hostname,</span><br><span>                     MAXLINE, client_port, MAXLINE, <span>0</span>);</span><br><span>        <span>printf</span>(<span>"Connected to (%s, %s)\n"</span>, client_hostname, client_port);</span><br><span>        </span><br><span>        echo(coonfd);</span><br><span>        Close(connfd);</span><br><span>    }</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br><span></span><br><span><span><span>void</span> <span>echo</span><span>(<span>int</span> connfd)</span> </span>{</span><br><span>    <span>size_t</span> n;</span><br><span>    <span>char</span> buf[MAXLINE];</span><br><span>    <span>rio_t</span> rio;</span><br><span>    </span><br><span>    </span><br><span>    Rio_readinitb(&amp;rio, connfd);</span><br><span>    <span>while</span>((n = Rio_readlineb(&amp;rio, buf, MAXLINE)) != <span>0</span>) {</span><br><span>        <span>printf</span>(<span>"server received %d bytes\n"</span>, (<span>int</span>)n);</span><br><span>        </span><br><span>        Rio_writen(connfd, buf, n);</span><br><span>    }</span><br><span>}</span><br></pre></td></tr></tbody></table>
+<p>复制</p>
+<h2 id="总结">总结</h2>
+<p>这一讲中，我们了解了网络的基本架构以及常见的网络协议，并通过编写 web 服务器掌握了基本的网络相关编程技巧。</p>
+<p>因为是用 C 语言来写，实现起来比较繁琐，但是对于理解整个网络的工作机制是非常有好处的，相信之后在用更高级语言来操作网络的时候，能够更加得心应手，毕竟知其所以然了嘛。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/vamei/archive/2012/12/05/2802811.html">协议森林</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/maybe2030/p/4781555.html">计算机网络基础知识总结</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">小土刀</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">https://wdxtub.com/work/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div><div class="post_share"><div class="social-share" data-image="/img/h.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/9110590b.html" title="CSAPP-【第十二章】并行编程-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSAPP-【第十二章】并行编程-补充阅读与总结【转载】</div></div></a></div><div class="next-post pull-right"><a href="/posts/b1fb9525.html" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/undefined.html" title="南京大学-操作系统--虚拟化-Linux 操作系统 (initramfs; 最小 Linux 世界)"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-05</div><div class="title">南京大学-操作系统--虚拟化-Linux 操作系统 (initramfs; 最小 Linux 世界)</div></div></a></div><div><a href="/posts/b1fb9525.html" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-27</div><div class="title">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/882cf7d3.html" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-09</div><div class="title">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/525342f9.html" title="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-23</div><div class="title">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/4ef1ce7c.html" title="CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-10</div><div class="title">CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/618b80aa.html" title="CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/h.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-02</div><div class="title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">180</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">53</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">网络架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E5%BA%95%E5%B1%82-Ethernet-Segment"><span class="toc-number">2.1.</span> <span class="toc-text">最底层 - Ethernet Segment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E4%B8%80%E5%B1%82-Bridged-Ethernet-Segment"><span class="toc-number">2.2.</span> <span class="toc-text">下一层 - Bridged Ethernet Segment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E4%B8%80%E5%B1%82-internets"><span class="toc-number">2.3.</span> <span class="toc-text">下一层 - internets</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.</span> <span class="toc-text">网络协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IP-%E5%9C%B0%E5%9D%80"><span class="toc-number">3.1.</span> <span class="toc-text">IP 地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet-%E5%9F%9F%E5%90%8D"><span class="toc-number">3.2.</span> <span class="toc-text">Internet 域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Internet-%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.3.</span> <span class="toc-text">Internet 连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Socket-%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.4.</span> <span class="toc-text">Socket 接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">简单服务器实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%B6%E6%9E%84%E6%80%BB%E8%A7%88"><span class="toc-number">4.1.</span> <span class="toc-text">架构总览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Client-open-clientfd"><span class="toc-number">4.2.</span> <span class="toc-text">Client open_clientfd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Server-open-listenfd"><span class="toc-number">4.3.</span> <span class="toc-text">Server open_listenfd</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84-socket-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E4%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">简单的 socket 服务器实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF-Echo-Client"><span class="toc-number">5.1.</span> <span class="toc-text">客户端 Echo Client</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8-Iterative-Echo-Server"><span class="toc-number">5.2.</span> <span class="toc-text">服务器 Iterative Echo Server</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/402f9c9e.html" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/h.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div></div><script src="/js/category.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":0,"vOffset":-100},"mobile":{"show":true},"react":{"opacity":0.85},"log":false});</script></body></html>

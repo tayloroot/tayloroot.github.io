@@ -1,21 +1,36 @@
-#recent-posts>.recent-post-item,.layout_page>div:first-child:not(.recent-posts),.layout_post>#page,.layout_post>#post,.read-mode .layout_post>#post {
-    background: rgba(255,255,255,.5);
-}
-
-#aside-content .card-widget {
-    background: rgba(255,255,255,.5);
-}
 
 #footer {
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     color: #000;
 }
 
+#aside-content .card-widget{
+    background: rgba(255, 255, 255, 1);
+    color: #000;
+}
+
+/* .layout_page>div:first-child:not(.recent-posts),  
+
+*/
+
+.layout_post .content,
+#recent-posts>.recent-post-item, 
+.layout>#page,
+.layout>#tag, 
+.layout>#category, 
+.layout>#archive{
+    background: rgba(255, 255, 255, 1);
+} 
+
+.layout>#post, 
+.read-mode .layout>#post {
+    background: rgba(255, 255, 255, 0.5);
+} 
 
 
 #web_bg {
     background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-    }
+}
 
 /* 分类样式 */  
 .category-all-page .category-list-item {  
@@ -25,4 +40,5 @@
 }  
 .category-all-page .category-list-child {  
     list-style: none;  
-}  
+}
+

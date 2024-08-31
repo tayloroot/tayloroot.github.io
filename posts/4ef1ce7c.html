@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2020-12-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-29T07:27:53.379Z">
+<meta property="article:modified_time" content="2024-08-31T09:16:58.120Z">
 <meta property="article:author" content="MrMatrix">
 <meta property="article:tag" content="编程">
 <meta property="article:tag" content="深入理解计算机系统">
@@ -176,7 +176,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2024-08-29 15:27:53'
+  postUpdate: '2024-08-31 17:16:58'
 }</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
   const $loadingBox = document.getElementById('loading-box')
   const $body = document.body
@@ -461,7 +461,7 @@
 </ul>
 <h3 id="类型转换">类型转换</h3>
 <p>我们在数轴上把有符号数和无符号数画出来的话，就能很清晰的看出相对的关系：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14609257940557.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14609257940557.jpg" alt=""></p>
 <p>在 C 语言中，如果不加关键字限制，默认的整型是有符号的。如果想要无符号数的话，需要在数字后面加 <code>U</code>，例如下面的代码段</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br></pre></td><td><pre><span><span>int</span> a_signed_number = <span>-15213</span>;</span><br><span><span>unsigned</span> <span>int</span> a_unsigned_number = <span>15213U</span>;</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
@@ -608,7 +608,7 @@
 <p>在 IEEE 标准中，我们用下面的公式来表达浮点数：</p>
 <p>(−1)sM2E</p>
 <p>其中 s 是符号位，决定正负；M 通常是一个值在 [1.0, 2.0) 的小数；E 是次方数。具体编码时结构如下，这里用单精度、双精度和扩展精度为例：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14609515849125.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14609515849125.jpg" alt=""></p>
 <p>其中 <code>s</code> 对应着符号位，<code>exp</code> 对应着 E（注意，不一定等于 E，因为位数限制表达能力有限），<code>frac</code> 对应着 M（注意，不一定等于 M，因为位数限制表达能力有限）。不同的位数就代表了不同的表示能力，也就是单精度，双精度，扩展精度的来源。</p>
 <p><strong>规范化值(Normalized Values)</strong></p>
 <p>在 exp≠000…0 和 exp≠111…1 时，表示的其实都是规范化的值，为什么说是规范化呢？这里只需要大概知道因为实数轴上原来连续的值会被规范到有限的定值上并且这些定值之间的间距也是不一样的，具体可以通过后面给出的例子来理解（所以现在不明白也不用担心）</p>
@@ -644,7 +644,7 @@
 <p>而在 exp=111…1 且 frac≠000…0 时，我们认为这不是一个数值（Not-a-Number，NaN），用来表示那些没办法确定的值，比如 sqrt(−1),∞−∞,∞×0</p>
 <h3 id="实例学习">实例学习</h3>
 <p>可能通过文字描述还是不够清晰，我们来看看上面各种情况对应到数轴中是怎么样的：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14609523456310.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14609523456310.jpg" alt=""></p>
 <p>接下来举一个实际的例子，我们采用 1 位符号位，4 位 exp 位，3 位 frac 位，因此对应的 bias 为 7。回顾一下几个重要公式：</p>
 <p>v=(−1)sM2E</p>
 <p>对于规范化数：E=Exp−Bias；对于非规范数：E=1−Bias，正数部分的数值为</p>
@@ -702,7 +702,7 @@
 <h2 id="数据在内存中的形式">数据在内存中的形式</h2>
 <p>后续章节会有关于内存的详细介绍，这里我们只要知道不同数据类型所占据的字节数，以及大端-小端规则即可。</p>
 <p>操作系统会给每个进程提供私有的虚拟内存地址空间，一个进程可以访问自己的数据，但是不能访问别人的数据。在虚拟内存中地址是连续的，对应物理内存则不一定，根据字长的不同，有不同的间隔，如下图所示</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14609333219815.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14609333219815.jpg" alt=""></p>
 <p>然后我们来看看常见数据类型所需要的字节数：</p>
 <table>
 <thead>
@@ -766,7 +766,7 @@
 </table>
 <p>数据具体的排列也有两种方式：大端(Big Endian)与小端(Little Endian)，区别在于高位地址的位置。Internet 数据采用大端规则，而我们常见的 x86 或 ARM 处理器都采用小端规则。</p>
 <p>举个例子，假如变量 <code>x</code> 是 4 字节，值为 <code>0x01234567</code>。用 <code>&amp;x</code> 索引的地址是 <code>0x100</code>，那么大端和小端的表示形式是</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/14609496617886.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14609496617886.jpg" alt=""></p>
 <p>如何检查数据的表示呢，可以用下面的代码</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span><span>typedef</span> <span>unsigned</span> <span>char</span> *pointer;</span><br><span></span><br><span><span><span>void</span> <span>show_bytes</span><span>(pointer start, <span>size_t</span> len)</span> </span>{</span><br><span><span>size_t</span> i;</span><br><span><span>for</span> (i = <span>0</span>; i &lt; len; i++)</span><br><span><span>printf</span>(<span>"%p\t0x%.2x\n"</span>, start+i, start[i]);</span><br><span><span>printf</span>(<span>"\n"</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
@@ -774,7 +774,7 @@
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br></pre></td><td><pre><span><span>int</span> a = <span>15213</span>;</span><br><span><span>printf</span>(<span>"int a = 15213;\n"</span>);</span><br><span>show_bytes((pointer) &amp;a, <span>sizeof</span>(<span>int</span>));</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>在我的电脑上，测试如下：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://wdxtub.com/images/csapp/csapp12.jpg" alt="csapp12"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/csapp12.jpg" alt="csapp12"></p>
 <h2 id="总结">总结</h2>
 <p>这一讲，我们从编程的常见误区开始，简要介绍了计算机架构。并从最基本的元素——比特开始，逐步说明了整型和浮点数这两个非常重要的基础数据类型。这之中涉及了类型转换、扩展与截取、运算与溢出。浮点数因为 IEEE 标准与常识的差异，通过具体的例子进行了讲解，最后引出了舍入的概念。</p>
 <p>需要注意的是，这部分内容知识点比较零碎，需要通过具体例子去理解。</p>

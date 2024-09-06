@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第八章】异常流控制-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-08-zhang-yi-chang-kong-zhi-liu 学习目标  了解异步异常与同步异常，以及异常控制流与平时的逻辑控制流的差异 理解进程的工作机制，如何通过异常来进行进程切换 理解 Linux 的进程控制机制，掌握 fork 的基本用法 了解信号的基本原理以及如何处理信号 掌握如何避免进">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第八章】异常流控制-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-08-zhang-yi-chang-kong-zhi-liu 学习目标 了解异步异常与同步异常，以及异常控制流与平时的逻辑控制流的差异 理解进程的工作机制，如何通过异常来进行进程切换 理解 Linux 的进程控制机制，掌握 fork 的基本用法 了解信号的基本原理以及如何处理信号 掌握如何避免进程竞">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSAPP-【第八章】异常流控制-补充阅读与总结【转载】">
 <meta property="og:url" content="http://mmwiki.cn/posts/6bc76c46.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-08-zhang-yi-chang-kong-zhi-liu 学习目标  了解异步异常与同步异常，以及异常控制流与平时的逻辑控制流的差异 理解进程的工作机制，如何通过异常来进行进程切换 理解 Linux 的进程控制机制，掌握 fork 的基本用法 了解信号的基本原理以及如何处理信号 掌握如何避免进">
+<meta property="og:description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-08-zhang-yi-chang-kong-zhi-liu 学习目标 了解异步异常与同步异常，以及异常控制流与平时的逻辑控制流的差异 理解进程的工作机制，如何通过异常来进行进程切换 理解 Linux 的进程控制机制，掌握 fork 的基本用法 了解信号的基本原理以及如何处理信号 掌握如何避免进程竞">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-01-16T16:00:00.000Z">
@@ -163,7 +163,7 @@
     buttonText: '加载更多'
   },
   isPhotoFigcaption: false,
-  islazyload: true,
+  islazyload: false,
   isAnchor: false,
   percent: {
     toc: true,
@@ -198,10 +198,8 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src= "/img/loading.gif" data-lazy-src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第八章】异常流控制-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-16T16:00:00.000Z" title="发表于 2021-01-17 00:00:00">2021-01-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">书籍阅读-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br>
-<a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-08-zhang-yi-chang-kong-zhi-liu">https://fengmuzi2003.gitbook.io/csapp3e/di-08-zhang-yi-chang-kong-zhi-liu</a></p>
-<h2 id="学习目标">学习目标</h2>
-<ol>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第八章】异常流控制-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-16T16:00:00.000Z" title="发表于 2021-01-17 00:00:00">2021-01-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">书籍阅读-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br><a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-08-zhang-yi-chang-kong-zhi-liu">https://fengmuzi2003.gitbook.io/csapp3e/di-08-zhang-yi-chang-kong-zhi-liu</a></p>
+<h2 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h2><ol>
 <li>了解异步异常与同步异常，以及异常控制流与平时的逻辑控制流的差异</li>
 <li>理解进程的工作机制，如何通过异常来进行进程切换</li>
 <li>理解 Linux 的进程控制机制，掌握 <code>fork</code> 的基本用法</li>
@@ -210,8 +208,7 @@
 <li>了解非本地跳转的概念和意义</li>
 </ol>
 <p>前面提到过，进程可能是计算机系统中最伟大的抽象。进程这个概念背后，其实隐藏着一整套系统级机制，从进程切换、用户态与内核态的转换到系统实时响应各种事件，都离不开一个相当熟悉又陌生的概念——异常。在这个基础上，我们会一起来看看，操作系统到底是如何工作的，为什么可以同时执行不同的程序，具体又是通过什么机制来管理这一切的呢？这一讲我们就来看看这之中的奥秘。</p>
-<h2 id="异常控制流">异常控制流</h2>
-<p>从开机到关机，处理器做的工作其实很简单，就是不断读取并执行指令，每次执行一条，整个指令执行的序列，称为处理器的控制流。到目前为止，我们已经学过了两种改变控制流的方式：</p>
+<h2 id="异常控制流"><a href="#异常控制流" class="headerlink" title="异常控制流"></a>异常控制流</h2><p>从开机到关机，处理器做的工作其实很简单，就是不断读取并执行指令，每次执行一条，整个指令执行的序列，称为处理器的控制流。到目前为止，我们已经学过了两种改变控制流的方式：</p>
 <ul>
 <li>跳转和分支</li>
 <li>调用和返回</li>
@@ -224,22 +221,20 @@
 <li>系统的计时器到时间</li>
 </ul>
 <p>这时候就要轮到另一种更加复杂的机制登场了，称之为异常控制流(exceptional control flow)。首先需要注意的是，虽然名称里包含异常（实际上也用到了异常），但是跟代码中 try catch 所涉及的异常是不一样的。</p>
-<p>异常控制流存在于系统的每个层级，最底层的机制称为<strong>异常(Exception)</strong>，用以改变控制流以响应系统事件，通常是由硬件的操作系统共同实现的。更高层次的异常控制流包括<strong>进程切换(Process Context Switch)</strong>、<strong>信号(Signal)<strong>和</strong>非本地跳转(Nonlocal Jumps)</strong>，也可以看做是一个从硬件过渡到操作系统，再从操作系统过渡到语言库的过程。进程切换是由硬件计时器和操作系统共同实现的，而信号则只是操作系统层面的概念了，到了非本地跳转就已经是在 C 运行时库中实现的了。</p>
+<p>异常控制流存在于系统的每个层级，最底层的机制称为<strong>异常(Exception)</strong>，用以改变控制流以响应系统事件，通常是由硬件的操作系统共同实现的。更高层次的异常控制流包括<strong>进程切换(Process Context Switch)</strong>、<strong>信号(Signal)</strong>和<strong>非本地跳转(Nonlocal Jumps)</strong>，也可以看做是一个从硬件过渡到操作系统，再从操作系统过渡到语言库的过程。进程切换是由硬件计时器和操作系统共同实现的，而信号则只是操作系统层面的概念了，到了非本地跳转就已经是在 C 运行时库中实现的了。</p>
 <p>接下来我们就分别来看看这四个跨域计算机不同层级的异常控制流机制。</p>
-<h2 id="异常-Exception">异常 Exception</h2>
-<p>这里的异常指的是把控制交给系统内核来响应某些事件（例如处理器状态的变化），其中内核是操作系统常驻内存的一部分，而这类事件包括除以零、数学运算溢出、页错误、I/O 请求完成或用户按下了 ctrl+c 等等系统级别的事件。</p>
+<h2 id="异常-Exception"><a href="#异常-Exception" class="headerlink" title="异常 Exception"></a>异常 Exception</h2><p>这里的异常指的是把控制交给系统内核来响应某些事件（例如处理器状态的变化），其中内核是操作系统常驻内存的一部分，而这类事件包括除以零、数学运算溢出、页错误、I/O 请求完成或用户按下了 ctrl+c 等等系统级别的事件。</p>
 <p>具体的过程可以用下图表示：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613541138958.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14613541138958.jpg" alt=""></p>
 <p>系统会通过异常表(Exception Table)来确定跳转的位置，每种事件都有对应的唯一的异常编号，发生对应异常时就会调用对应的异常处理代码</p>
-<h3 id="异步异常（中断）">异步异常（中断）</h3>
-<p>异步异常(Asynchronous Exception)称之为中断(Interrupt)，是由处理器外面发生的事情引起的。对于执行程序来说，这种“中断”的发生完全是异步的，因为不知道什么时候会发生。CPU对其的响应也完全是被动的，但是可以屏蔽掉[1]。这种情况下：</p>
+<h3 id="异步异常（中断）"><a href="#异步异常（中断）" class="headerlink" title="异步异常（中断）"></a>异步异常（中断）</h3><p>异步异常(Asynchronous Exception)称之为中断(Interrupt)，是由处理器外面发生的事情引起的。对于执行程序来说，这种“中断”的发生完全是异步的，因为不知道什么时候会发生。CPU对其的响应也完全是被动的，但是可以屏蔽掉[1]。这种情况下：</p>
 <ul>
 <li>需要设置处理器的中断指针(interrupt pin)</li>
 <li>处理完成后会返回之前控制流中的『下一条』指令</li>
 </ul>
 <p>比较常见的中断有两种：计时器中断和 I/O 中断。计时器中断是由计时器芯片每隔几毫秒触发的，内核用计时器终端来从用户程序手上拿回控制权。I/O 中断类型比较多样，比方说键盘输入了 ctrl-c，网络中一个包接收完毕，都会触发这样的中断。</p>
-<h3 id="同步异常">同步异常</h3>
-<p>同步异常(Synchronous Exception)是因为执行某条指令所导致的事件，分为陷阱(Trap)、故障(Fault)和终止(Abort)三种情况。</p>
+<h3 id="同步异常"><a href="#同步异常" class="headerlink" title="同步异常"></a>同步异常</h3><p>同步异常(Synchronous Exception)是因为执行某条指令所导致的事件，分为陷阱(Trap)、故障(Fault)和终止(Abort)三种情况。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -270,9 +265,10 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>这里需要注意三种不同类型的处理方式，比方说陷阱和中断一样，会返回执行『下一条』指令；而故障会重新执行之前触发事件的指令；终止则是直接退出当前的程序。</p>
-<h3 id="系统调用示例">系统调用示例</h3>
-<p>系统调用看起来像是函数调用，但其实是走异常控制流的，在 x86-64 系统中，每个系统调用都有一个唯一的 ID，如</p>
+<h3 id="系统调用示例"><a href="#系统调用示例" class="headerlink" title="系统调用示例"></a>系统调用示例</h3><p>系统调用看起来像是函数调用，但其实是走异常控制流的，在 x86-64 系统中，每个系统调用都有一个唯一的 ID，如</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -329,43 +325,43 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>举个例子，假设用户调用了 <code>open(filename, options)</code>，系统实际上会执行 <code>__open</code> 函数，也就是进行系统调用 <code>syscall</code>，如果返回值是负数，则是出错，汇编代码如下：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br></pre></td><td><pre><span>00000000000e5d70 &lt;__open&gt;:</span><br><span>    ...</span><br><span>    e5d79: b8 02 00 00 00     mov $0x2, %eax    # open 是编号 2 的系统调用</span><br><span>    e5d7e: 0f 05              syscall           # 调用的返回值会在 %rax 中</span><br><span>    e5d80: 48 3d 01 f0 ff ff  cmp $0xfffffffffffff001, %rax</span><br><span>    ...</span><br><span>    e5dfa: c3                 retq</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>对应的示意图是：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613688255926.jpg" alt=""></p>
-<h3 id="故障示例">故障示例</h3>
-<p>这里我们以 Page Fault 为例，来说明 Fault 的机制。Page Fault 发生的条件是：</p>
+<p><img src="/img/post/csapp/14613688255926.jpg" alt=""></p>
+<h3 id="故障示例"><a href="#故障示例" class="headerlink" title="故障示例"></a>故障示例</h3><p>这里我们以 Page Fault 为例，来说明 Fault 的机制。Page Fault 发生的条件是：</p>
 <ul>
 <li>用户写入内存位置</li>
 <li>但该位置目前还不在内存中</li>
 </ul>
 <p>比如：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span><span>int</span> a[<span>1000</span>];</span><br><span>main()</span><br><span>{</span><br><span>    a[<span>500</span>] = <span>13</span>;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>那么系统会通过 Page Fault 把对应的部分载入到内存中，然后重新执行赋值语句：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613689402121.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14613689402121.jpg" alt=""></p>
 <p>但是如果代码改为这样：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span><span>int</span> a[<span>1000</span>];</span><br><span>main()</span><br><span>{</span><br><span>    a[<span>5000</span>] = <span>13</span>;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>也就是引用非法地址的时候，整个流程就会变成：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613690660319.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14613690660319.jpg" alt=""></p>
 <p>具体来说会像用户进程发送 <code>SIGSEGV</code> 信号，用户进程会以 segmentation fault 的标记退出。</p>
 <p>从上面我们就可以看到异常的具体实现是依靠在用户代码和内核代码间切换而实现的，是非常底层的机制。</p>
-<h2 id="进程">进程</h2>
-<p>进程是计算机科学中最为重要的思想之一，进程才是程序（指令和数据）的真正运行实例。之所以重要，是因为进程给每个应用提供了两个非常关键的抽象：一是逻辑控制流，二是私有地址空间。逻辑控制流通过称为上下文切换(context switching)的内核机制让每个程序都感觉自己在独占处理器。私有地址空间则是通过称为虚拟内存(virtual memory)的机制让每个程序都感觉自己在独占内存。这样的抽象使得具体的进程不需要操心处理器和内存的相关适宜，也保证了在不同情况下运行同样的程序能得到相同的结果。</p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>进程是计算机科学中最为重要的思想之一，进程才是程序（指令和数据）的真正运行实例。之所以重要，是因为进程给每个应用提供了两个非常关键的抽象：一是逻辑控制流，二是私有地址空间。逻辑控制流通过称为上下文切换(context switching)的内核机制让每个程序都感觉自己在独占处理器。私有地址空间则是通过称为虚拟内存(virtual memory)的机制让每个程序都感觉自己在独占内存。这样的抽象使得具体的进程不需要操心处理器和内存的相关适宜，也保证了在不同情况下运行同样的程序能得到相同的结果。</p>
 <p>计算机会同时运行多个进程，有前台应用，也后台任务，我们在 Mac 的终端下输入 <code>top</code>（或者更酷炫的 <code>htop</code>），就可以看到如下的进程信息</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613699267859.jpg" alt=""></p>
-<h3 id="进程切换-Process-Context-Switch">进程切换 Process Context Switch</h3>
-<p>这么多进程，具体是如何工作的呢？我们来看看下面的示意图：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613707308133.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14613699267859.jpg" alt=""></p>
+<h3 id="进程切换-Process-Context-Switch"><a href="#进程切换-Process-Context-Switch" class="headerlink" title="进程切换 Process Context Switch"></a>进程切换 Process Context Switch</h3><p>这么多进程，具体是如何工作的呢？我们来看看下面的示意图：</p>
+<p><img src="/img/post/csapp/14613707308133.jpg" alt=""></p>
 <p>左边是单进程的模型，内存中保存着进程所需的各种信息，因为该进程独占 CPU，所以并不需要保存寄存器值。而在右边的单核多进程模型中，虚线部分可以认为是当前正在执行的进程，因为我们可能会切换到其他进程，所以内存中需要另一块区域来保存当前的寄存器值，以便下次执行的时候进行恢复（也就是所谓的上下文切换）。整个过程中，CPU 交替执行不同的进程，虚拟内存系统会负责管理地址空间，而没有执行的进程的寄存器值会被保存在内存中。切换到另一个进程的时候，会载入已保存的对应于将要执行的进程的寄存器值。</p>
 <p>而现代处理器一般有多个核心，所以可以真正同时执行多个进程。这些进程会共享主存以及一部分缓存，具体的调度是由内核控制的，示意图如下：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613708880333.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14613708880333.jpg" alt=""></p>
 <p>切换进程时，内核会负责具体的调度，如下图所示</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613717282590.jpg" alt=""></p>
-<h3 id="进程控制-Process-Control">进程控制 Process Control</h3>
-<p><strong>系统调用的错误处理</strong></p>
+<p><img src="/img/post/csapp/14613717282590.jpg" alt=""></p>
+<h3 id="进程控制-Process-Control"><a href="#进程控制-Process-Control" class="headerlink" title="进程控制 Process Control"></a>进程控制 Process Control</h3><p><strong>系统调用的错误处理</strong></p>
 <p>在遇到错误的时候，Linux 系统级函数通常会返回 -1 并且设置 <code>errno</code> 这个全局变量来表示错误的原因。使用的时候记住两个规则：</p>
 <ol>
 <li>对于每个系统调用都应该检查返回值</li>
@@ -373,12 +369,15 @@
 </ol>
 <p>例如，对于 <code>fork()</code> 函数，我们应该这么写：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></pre></td><td><pre><span><span>if</span> ((pid = fork()) &lt; <span>0</span>) {</span><br><span>    <span>fprintf</span>(<span>stderr</span>, <span>"fork error: %s\n"</span>, strerror(errno));</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>如果觉得这样写太麻烦，可以利用一个辅助函数：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br></pre></td><td><pre><span><span><span>void</span> <span>unix_error</span><span>(<span>char</span> *msg)</span> </span></span><br><span><span></span>{</span><br><span>    <span>fprintf</span>(<span>stderr</span>, <span>"%s: %s\n"</span>, msg, strerror(errno));</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br><span></span><br><span></span><br><span><span>if</span> ((pid = fork()) &lt; <span>0</span>)</span><br><span>    unix_error(<span>"fork error"</span>);</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>我们甚至可以更进一步，把整个 <code>fork()</code> 包装起来，就可以自带错误处理，比如</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br></pre></td><td><pre><span><span>pid_t</span> Fork(<span>void</span>)</span><br><span>{</span><br><span>    <span>pid_t</span> pid;</span><br><span>    <span>if</span> ((pid = fork()) &lt; <span>0</span>)</span><br><span>        unix_error(<span>"Fork error"</span>);</span><br><span>    <span>return</span> pid;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>调用的时候直接使用 <code>pid = Fork();</code> 即可（注意这里是大写的 F）</p>
 <p><strong>获取进程信息</strong></p>
@@ -389,18 +388,15 @@
 </ul>
 <p>我们可以认为，进程有三个主要状态：</p>
 <ul>
-<li>运行 Running
-<ul>
+<li>运行 Running<ul>
 <li>正在被执行、正在等待执行或者最终将会被执行</li>
 </ul>
 </li>
-<li>停止 Stopped
-<ul>
+<li>停止 Stopped<ul>
 <li>执行被挂起，在进一步通知前不会计划执行</li>
 </ul>
 </li>
-<li>终止 Terminated
-<ul>
+<li>终止 Terminated<ul>
 <li>进程被永久停止</li>
 </ul>
 </li>
@@ -415,15 +411,18 @@
 </ol>
 <p><code>exit</code> 函数会被调用一次，但从不返回，具体的函数原型是</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br></pre></td><td><pre><span></span><br><span><span><span>void</span> <span>exit</span><span>(<span>int</span> status)</span></span></span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p><strong>创建进程</strong></p>
 <p>调用 <code>fork</code> 来创造新进程。这个函数很有趣，执行一次，但是会返回两次，具体的函数原型为</p>
 <p>子进程几乎和父进程一模一样，会有相同且独立的虚拟地址空间，也会得到父进程已经打开的文件描述符(file descriptor)。比较明显的不同之处就是进程 PID 了。</p>
 <p>看一个简单的例子</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br></pre></td><td><pre><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>pid_t</span> pid;</span><br><span>    <span>int</span> x = <span>1</span>;</span><br><span>    </span><br><span>    pid = Fork();</span><br><span>    <span>if</span> (pid == <span>0</span>) </span><br><span>    {   </span><br><span>        <span>printf</span>(<span>"I'm the child!  x = %d\n"</span>, ++x);</span><br><span>        <span>exit</span>(<span>0</span>);</span><br><span>    }</span><br><span>    </span><br><span>    </span><br><span>    <span>printf</span>(<span>"I'm the parent! x = %d\n"</span>, --x);</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>输出是</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br></pre></td><td><pre><span>linux&gt; ./forkdemo</span><br><span>I<span>'m the parent! x = 0</span></span><br><span><span>I'</span>m the child!  x = 2</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>有以下几点需要注意：</p>
 <ul>
@@ -432,8 +431,7 @@
 <li>拥有自己独立的地址空间（也就是变量都是独立的），除此之外其他都相同</li>
 <li>在父进程和子进程中 <code>stdout</code> 是一样的（都会发送到标准输出）</li>
 </ul>
-<h3 id="进程图">进程图</h3>
-<p>进程图是一个很好的帮助我们理解进程执行的工具：</p>
+<h3 id="进程图"><a href="#进程图" class="headerlink" title="进程图"></a>进程图</h3><p>进程图是一个很好的帮助我们理解进程执行的工具：</p>
 <ul>
 <li>每个节点代表一条执行的语句</li>
 <li>a -&gt; b 表示 a 在 b 前面执行</li>
@@ -443,20 +441,20 @@
 </ul>
 <p>对于进程图来说，只要满足拓扑排序，就是可能的输出。我们还是用刚才的例子来简单示意一下：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br></pre></td><td><pre><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>pid_t</span> pid;</span><br><span>    <span>int</span> x = <span>1</span>;</span><br><span>    </span><br><span>    pid = Fork();</span><br><span>    <span>if</span> (pid == <span>0</span>) </span><br><span>    {   </span><br><span>        <span>printf</span>(<span>"child! x = %d\n"</span>, --x);</span><br><span>        <span>exit</span>(<span>0</span>);</span><br><span>    }</span><br><span>    </span><br><span>    </span><br><span>    <span>printf</span>(<span>"parent! x = %d\n"</span>, x);</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>对应的进程图为</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14625029984869.jpg" alt=""></p>
-<h3 id="回收子进程">回收子进程</h3>
-<p>即使主进程已经终止，子进程也还在消耗系统资源，我们称之为『僵尸』。为了『打僵尸』，就可以采用『收割』(Reaping) 的方法。父进程利用 <code>wait</code> 或 <code>waitpid</code> 回收已终止的子进程，然后给系统提供相关信息，kernel 就会把 zombie child process 给删除。</p>
+<p><img src="/img/post/csapp/14625029984869.jpg" alt=""></p>
+<h3 id="回收子进程"><a href="#回收子进程" class="headerlink" title="回收子进程"></a>回收子进程</h3><p>即使主进程已经终止，子进程也还在消耗系统资源，我们称之为『僵尸』。为了『打僵尸』，就可以采用『收割』(Reaping) 的方法。父进程利用 <code>wait</code> 或 <code>waitpid</code> 回收已终止的子进程，然后给系统提供相关信息，kernel 就会把 zombie child process 给删除。</p>
 <p>如果父进程不回收子进程的话，通常来说会被 <code>init</code> 进程(pid == 1)回收，所以一般不必显式回收。但是在长期运行的进程中，就需要显式回收（例如 shell 和 server）。</p>
 <p>如果想在子进程载入其他的程序，就需要使用 <code>execve</code> 函数，具体可以查看对应的 man page，这里不再深入。</p>
-<h2 id="信号-Signal">信号 Signal</h2>
-<p>Linux 的进程树，可以通过 <code>pstree</code> 命令查看，如下图所示：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613761276198.jpg" alt=""></p>
+<h2 id="信号-Signal"><a href="#信号-Signal" class="headerlink" title="信号 Signal"></a>信号 Signal</h2><p>Linux 的进程树，可以通过 <code>pstree</code> 命令查看，如下图所示：</p>
+<p><img src="/img/post/csapp/14613761276198.jpg" alt=""></p>
 <p>对于前台进程来说，我们可以在其执行完成后进行回收，而对于后台进程来说，因为不能确定具体执行完成的时间，所以终止之后就成为了僵尸进程，无法被回收并因此造成内存泄露。</p>
 <p>这怎么办呢？同样可以利用异常控制流，当后台进程完成时，内核会中断常规执行并通知我们，具体的通知机制就是『信号』(signal)。</p>
 <p>信号是 Unix、类 Unix 以及其他 POSIX 兼容的操作系统中进程间通讯的一种有限制的方式。它是一种异步的通知机制，用来提醒进程一个事件已经发生。当一个信号发送给一个进程，操作系统中断了进程正常的控制流程，此时，任何非原子操作都将被中断。如果进程定义了信号的处理函数，那么它将被执行，否则就执行默认的处理函数。</p>
 <p>这样看来，信号其实是类似于异常和中断的，是由内核（在其他进程的请求下）向当前进程发出的。信号的类型由 1-30 的整数定义，信号所能携带的信息极少，一是对应的编号，二就是信号到达这个事实。下面是几个比较常用的信号的编号及简介：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -499,6 +497,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>内核通过给目标进程发送信号，来更新目标进程的状态，具体的场景为：</p>
 <ul>
 <li>内核检测到了如除以零(SIGFPE)或子进程终止(SIGCHLD)的系统事件</li>
@@ -511,17 +510,17 @@
 <li><strong>捕获</strong>信号，执行信号处理器(signal handler)，类似于异步中断中的异常处理器(exception handler)</li>
 </ul>
 <p>具体的过程如下：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614121439266.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14614121439266.jpg" alt=""></p>
 <p>如果信号已被发送但是未被接收，那么处于等待状态(pending)，同类型的信号至多只会有一个待处理信号(pending signal)，一定要注意这个特性，因为内部实现机制不可能提供较复杂的数据结构，所以信号的接收并不是一个队列。比如说进程有一个 <code>SIGCHLD</code> 信号处于等待状态，那么之后进来的 <code>SIGCHLD</code> 信号都会被直接扔掉。</p>
 <p>当然，进程也可以阻塞特定信号的接收，但信号的发送并不受控制，所以被阻塞的信号仍然可以被发送，不过直到进程取消阻塞该信号之后才会被接收。内核用等待(pending)位向量和阻塞(blocked)位向量来维护每个进程的信号相关状态。</p>
-<h3 id="进程组">进程组</h3>
-<p>每个进程都只属于一个进程组，从前面的进程树状图中我们也能大概了解一二，想要了解相关信息，一般使用如下函数：</p>
+<h3 id="进程组"><a href="#进程组" class="headerlink" title="进程组"></a>进程组</h3><p>每个进程都只属于一个进程组，从前面的进程树状图中我们也能大概了解一二，想要了解相关信息，一般使用如下函数：</p>
 <ul>
 <li><code>getpgrp()</code> - 返回当前进程的进程组</li>
 <li><code>setpgid()</code> - 设置一个进程的进程组</li>
 </ul>
 <p>我们可以据此指定一个进程组或者一个单独的进程，比方说可以通过 <code>kill</code> 应用来发送信号，流入</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br></pre></td><td><pre><span></span><br><span>linux&gt; ./forks 16</span><br><span>Child1: pid=24818 pgrp=24817</span><br><span>Child2: pid=24819 pgrp=24817</span><br><span></span><br><span>linux&gt; ps</span><br><span>  PID TTY      TIME  CMD</span><br><span>24788 pts/2 00:00:00 tcsh</span><br><span>24818 pts/2 00:00:02 forks</span><br><span>24819 pts/2 00:00:02 forks</span><br><span>24820 pts/2 00:00:00 ps</span><br><span></span><br><span></span><br><span>linux&gt; /bin/<span>kill</span> -9 24818</span><br><span></span><br><span>linux&gt; /bin/<span>kill</span> -9 -24817</span><br><span></span><br><span>linux&gt; ps</span><br><span>  PID TTY      TIME  CMD</span><br><span>24788 pts/2 00:00:00 tcsh</span><br><span>24820 pts/2 00:00:00 ps</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>这里可以看到，第一个命令只会杀掉编号为 24818 的进程，但是第二个命令，因为有两个进程都属于进程组 24817，所以会杀掉进程组中的每个进程。</p>
 <p>我们也可以通过键盘让内核向每个前台进程发送 SIGINT(SIGTSTP) 信号</p>
@@ -531,6 +530,7 @@
 </ul>
 <p>下面是一个简单的例子</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br></pre></td><td><pre><span>linux&gt; ./forks 17</span><br><span>Child: pid=28108 pgrp=28107</span><br><span>Parent: pid=28107 pgrp=28107</span><br><span></span><br><span>Suspended </span><br><span>linux&gt; ps w</span><br><span>  PID TTY   STAT  TIME  COMMAND</span><br><span>27699 pts/8 Ss    00:00 -tcsh</span><br><span>28107 pts/8 T     00:02 ./forks 17</span><br><span>28108 pts/8 T     00:02 ./forks 17</span><br><span>28109 pts/8 R+    00:00 ps w</span><br><span>linux&gt; <span>fg</span></span><br><span>./forks 17</span><br><span></span><br><span>linux&gt; ps w</span><br><span>  PID TTY   STAT  TIME  COMMAND</span><br><span>27699 pts/8 Ss    00:00 -tcsh</span><br><span>28109 pts/8 R+    00:00 ps w</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>STAT 部分的第一个字母的意思</p>
 <ul>
@@ -546,13 +546,12 @@
 <p>更多信息可以查看 <code>man ps</code></p>
 <p>如果想要发送信号，可以使用 <code>kill</code> 函数，下面是一个简单的示例，父进程通过发送 <code>SIGINT</code> 信号来终止正在无限循环的子进程。</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br></pre></td><td><pre><span><span><span>void</span> <span>forkandkill</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>pid_t</span> pid[N];</span><br><span>    <span>int</span> i;</span><br><span>    <span>int</span> child_status;</span><br><span>    </span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; N; i++)</span><br><span>        <span>if</span> ((pid[i] = fork()) == <span>0</span>)</span><br><span>            <span>while</span>(<span>1</span>) ;  </span><br><span>    </span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; N; i++)</span><br><span>    {</span><br><span>        <span>printf</span>(<span>"Killing process %d\n"</span>, pid[i]);</span><br><span>        kill(pid[i], SIGINT);</span><br><span>    }</span><br><span>    </span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; N; i++)</span><br><span>    {</span><br><span>        <span>pid_t</span> wpid = wait(&amp;child_status);</span><br><span>        <span>if</span> (WIFEXITED(child_status))</span><br><span>            <span>printf</span>(<span>"Child %d terminated with exit status %d\n"</span>,</span><br><span>                    wpid, WEXITSTATUS(child_status));</span><br><span>        <span>else</span></span><br><span>            <span>printf</span>(<span>"Child %d terminated abnormally\n"</span>, wpid);</span><br><span>    }</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="接收信号">接收信号</h3>
-<p>所有的上下文切换都是通过调用某个异常处理器(exception handler)完成的，内核会计算对易于某个进程 p 的 pnb 值：<code>pnb = pending &amp; ~blocked</code></p>
+<h3 id="接收信号"><a href="#接收信号" class="headerlink" title="接收信号"></a>接收信号</h3><p>所有的上下文切换都是通过调用某个异常处理器(exception handler)完成的，内核会计算对易于某个进程 p 的 pnb 值：<code>pnb = pending &amp; ~blocked</code></p>
 <ul>
 <li>如果 <code>pnb == 0</code>，那么就把控制交给进程 p 的逻辑流中的下一条指令</li>
-<li>如果 <code>pnb != 0</code>
-<ul>
+<li>如果 <code>pnb != 0</code><ul>
 <li>选择 <code>pnb</code> 中最小的非零位 k，并强制进程 p 接收信号 k</li>
 <li>接收到信号之后，进程 p 会执行对应的动作</li>
 <li>对 <code>pnb</code> 中所有的非零位进行这个操作</li>
@@ -569,15 +568,15 @@
 </ul>
 <p><code>signal</code> 函数可以修改默认的动作，函数原型为 <code>handler_t *signal(int signum, handler_t *handler)</code>。我们通过一个简单的例子来感受下，这里我们屏蔽了 <code>SIGINT</code> 函数，即使按下 <code>ctrl+c</code> 也不会终止</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br></pre></td><td><pre><span><span><span>void</span> <span>sigint_handler</span><span>(<span>int</span> sig)</span> </span></span><br><span><span></span>{</span><br><span>    <span>printf</span>(<span>"想通过 ctrl+c 来关闭我？\n"</span>);</span><br><span>    sleep(<span>2</span>);</span><br><span>    fflush(<span>stdout</span>);</span><br><span>    sleep(<span>1</span>);</span><br><span>    <span>printf</span>(<span>"OK. :-)\n"</span>);</span><br><span>    <span>exit</span>(<span>0</span>);</span><br><span>}</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    </span><br><span>    <span>if</span> (signal(SIGINT, sigint_handler) == SIG_ERR)</span><br><span>        unix_error(<span>"signal error"</span>);</span><br><span>        </span><br><span>    </span><br><span>    pause();</span><br><span>    <span>return</span> <span>0</span>;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>信号处理器的工作流程可以认为是和当前用户进程『并发』的同一个『伪』进程，示意如下：</p>
 <p>注：并行与并发的区别</p>
 <p>计算机虽然只有一个 CPU，但操作系统能够将程序的执行单位细化，然后分开执行，从而实现伪并行执行。这种伪并行执行称为并发(concurrent)。使用多个 CPU 真的同时执行称为并行(parallel)</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614181710603.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14614181710603.jpg" alt=""></p>
 <p>还有一个需要注意的是，信号处理器也可以被其他的信号处理器中断，控制流如下图所示：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614185201475.jpg" alt=""></p>
-<h3 id="阻塞信号">阻塞信号</h3>
-<p>我们知道，内核会阻塞与当前在处理的信号同类型的其他正待等待的信号，也就是说，一个 SIGINT 信号处理器是不能被另一个 SIGINT 信号中断的。</p>
+<p><img src="/img/post/csapp/14614185201475.jpg" alt=""></p>
+<h3 id="阻塞信号"><a href="#阻塞信号" class="headerlink" title="阻塞信号"></a>阻塞信号</h3><p>我们知道，内核会阻塞与当前在处理的信号同类型的其他正待等待的信号，也就是说，一个 SIGINT 信号处理器是不能被另一个 SIGINT 信号中断的。</p>
 <p>如果想要显式阻塞，就需要使用 <code>sigprocmask</code> 函数了，以及其他一些辅助函数：</p>
 <ul>
 <li><code>sigemptyset</code> - 创建空集</li>
@@ -587,37 +586,31 @@
 </ul>
 <p>我们可以用下面这段代码来临时阻塞特定的信号：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br></pre></td><td><pre><span><span>sigset_t</span> mask, prev_mask;</span><br><span></span><br><span>Sigemptyset(&amp;mask); </span><br><span>Sigaddset(&amp;mask, SIGINT); </span><br><span></span><br><span></span><br><span>Sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask);</span><br><span>...</span><br><span>... </span><br><span>...</span><br><span></span><br><span>Sigprocmask(SIG_SETMASK, &amp;prev_mask, <span>NULL</span>);</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="安全处理信号">安全处理信号</h3>
-<p>信号处理器的设计并不简单，因为它们和主程序并行且共享相同的全局数据结构，尤其要注意因为并行访问可能导致的数据损坏的问题，这里提供一些基本的指南（后面的课程会详细介绍）</p>
+<h3 id="安全处理信号"><a href="#安全处理信号" class="headerlink" title="安全处理信号"></a>安全处理信号</h3><p>信号处理器的设计并不简单，因为它们和主程序并行且共享相同的全局数据结构，尤其要注意因为并行访问可能导致的数据损坏的问题，这里提供一些基本的指南（后面的课程会详细介绍）</p>
 <ul>
-<li>规则 1：信号处理器越简单越好
-<ul>
+<li>规则 1：信号处理器越简单越好<ul>
 <li>例如：设置一个全局的标记，并返回</li>
 </ul>
 </li>
-<li>规则 2：信号处理器中只调用异步且信号安全(async-signal-safe)的函数
-<ul>
+<li>规则 2：信号处理器中只调用异步且信号安全(async-signal-safe)的函数<ul>
 <li>诸如 <code>printf</code>, <code>sprintf</code>, <code>malloc</code> 和 <code>exit</code> 都是不安全的！</li>
 </ul>
 </li>
-<li>规则 3：在进入和退出的时候保存和恢复 <code>errno</code>
-<ul>
+<li>规则 3：在进入和退出的时候保存和恢复 <code>errno</code><ul>
 <li>这样信号处理器就不会覆盖原有的 <code>errno</code> 值</li>
 </ul>
 </li>
-<li>规则 4：临时阻塞所有的信号以保证对于共享数据结构的访问
-<ul>
+<li>规则 4：临时阻塞所有的信号以保证对于共享数据结构的访问<ul>
 <li>防止可能出现的数据损坏</li>
 </ul>
 </li>
-<li>规则 5：用 <code>volatile</code> 关键字声明全局变量
-<ul>
+<li>规则 5：用 <code>volatile</code> 关键字声明全局变量<ul>
 <li>这样编译器就不会把它们保存在寄存器中，保证一致性</li>
 </ul>
 </li>
-<li>规则 6：用 <code>volatile sig_atomic_t</code> 来声明全局标识符(flag)
-<ul>
+<li>规则 6：用 <code>volatile sig_atomic_t</code> 来声明全局标识符(flag)<ul>
 <li>这样可以防止出现访问异常</li>
 </ul>
 </li>
@@ -628,31 +621,30 @@
 <li>不会被信号中断的函数</li>
 </ol>
 <p>Posix 标准指定了 117 个异步信号安全(async-signal-safe)的函数（可以通过 <code>man 7 signal</code> 查看）</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614222627451.jpg" alt=""></p>
-<h2 id="非本地跳转-Non-local-Jump">非本地跳转 Non local Jump</h2>
-<p>所谓的本地跳转，指的是在一个程序中通过 goto 语句进行流程跳转，尽管不推荐使用goto语句，但在嵌入式系统中为了提高程序的效率，goto语句还是可以使用的。本地跳转的限制在于，我们不能从一个函数跳转到另一个函数中。如果想突破函数的限制，就要使用 <code>setjmp</code> 或 <code>longjmp</code> 来进行非本地跳转了。</p>
+<p><img src="/img/post/csapp/14614222627451.jpg" alt=""></p>
+<h2 id="非本地跳转-Non-local-Jump"><a href="#非本地跳转-Non-local-Jump" class="headerlink" title="非本地跳转 Non local Jump"></a>非本地跳转 Non local Jump</h2><p>所谓的本地跳转，指的是在一个程序中通过 goto 语句进行流程跳转，尽管不推荐使用goto语句，但在嵌入式系统中为了提高程序的效率，goto语句还是可以使用的。本地跳转的限制在于，我们不能从一个函数跳转到另一个函数中。如果想突破函数的限制，就要使用 <code>setjmp</code> 或 <code>longjmp</code> 来进行非本地跳转了。</p>
 <p><code>setjmp</code> 保存当前程序的堆栈上下文环境(stack context)，注意，这个保存的堆栈上下文环境仅在调用 <code>setjmp</code> 的函数内有效，如果调用 <code>setjmp</code> 的函数返回了，这个保存的堆栈上下文环境就失效了。调用 <code>setjmp</code> 的直接返回值为 0。</p>
 <p><code>longjmp</code> 将会恢复由 <code>setjmp</code> 保存的程序堆栈上下文，即程序从调用 <code>setjmp</code> 处重新开始执行，不过此时的 <code>setjmp</code> 的返回值将是由 <code>longjmp</code> 指定的值。注意<code>longjmp</code> 不能指定0为返回值，即使指定了 0，<code>longjmp</code> 也会使 <code>setjmp</code> 返回 1。</p>
 <p>我们可以利用这种方式，来跳转到其他的栈帧中，比方说在嵌套函数中，我们可以利用这个快速返回栈底的函数，我们来看如下代码</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br></pre></td><td><pre><span>jmp_buf env;</span><br><span></span><br><span>P1()</span><br><span>{</span><br><span>    <span>if</span> (setjmp(env))</span><br><span>    {</span><br><span>        </span><br><span>    } <span>else</span> </span><br><span>    {</span><br><span>        P2();</span><br><span>    }</span><br><span>    </span><br><span>}</span><br><span></span><br><span>P2()</span><br><span>{</span><br><span>    ...</span><br><span>    P2();</span><br><span>    ...</span><br><span>    P3();</span><br><span>}</span><br><span></span><br><span>P3()</span><br><span>{</span><br><span>    longjmp(env, <span>1</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>对应的跳转过程为：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614229485048.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14614229485048.jpg" alt=""></p>
 <p>也就是说，我们直接从 P3 跳转回了 P1，但是也有限制，函数必须在栈中（也就是还没完成）才可以进行跳转，下面的例子中，因为 P2 已经返回，所以不能跳转了</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br></pre></td><td><pre><span>jmp_buf env;</span><br><span></span><br><span>P1()</span><br><span>{</span><br><span>    P2(); P3();</span><br><span>}</span><br><span></span><br><span>P2()</span><br><span>{</span><br><span>    <span>if</span> (setjmp(env))</span><br><span>    {</span><br><span>        </span><br><span>    }</span><br><span>}</span><br><span></span><br><span>P3()</span><br><span>{</span><br><span>    longjmp(env, <span>1</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>因为 P2 在跳转的时候已经返回，对应的栈帧在内存中已经被清理，所以 P3 中的 <code>longjmp</code> 并不能实现期望的操作。</p>
-<h2 id="总结">总结</h2>
-<p>这一讲中，我们细致了解了而异常控制流的四个基本机制：异常、进程切换、信号和非本地跳转。其中异常是最底层的，也是后面几种的基础；而信号是进程间最重要，简单却强大的信使。结合信号和进程，因为系统进程并行的缘故，具体编写程序的时候有许多需要注意的地方。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲中，我们细致了解了而异常控制流的四个基本机制：异常、进程切换、信号和非本地跳转。其中异常是最底层的，也是后面几种的基础；而信号是进程间最重要，简单却强大的信使。结合信号和进程，因为系统进程并行的缘故，具体编写程序的时候有许多需要注意的地方。</p>
 <p>这部分的内容比较繁杂，涉及到的相关概念也比较多，最好结合《深入理解计算机系统》的原文来进行学习。</p>
-<h2 id="参考链接">参考链接</h2>
-<ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
 <li><a target="_blank" rel="noopener" href="http://www.kryptosx.info/archives/1190.html">Linux的中断和异常扫盲笔记</a></li>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B">进程</a></li>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%AD%90%E8%BF%9B%E7%A8%8B">子进程</a></li>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Unix%E4%BF%A1%E5%8F%B7">Unix信号</a></li>
 </ol>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">小土刀</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">https://wdxtub.com/work/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/525342f9.html" title="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</div></div></a></div><div class="next-post pull-right"><a href="/posts/882cf7d3.html" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/b1fb9525.html" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-27</div><div class="title">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/882cf7d3.html" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-09</div><div class="title">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/525342f9.html" title="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-23</div><div class="title">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/4ef1ce7c.html" title="CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-10</div><div class="title">CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/618b80aa.html" title="CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-02</div><div class="title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/f41e98fa.html" title="CSAPP-【第十一章】网络-补充阅读与总结【转载】"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-31</div><div class="title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81"><span class="toc-number">2.</span> <span class="toc-text">异常控制流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8-Exception"><span class="toc-number">3.</span> <span class="toc-text">异常 Exception</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%AD%E6%96%AD%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">异步异常（中断）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%BC%82%E5%B8%B8"><span class="toc-number">3.2.</span> <span class="toc-text">同步异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.3.</span> <span class="toc-text">系统调用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.4.</span> <span class="toc-text">故障示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2-Process-Context-Switch"><span class="toc-number">4.1.</span> <span class="toc-text">进程切换 Process Context Switch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6-Process-Control"><span class="toc-number">4.2.</span> <span class="toc-text">进程控制 Process Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%9B%BE"><span class="toc-number">4.3.</span> <span class="toc-text">进程图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="toc-number">4.4.</span> <span class="toc-text">回收子进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7-Signal"><span class="toc-number">5.</span> <span class="toc-text">信号 Signal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84"><span class="toc-number">5.1.</span> <span class="toc-text">进程组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E4%BF%A1%E5%8F%B7"><span class="toc-number">5.2.</span> <span class="toc-text">接收信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E4%BF%A1%E5%8F%B7"><span class="toc-number">5.3.</span> <span class="toc-text">阻塞信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%A4%84%E7%90%86%E4%BF%A1%E5%8F%B7"><span class="toc-number">5.4.</span> <span class="toc-text">安全处理信号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E6%9C%AC%E5%9C%B0%E8%B7%B3%E8%BD%AC-Non-local-Jump"><span class="toc-number">6.</span> <span class="toc-text">非本地跳转 Non local Jump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">8.</span> <span class="toc-text">参考链接</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/402f9c9e.html" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a href="http://www.beian.gov.cn" target="_blank"><img class="lozad" data-src="/img/beian.png" onerror="onerror=null;src='/img/beian.png'" style="padding:0px;vertical-align: text-bottom;"/><span>浙ICP备2024121111号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src= "/img/loading.gif" data-lazy-src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">小土刀</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">https://wdxtub.com/work/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/525342f9.html" title="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</div></div></a></div><div class="next-post pull-right"><a href="/posts/882cf7d3.html" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/b1fb9525.html" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-27</div><div class="title">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/882cf7d3.html" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-09</div><div class="title">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/525342f9.html" title="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-23</div><div class="title">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/4ef1ce7c.html" title="CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-10</div><div class="title">CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/618b80aa.html" title="CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-02</div><div class="title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/f41e98fa.html" title="CSAPP-【第十一章】网络-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-31</div><div class="title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8E%A7%E5%88%B6%E6%B5%81"><span class="toc-number">2.</span> <span class="toc-text">异常控制流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8-Exception"><span class="toc-number">3.</span> <span class="toc-text">异常 Exception</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%AD%E6%96%AD%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">异步异常（中断）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%BC%82%E5%B8%B8"><span class="toc-number">3.2.</span> <span class="toc-text">同步异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.3.</span> <span class="toc-text">系统调用示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.4.</span> <span class="toc-text">故障示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B"><span class="toc-number">4.</span> <span class="toc-text">进程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2-Process-Context-Switch"><span class="toc-number">4.1.</span> <span class="toc-text">进程切换 Process Context Switch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%8E%A7%E5%88%B6-Process-Control"><span class="toc-number">4.2.</span> <span class="toc-text">进程控制 Process Control</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%9B%BE"><span class="toc-number">4.3.</span> <span class="toc-text">进程图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%94%B6%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="toc-number">4.4.</span> <span class="toc-text">回收子进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7-Signal"><span class="toc-number">5.</span> <span class="toc-text">信号 Signal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BB%84"><span class="toc-number">5.1.</span> <span class="toc-text">进程组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E6%94%B6%E4%BF%A1%E5%8F%B7"><span class="toc-number">5.2.</span> <span class="toc-text">接收信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%BB%E5%A1%9E%E4%BF%A1%E5%8F%B7"><span class="toc-number">5.3.</span> <span class="toc-text">阻塞信号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E5%A4%84%E7%90%86%E4%BF%A1%E5%8F%B7"><span class="toc-number">5.4.</span> <span class="toc-text">安全处理信号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E6%9C%AC%E5%9C%B0%E8%B7%B3%E8%BD%AC-Non-local-Jump"><span class="toc-number">6.</span> <span class="toc-text">非本地跳转 Non local Jump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">8.</span> <span class="toc-text">参考链接</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/402f9c9e.html" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a href="http://www.beian.gov.cn" target="_blank"><img class="lozad" data-src="/img/beian.png" onerror="onerror=null;src='/img/beian.png'" style="padding:0px;vertical-align: text-bottom;"/><span>浙ICP备2024121111号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {

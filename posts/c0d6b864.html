@@ -163,7 +163,7 @@
     buttonText: '加载更多'
   },
   isPhotoFigcaption: false,
-  islazyload: true,
+  islazyload: false,
   isAnchor: false,
   percent: {
     toc: true,
@@ -198,48 +198,48 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/loading.gif" data-lazy-src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src= "/img/loading.gif" data-lazy-src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">清华大学-计算几何-点集三角化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2020-03-29T16:00:00.000Z" title="发表于 2020-03-30 00:00:00">2020-03-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6-%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/">清华大学-计算几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/">计算几何</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></div></div><article class="post-content" id="article-container"><p>1、Point Set Triangulation</p>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">清华大学-计算几何-点集三角化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2020-03-29T16:00:00.000Z" title="发表于 2020-03-30 00:00:00">2020-03-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6-%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/">清华大学-计算几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/">计算几何</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a></div></div><article class="post-content" id="article-container"><p>1、Point Set Triangulation</p>
 <ul>
 <li>目标：对一系列的点进行三角化(网格化)</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-f8eec2fb8584dfcba30e3e40d4be9b6e_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-f8eec2fb8584dfcba30e3e40d4be9b6e_b.jpg" alt=""></p>
 <p>当我们有一系列点集时，我们需要对这些点集数据进行结构化。对点集进行结构化的一个重要的方法就是对这些点进行三角化。</p>
 <p>这里的对角线分为两类，如上图所示，深绿色的外面的边对应于原来的凸包，另外一些内部的浅绿色的线则是凸包的内对角线。</p>
 <p>所谓的点集的三角化，其实就是对这个点集所对应的凸包的区域进行剖分。</p>
 <ul>
 <li>对于点集的三角化并不唯一</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-a98aaaa962ec8fa22c117c8298fb9c1e_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-a98aaaa962ec8fa22c117c8298fb9c1e_b.jpg" alt=""></p>
 <p>如果一个点集的点数目是n，如果凸包的size记做h，那么任意一个极大的对角线的集合都是由3(n-1)-h条对角线组成；这些对角线剖分出来的三角形的数目为2(n-1)-h。</p>
 <p>每新增一个点，大致就增加三条对角线，两个三角形。</p>
 <p>边翻转（Edge Flipping）：如上面不唯一的剖分所示，从左边的竖着的那条红色的内对角线变成右边横着的内对角线的这个操作称作边翻转。每进行一次边翻转就会得到一个不同的剖分方案。</p>
 <ul>
 <li>剖分算法的界</li>
 </ul>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-f2e8013e5dd9a5a7f679c15e149d8a84_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-f2e8013e5dd9a5a7f679c15e149d8a84_b.jpg" alt=""></p>
 <p>如图所示，若我们已经有两个做好剖分的子集，那么根据第一章凸包算法找上下边界的Zigzag方法，我们就可以得到两个子集连接后的三角化，时间复杂度为O(nlogn)，那么上界为O(nlogn)。</p>
 <p>下界：将sorting问题规约到trangulation问题。下界为O(nlogn)</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-fc2eb530fb5d9151057d1d1743cd53dc_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-fc2eb530fb5d9151057d1d1743cd53dc_b.jpg" alt=""></p>
 <p>将sorting的一系列输入映射到弧上的点，然后找到输入的最大值和最小值，再在外面引入一个点构成三角化的问题输入。对于这个点与弧上的点的这些对角线就构成了三角化，然后可以通过这个点的DCEL结构枚举各条边及其对应的邻居们，这样就得到了这些点在圆周上的排列的次序，也就得到了sorting的输出。这样就将sorting问题规约到了剖分问题。</p>
 <p>因此点集三角化的下界是O(nlogn)</p>
 <p>2、Delaunay Triangulation（简称DT）</p>
 <p>Delaunay三角化定义：平面上的点集P是一种三角化，使得P中没有点严格处于剖分后中任意一个三角形外接圆的内部。</p>
 <p>对偶图：对于一个Voronoi图，若任何两个site之间有一条非空边界，那么这两个site之间连接一条边。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-968bb0f03536e5e0a9aed910e1e6e069_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-968bb0f03536e5e0a9aed910e1e6e069_b.jpg" alt=""></p>
 <p>由此得到的对偶图，就是一个三角化。这是由于对于一个一般的Voronoi图（即没有四点共圆的情况出现），它的每一个Vertex的度数都恰好是3，也就是说每一个Vertex都恰好和三条边关联，那么与同一个Vertex关联的三条边就会围成一个三角形。这就说明在对偶图中每一个face都是由三条边围成的三角形。</p>
 <p>Delaunay三角化的复杂度是O(nlogn)。因为对偶变换是线性时间，从数学上将只需要把线性个顶点，线性个边对应过去即可，而Voronoi图的构建是O(nlogn)的时间，因此总体的剖分算法的复杂度也就是O(nlogn)</p>
 <p>3、Properties</p>
 <p>Delaunay三角化与Voronoi图是对偶关系，它们的性质也是有所联系。</p>
 <p>（1）、空圆性（Empty Circle）</p>
 <p>①对于Delaunay剖分中的任何一张face的外接圆必然是空的。如下图所示的七个圆都是空的。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-85613b2593f99fd930c87c955403b7db_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/v2-85613b2593f99fd930c87c955403b7db_b.jpg" alt=""></p>
 <p>②在Delaunay三角化中，每一条边之所以会成为一条边，本质上是存在一个空圆以它为弦。</p>
 <p>这个是它的充分条件。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-8ba651796eb9b981955e45481ea23924_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-8ba651796eb9b981955e45481ea23924_b.jpg" alt=""></p>
 <p>左图是剖分图，右图是相应的Voronoi图。</p>
 <p>（2）、最近邻性</p>
 <p>任何一条连接于最近邻之间的边都会被Delaunay剖分所采用，因为这里头会存在一个以这条边为直径（弦）的空圆。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-fc9be6ec46a4e742b12823d3ad707d65_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-fc9be6ec46a4e742b12823d3ad707d65_b.jpg" alt=""></p>
 <p>而按照这种最近邻关系所生成的图又被称为Nearest Neighbor Graph（最近邻图），它是对应的Delaunay剖分的一个子图。NNG是一个有向图，由上图可知最近邻关系不是对等的。</p>
 <p>（3）、复杂度</p>
 <p>在二维平面中，每增加一个点三角形的数目都会大概增加2，边数增加3。可以说在二维上的Delaunay剖分中是一个线性规模的数据结构。但在三维的情况下这两个指标最多会达到平房的量级，更高维的空间的一般结论也会达到2^d量级。</p>
@@ -250,7 +250,7 @@
 <p>定义：对于给定点集S，若线pq是属于Gabriel Graph的一条边当且仅当</p>
 <p>|pq|²=min{|pr|²+|rq|² | r∈S}</p>
 <p>几何解释：以pq为直径的圆是空的。如图所示</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-c37099b6dad7768050623213a6358b34_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-c37099b6dad7768050623213a6358b34_b.jpg" alt=""></p>
 <p>其他等价定义：若边pq被Gabriel Graph所采用，它的充要条件是①其他的点r与p,q两点形成的角不是钝角②在同样这个点集所对应的Voronoi图中，在p和q之间必然有一段非空的公共边界，且pq的连线必然会和实际上存在但是看不见的那条公共边界存在一个实在的交点。</p>
 <p>对于第②点的解释：在Voronoi图中，对应的p和q是site。如果确实p和q中间的连边会和p和q这两个Cell的公共边界相交于一点，那一定是中点x。这个点是Voronoi edge上的一个点，那么以它为中心会存在一个空圆且经过p和q；反过来如果p和q之间的这条边的确会被Gabriel Graph采用并且相应的有一个空圆，那么也说明这个圆心是具有Voronoi edge的必要条件的一个点，即这个圆心就在某一条Voronoi edge上，且这条edge就是介于p和q所对应的Cell之间的那一段公共边界上。</p>
 <p>结论：Gabriel Graph中的任何一条边也就属于同样的一个点集所对应的Voronoi图中的一条边，因此Gabriel Graph必然是Delaunay剖分的一个子图。</p>
@@ -260,36 +260,36 @@
 </ul>
 <p>定义：|pq| = min{max(|pr|, |rq|) | r∈S}</p>
 <p>几何解释：若线pq属于RNG，那么以pq为半径，分别以p和q为圆心作出的两个圆的公共部分必定是空的。如图所示的两个圆的公共的梭形部分。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-d5014f968d599783f28eb7c0b447c6cd_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-d5014f968d599783f28eb7c0b447c6cd_b.jpg" alt=""></p>
 <p>性质：RNG一定是Gabriel Graph的子图。由上图所示，显然以pq为直径的圆一定是空的。</p>
 <p>构造RNG的复杂度：O(nlogn)</p>
 <ul>
 <li>构造GG或RNG的下界：O(nlogn)</li>
 </ul>
 <p>证明：考虑一维的情况，将这个问题规约到sorting。对于sorting输入的一系列点，其实就相当于一维空间中GG和RNG的输入。如图所示，根据GG的定义，相邻两个点的连线必然会被GG所采用。那么构造出来的GG的点的排列是按照紧邻的规则来确定，而这个规则恰好就是对应的排序的结果，因此可以规约到sorting问题上。RNG图亦然。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-91ec04626174f54b3951ec8febef1418_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-91ec04626174f54b3951ec8febef1418_b.jpg" alt=""></p>
 <p>5、Euclidean Minimum Spanning Tree（欧氏最小生成树，简称EMST）</p>
 <p>定义：最小生成树两个节点之间的权重就是它们之间的欧氏距离。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-fc8ea112a24c0c976003ef51d02c3382_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-fc8ea112a24c0c976003ef51d02c3382_b.jpg" alt=""></p>
 <p>如图所示，给了一系列的点用适当的方式连接起来，使得这个连接的成本达到欧氏意义上的最小。那么这个图实际上是一个隐式的图，因为所有点对之间的距离都是通过欧氏距离隐式的给出。这样，我们的计算输入是一幅完全图。</p>
 <p>由于有了欧氏距离这个条件，EMST是我们前面提到的RNG的子图。</p>
 <p>证明：思路是任何一条不属于RNG的边也必不属于EMST。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-c4fecde5dfe698941d6bba34f9fe78ca_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-c4fecde5dfe698941d6bba34f9fe78ca_b.jpg" alt=""></p>
 <p>如图所示，图中的pq必不被RNG所采用，假设它被EMST采用，那么将pq剪除后会把EMST图分为不连通的两个部分。而r作为EMST中的一个点，它至少会和p或q中的一个点连通。不失一般性，假设r与p连通，当我们将pq剪除后再连接rq，那么我们会得到一棵新的树，这棵树与之前的EMST的差别就在于pq和rq的权重不同。由于权重的定义是欧氏距离，那么从几何上可知rq的权重必然小于pq的权重。这说明这棵新的树的权重比之前的最小生成树的权重还要小，矛盾。因此不被RNG采用的边一定不被EMST采用。</p>
 <p>在有上述结论EMST是RNG的子图后，那么EMST也必然是DT的子图。那对于EMST的构造就可以先花费O(nlogn)的时间构造DT，然后再套用Kruskal或Prim算法即可。</p>
 <p>总览：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-e7aa77c03379702bbbaa0b431faa639d_b.jpg" alt=""></p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-450aa1e1c29050eb3b30562b3d20e989_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-e7aa77c03379702bbbaa0b431faa639d_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-450aa1e1c29050eb3b30562b3d20e989_b.jpg" alt=""></p>
 <p>6、Euclidean Traveling Salesman Problem（简称ETSP）</p>
 <p>定义：给出的所有点之间的距离采用欧氏距离，在这样的意义下找到一条环路使得距离和最小。</p>
 <p>已证明：ETSP依然是NP-hard问题，但有一些简单的近似方法。我们可以在O(n)时间内从一个已经构造好的EMST中得到一个ETSP的近似解，且近似程度最多不过最优解的两倍。</p>
 <p>算法：首先构造点集对应的EMST，然后利用DCEL中类似的方法构造一个初始的环路（如图所示绿色部分）。然后从一个特定的点出发如最左侧的点，沿着初始环路往前走，能往前走就走直到它试图回到以前已经访问过的一个点的时候，就跳过这个点并尝试下一个点，最终会回到起点，并且总的路程（tour）会构成一个环路（如图所示的蓝色虚线）。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-d3e3031172282656d717b2df39eb8b42_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-d3e3031172282656d717b2df39eb8b42_b.jpg" alt=""></p>
 <p>在没有优化的情况下，这条tour的总权重|W| = 2 * |EMST| &lt; 2 * |ETST|</p>
 <p>7、Minumum Weighted Trangulation（最小权三角化，简称MWT）</p>
 <p>定义：对于给定的一系列点集，找到一个三角化，使得它的权重之和最小。</p>
 <p>MWT与DT并不是同一码事，如下图，MWT会选择竖直的那条内对角线，而DT会选择水平的内对角线。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-bcd38b69ed1bcfeebf892437bcfea27b_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/v2-bcd38b69ed1bcfeebf892437bcfea27b_b.jpg" alt=""></p>
 <p>MWT问题的是NP-Hard问题。</p>
 <p>8、Construction</p>
 <ul>
@@ -298,12 +298,12 @@
 </ul>
 <p>对于每一个三角化所对应的角的数目为6n-3h-6个。</p>
 <p>一个指标：将一个三角化中的所有角按照从小到大排列，构成一个向量用来度量和评价这个三角化。如下图所示</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-2a4d0dc2d9626ebe3d9ba0b93508cc93_b.jpg" alt=""></p>
-<p>若采用AC作为内对角线剖分，则角度序列是 &lt;15,30,60,75,75,105&gt;</p>
-<p>若采用BD作为内对角线剖分，则角度序列是&lt;15,30,45,60,75,135&gt;</p>
+<p><img src="https://pic4.zhimg.com/v2-2a4d0dc2d9626ebe3d9ba0b93508cc93_b.jpg" alt=""></p>
+<p>若采用AC作为内对角线剖分，则角度序列是 <15,30,60,75,75,105></p>
+<p>若采用BD作为内对角线剖分，则角度序列是<15,30,45,60,75,135></p>
 <p>用字典序比较这两个角度序列，我们可以说AC＞BD</p>
 <p>Delaunay三角化存在一个趋势：尽可能使每一个三角形都匀称均衡。如下图所示，上图采用的是DT，下图则是其他方案。因为要保证空圆性，上图剖分的三角形要比下图更为均衡。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-37d94f74b5619cae60ea03b53475e4fb_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/v2-37d94f74b5619cae60ea03b53475e4fb_b.jpg" alt=""></p>
 <p>从数学上讲，Delaunay三角化会尽可能使得刚才所说的角度序列极大化，也可以说是尽可能使小的角更大，又被称为Maximizing the minimum angle.</p>
 <p>解释：由上图所示，我们来考虑ad,ab,bc和cd对应的四个角，由几何知识得：θab＜φab，θbc＜φbc，θcd＜φcd，θda＜φda。因此由DT得到的角相对而言比其他方法得到的要大。</p>
 <p>问题：我们总共有6对角，为何只考虑其中的四对角？</p>
@@ -321,18 +321,18 @@
 <p>思想：在一个已经成形的现有框架下再增加一个点进行构造。</p>
 <p>（1）、点定位</p>
 <p>对于给定的一个新的点，判断它处于哪个face中。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-d5a0975133d86cb65a281d1e09809ad1_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-d5a0975133d86cb65a281d1e09809ad1_b.jpg" alt=""></p>
 <p>（2）、In-Circle test</p>
 <p>对于新引入的这个点，判断它的哪个三角化是属于Delaunay剖分的。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-333858ab6be5f6f296eadd5f3d4ad752_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-333858ab6be5f6f296eadd5f3d4ad752_b.jpg" alt=""></p>
 <p>当如上图的右图的剖分不属于Delaunay剖分时，将该边进行边翻转（edge flip）翻到左边的那种情况。但当进行了这个操作后，要对那些粉红色的边进行判断是否还是属于Delaunay剖分，这些边又被称为嫌疑边。</p>
 <p>（3）、Frontier</p>
 <p>对嫌疑边做空圆检测，若不符合，那么继而进行边翻转，再检查其余的嫌疑边。这些嫌疑边实际上是首尾相连构成一个环的，有一个中心G，是一个星形多边形。这个星形多边形又称为Frontier Polygon。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-ce0add51b856871fc614823c739701b1_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-ce0add51b856871fc614823c739701b1_b.jpg" alt=""></p>
 <p>（4）、Convergence</p>
 <p>对于这个多边形的角度序列，每做一次边翻转，角度序列都会有所递增，而这个角度序列是有一个上界的，因此这个操作存在一个上界。当抵达上界时算法结束。</p>
 <p>10、Randomized Incremental Construction</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-ec97d8e407fa599aa4564bcd0ddfae96_b.jpg" alt=""></p>
+<p><img src="https://pic3.zhimg.com/v2-ec97d8e407fa599aa4564bcd0ddfae96_b.jpg" alt=""></p>
 <ul>
 <li>基本操作</li>
 </ul>
@@ -351,7 +351,7 @@
 <li>In-Circle Test</li>
 </ul>
 <p>判断点是否在三角形外接圆内部。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-28d2f177e478d1e95b28d817e5e9b2d8_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-28d2f177e478d1e95b28d817e5e9b2d8_b.jpg" alt=""></p>
 <p>若InCircle(a,b,c,p)&gt;0，则说明这个点落在圆内部；</p>
 <p>若InCircle(a,b,c,p)&lt;0，则说明这个点落在圆外部；</p>
 <p>若InCircle(a,b,c,p)=0，则说明这个点落在圆周上。</p>
@@ -360,10 +360,10 @@
 <li>Point Location</li>
 </ul>
 <p>首先一开始的时候将所有的未插入的点进行归类，每一类用一个桶结构（bucket）来进行存储，具体的分类就是按照它们在已有的三角形中分别归属于哪个三角形。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-60fb349febf924359ddd3940e5daf14c_b.jpg" alt=""></p>
+<p><img src="https://pic1.zhimg.com/v2-60fb349febf924359ddd3940e5daf14c_b.jpg" alt=""></p>
 <p>如上图所示，abc同属于一个三角形内，那么这三个点就放在一个桶里。</p>
 <p>在进行边翻转的时候会导致三角形结构的变更。如下图，一开始是水平切分成两个三角形，那么abc是一个桶，de是另一个桶；若发生边翻转，那么这两个桶消亡，重新生成新的两个桶，一个桶放置bce，一个桶放置ad。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-c59606b64ab74d21ba9d67fe75dafe3f_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/v2-c59606b64ab74d21ba9d67fe75dafe3f_b.jpg" alt=""></p>
 <p>11、RIC Analysis</p>
 <ul>
 <li>复杂度分析：主要包含边的变化的复杂度和桶结构修正的复杂度。</li>
@@ -375,7 +375,7 @@
 </ul>
 <p>使用后向分析的条件对应：①假设所有的点都在一般性位置没有退化，那么最终结果是确定的②在中间的任何一个时刻的k个点的临时局部的Delaunay剖分都是确定的③前面k个点的插入从概率上来说每个点是最后插入的概率都是相等的。虽然不知道前k个点究竟是哪个点作为最后一个点插入，但是只需要把每个点所作为最后一个元素插入所对应的时间成本平均起来就可以得到这样一个期望值。</p>
 <p>我们将假设是最后一个插入的点称为点p，分析每一个点作为这个点p相应的需要做多少次边翻转以及相应的边操作。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-d705a9218ab5935842dd5e346369f823_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/v2-d705a9218ab5935842dd5e346369f823_b.jpg" alt=""></p>
 <p>假设这个点G是作为最后一个点即p点被插入，它会引起的修改操作是：①初始插入：即引入三条新增的边；②：边翻转，每一次边翻转会生成一条新的边。对于这个图而言，在第二步的时候会有两次边翻转，所以总共有3+2次边操作。</p>
 <p>分析：因为所有的点都可能是作为最后一个点被插入，理论上而言我们应该把所有点的可能统计出来再求平均。具体的来讲，假设上图的G是作为最后一个点被插入，如果我们能把它精确所需要的时间准确的估计出来就足够了，若这个方法能通用就可以施加到所有的点上去。因此现在我们将目光就放在一个点上。</p>
 <p>分析这个点G，在每经过一次边的翻转时，都会有一条老的边死掉并且引入一条新的边，同时会有两条新的边成为需要检查的嫌疑边，因此对于这个Frontier而言每做过一次flip后size都是-1+2=1，这说明这个Frontier Polygon忠实的记录了我们此前进行过多少次操作。巧合的是如果算上初始生成的三条边这个数恰好相当于Frontier Polygon的size。注意到点G引起的edge change恰好是5次，而这个Frontier Polygon的size也是5，因此这个polygon最后的size就度量了我们此前如果G是最后一个点被插入的话它所花费的时间。而前面我们说过这个Frontier Polygon是一个星形多边形，G就是它的核，我们就可以直接得出结论说<strong>这个点G的度数就度量了花费的时间</strong>。</p>
@@ -387,12 +387,12 @@
 <p>思路：考虑某一个点，在整个算法的执行过程中这个点从期望的角度讲会参与rebucketing多少次？</p>
 <p>结论：O(logn)</p>
 <p>假设点pi是第i个点，即截止到它已经插入了i个点，那么剩下n-i个点待插入。而在剩下的n-i个点钟每一个点从期望的意义上讲从概率上都是3/i的概率会参与刚刚过去的最后那次迭代中参与了rebucketing，它们所归属的那个三角形以及相应的bucket有变化。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-de6e4cce2367a3d114b63b993b4306a3_b.jpg" alt=""></p>
+<p><img src="https://pic4.zhimg.com/v2-de6e4cce2367a3d114b63b993b4306a3_b.jpg" alt=""></p>
 <p>对于上图，假设在最后的那步迭代中q曾经参与一次rebucketing，它的必要条件是在当下q所属的那个三角形必然是在刚刚最后那步迭代中最新创建的。可以再将这个条件转化为另一个必要条件：如果这个三角形确实是刚才第i次迭代中创建的，那么这个三角形肯定会与最新插入的顶点相关联，也就是说新插入的这个点必然是这个三角形的三个顶点之一，即要么a要么b要么c作为最后一个点引入，才会引起q的rebucketing。因此这个概率是3/i。</p>
 <p>总体期望：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-8680a1a553ea9e234357aa2c43169965_b.jpg" alt=""></p>
+<p><img src="https://pic2.zhimg.com/v2-8680a1a553ea9e234357aa2c43169965_b.jpg" alt=""></p>
 <p>因此最后结果是O(nlogn)。</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/yq-huang-9">z文聿(知乎)</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_162517931">https://www.zhihu.com/column/c_162517931</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/7e69792f.html" title="清华大学-计算几何-总结"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">清华大学-计算几何-总结</div></div></a></div><div class="next-post pull-right"><a href="/posts/971e5441.html" title="清华大学-计算几何-维诺图"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">清华大学-计算几何-维诺图</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/7e69792f.html" title="清华大学-计算几何-总结"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-01</div><div class="title">清华大学-计算几何-总结</div></div></a></div><div><a href="/posts/3f3fb974.html" title="清华大学-计算几何-凸包"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-08</div><div class="title">清华大学-计算几何-凸包</div></div></a></div><div><a href="/posts/30a192dc.html" title="清华大学-计算几何-多边形三角剖分"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-15</div><div class="title">清华大学-计算几何-多边形三角剖分</div></div></a></div><div><a href="/posts/7df22a0d.html" title="清华大学-计算几何-几何求交"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="title">清华大学-计算几何-几何求交</div></div></a></div><div><a href="/posts/971e5441.html" title="清华大学-计算几何-维诺图"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-21</div><div class="title">清华大学-计算几何-维诺图</div></div></a></div><div><a href="/posts/a238d6a3.html" title="MIT-算法导论-写在后面"><img class="cover" src= "/img/loading.gif" data-lazy-src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-01</div><div class="title">MIT-算法导论-写在后面</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/loading.gif" data-lazy-src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/402f9c9e.html" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a href="http://www.beian.gov.cn" target="_blank"><img class="lozad" data-src="/img/beian.png" onerror="onerror=null;src='/img/beian.png'" style="padding:0px;vertical-align: text-bottom;"/><span>浙ICP备2024121111号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src= "/img/loading.gif" data-lazy-src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://www.zhihu.com/people/yq-huang-9">z文聿(知乎)</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_162517931">https://www.zhihu.com/column/c_162517931</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/7e69792f.html" title="清华大学-计算几何-总结"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">清华大学-计算几何-总结</div></div></a></div><div class="next-post pull-right"><a href="/posts/971e5441.html" title="清华大学-计算几何-维诺图"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">清华大学-计算几何-维诺图</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/3f3fb974.html" title="清华大学-计算几何-凸包"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-08</div><div class="title">清华大学-计算几何-凸包</div></div></a></div><div><a href="/posts/7e69792f.html" title="清华大学-计算几何-总结"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-01</div><div class="title">清华大学-计算几何-总结</div></div></a></div><div><a href="/posts/7df22a0d.html" title="清华大学-计算几何-几何求交"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="title">清华大学-计算几何-几何求交</div></div></a></div><div><a href="/posts/30a192dc.html" title="清华大学-计算几何-多边形三角剖分"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-15</div><div class="title">清华大学-计算几何-多边形三角剖分</div></div></a></div><div><a href="/posts/971e5441.html" title="清华大学-计算几何-维诺图"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-03-21</div><div class="title">清华大学-计算几何-维诺图</div></div></a></div><div><a href="/posts/a238d6a3.html" title="MIT-算法导论-写在后面"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-01</div><div class="title">MIT-算法导论-写在后面</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/402f9c9e.html" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a href="http://www.beian.gov.cn" target="_blank"><img class="lozad" data-src="/img/beian.png" onerror="onerror=null;src='/img/beian.png'" style="padding:0px;vertical-align: text-bottom;"/><span>浙ICP备2024121111号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {

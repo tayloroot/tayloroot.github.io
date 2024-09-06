@@ -42,3 +42,9 @@
     list-style: none;  
 }
 
+/* 针对 "加密" 字样的字体大小调整 */
+.hbe-input-label-content {
+    font-size: 15px; /* 你希望的字体大小 */
+    color: #4CB2FB;
+}
+

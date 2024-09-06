@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-模式识别-贝叶斯决策与模式识别应用 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课讲解了贝叶斯决策的基本概念及其在模式识别中的应用，强调了该理论在统计分类中的重要性。课程开篇介绍了模式识别的基础方法，包括贝叶斯决策、特征表示、监督学习和无监督学习等。同时，深入探讨了贝叶斯决策规则的数学基础，讨论了后验概率的计算及其与特征空间的相互关系，分析了高斯分布的属性及其对决策面的影响。课上强调了贝叶斯分类器的理论最优性，并指出其实际应用中的一些挑战。 模式识别与贝叶斯决策基础 模式">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-模式识别-贝叶斯决策与模式识别应用 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课讲解了贝叶斯决策的基本概念及其在模式识别中的应用，强调了该理论在统计分类中的重要性。课程开篇介绍了模式识别的基础方法，包括贝叶斯决策、特征表示、监督学习和无监督学习等。同时，深入探讨了贝叶斯决策规则的数学基础，讨论了后验概率的计算及其与特征空间的相互关系，分析了高斯分布的属性及其对决策面的影响。课上强调了贝叶斯分类器的理论最优性，并指出其实际应用中的一些挑战。 模式识别与贝叶斯决策基础">
 <meta property="og:type" content="article">
 <meta property="og:title" content="国科大-模式识别-贝叶斯决策与模式识别应用">
 <meta property="og:url" content="http://mmwiki.cn/posts/f4bd6a7c.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="本节课讲解了贝叶斯决策的基本概念及其在模式识别中的应用，强调了该理论在统计分类中的重要性。课程开篇介绍了模式识别的基础方法，包括贝叶斯决策、特征表示、监督学习和无监督学习等。同时，深入探讨了贝叶斯决策规则的数学基础，讨论了后验概率的计算及其与特征空间的相互关系，分析了高斯分布的属性及其对决策面的影响。课上强调了贝叶斯分类器的理论最优性，并指出其实际应用中的一些挑战。 模式识别与贝叶斯决策基础 模式">
+<meta property="og:description" content="本节课讲解了贝叶斯决策的基本概念及其在模式识别中的应用，强调了该理论在统计分类中的重要性。课程开篇介绍了模式识别的基础方法，包括贝叶斯决策、特征表示、监督学习和无监督学习等。同时，深入探讨了贝叶斯决策规则的数学基础，讨论了后验概率的计算及其与特征空间的相互关系，分析了高斯分布的属性及其对决策面的影响。课上强调了贝叶斯分类器的理论最优性，并指出其实际应用中的一些挑战。 模式识别与贝叶斯决策基础">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2023-04-30T16:00:00.000Z">
@@ -198,124 +198,154 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-贝叶斯决策与模式识别应用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-04-30T16:00:00.000Z" title="发表于 2023-05-01 00:00:00">2023-05-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><p>本节课讲解了贝叶斯决策的基本概念及其在模式识别中的应用，强调了该理论在统计分类中的重要性。课程开篇介绍了模式识别的基础方法，包括贝叶斯决策、特征表示、监督学习和无监督学习等。同时，深入探讨了贝叶斯决策规则的数学基础，讨论了后验概率的计算及其与特征空间的相互关系，分析了高斯分布的属性及其对决策面的影响。课上强调了贝叶斯分类器的理论最优性，并指出其实际应用中的一些挑战。</p>
-<h3 id="模式识别与贝叶斯决策基础"><a href="#模式识别与贝叶斯决策基础" class="headerlink" title="模式识别与贝叶斯决策基础"></a>模式识别与贝叶斯决策基础</h3><ul>
-<li><p><strong>模式识别概念及应用背景</strong>:  </p>
+<h3 id="模式识别与贝叶斯决策基础">模式识别与贝叶斯决策基础</h3>
 <ul>
-<li>探讨了模式识别的定义及其主要方法。学生在之前的课程中已对该领域有整体的了解，而贝叶斯决策的引入强化了这一认知。  </li>
-<li>作为一种使用生成模型的分类方法，贝叶斯决策强调最大后验概率的计算。深入理解后验概率及其在模式分类中的应用是学习的关键。  </li>
+<li>
+<p><strong>模式识别概念及应用背景</strong>:</p>
+<ul>
+<li>探讨了模式识别的定义及其主要方法。学生在之前的课程中已对该领域有整体的了解，而贝叶斯决策的引入强化了这一认知。</li>
+<li>作为一种使用生成模型的分类方法，贝叶斯决策强调最大后验概率的计算。深入理解后验概率及其在模式分类中的应用是学习的关键。</li>
 </ul>
 </li>
-<li><p><strong>统计模式识别方法</strong>:  </p>
+<li>
+<p><strong>统计模式识别方法</strong>:</p>
 <ul>
-<li>课程将统计模式识别方法分为生成模型和判别模型，通过比较参数与非参数方法增强理解，提升分析能力。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="计算与决策优化"><a href="#计算与决策优化" class="headerlink" title="计算与决策优化"></a>计算与决策优化</h3><ul>
-<li><p><strong>贝叶斯决策与条件概率</strong>:  </p>
-<ul>
-<li>探讨了已知类别数条件下的模式分类，强调通过输入特征进行判别的必要性，这对开发有效分类器尤其在复杂任务中至关重要。  </li>
-</ul>
-</li>
-<li><p><strong>贝叶斯决策的应用</strong>:  </p>
-<ul>
-<li>以实例演示如何在特征缺失情况下依据先验概率进行判断，以及传感器特征获取在提升分类准确性中的作用。  </li>
+<li>课程将统计模式识别方法分为生成模型和判别模型，通过比较参数与非参数方法增强理解，提升分析能力。</li>
 </ul>
 </li>
 </ul>
-<h3 id="后验概率与错误代价"><a href="#后验概率与错误代价" class="headerlink" title="后验概率与错误代价"></a>后验概率与错误代价</h3><ul>
-<li><p><strong>条件概率密度与分类策略</strong>:  </p>
+<h3 id="计算与决策优化">计算与决策优化</h3>
 <ul>
-<li>结合条件概率密度和先验概率，显著提升分类效率，解释概率密度函数与自然度及证据在最大似然估计中的重要性。  </li>
+<li>
+<p><strong>贝叶斯决策与条件概率</strong>:</p>
+<ul>
+<li>探讨了已知类别数条件下的模式分类，强调通过输入特征进行判别的必要性，这对开发有效分类器尤其在复杂任务中至关重要。</li>
 </ul>
 </li>
-<li><p><strong>错误代价与决策</strong>:  </p>
+<li>
+<p><strong>贝叶斯决策的应用</strong>:</p>
 <ul>
-<li>性别判断中的传感器使用及其在商业决策中的错误代价考量，说明不同错误代价在决策中的实质作用。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="最优贝叶斯分类器"><a href="#最优贝叶斯分类器" class="headerlink" title="最优贝叶斯分类器"></a>最优贝叶斯分类器</h3><ul>
-<li><p><strong>依据代价函数与条件概率判别</strong>:  </p>
-<ul>
-<li>课程体现了通过代价比较进行类别判定以及最大后验概率决策的最优性实践。  </li>
-</ul>
-</li>
-<li><p><strong>决策面与判别函数</strong>:  </p>
-<ul>
-<li>讨论了决策代价与条件密度比值对分类判定的重大影响，说明后验概率大小判断类别在实际应用中的普遍适用性。  </li>
+<li>以实例演示如何在特征缺失情况下依据先验概率进行判断，以及传感器特征获取在提升分类准确性中的作用。</li>
 </ul>
 </li>
 </ul>
-<h3 id="贝叶斯决策中的不确定性"><a href="#贝叶斯决策中的不确定性" class="headerlink" title="贝叶斯决策中的不确定性"></a>贝叶斯决策中的不确定性</h3><ul>
-<li><p><strong>不识别结果建议</strong>:  </p>
+<h3 id="后验概率与错误代价">后验概率与错误代价</h3>
 <ul>
-<li>建议在判断不确定时，采用不识别结果以减少严重后果，以普适的例子说明这一策略在应用中的重要性。  </li>
+<li>
+<p><strong>条件概率密度与分类策略</strong>:</p>
+<ul>
+<li>结合条件概率密度和先验概率，显著提升分类效率，解释概率密度函数与自然度及证据在最大似然估计中的重要性。</li>
 </ul>
 </li>
-<li><p><strong>开放性模式识别</strong>:  </p>
+<li>
+<p><strong>错误代价与决策</strong>:</p>
 <ul>
-<li>针对不属于已有类别的输入问题，探讨设计开放类别分类器的必要以及未知类别中可能的复杂性。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="分类器的设计原理"><a href="#分类器的设计原理" class="headerlink" title="分类器的设计原理"></a>分类器的设计原理</h3><ul>
-<li><p><strong>数字与开放分类器</strong>:  </p>
-<ul>
-<li>详细描述条件风险与先验计算在分类器构造中的作用，强调开放性模式识别对实际异常样本处理的重要性。  </li>
-</ul>
-</li>
-<li><p><strong>先验概率与条件概率结合</strong>:  </p>
-<ul>
-<li>探讨了处理未知类别时的假设分布策略，描述判别函数多样化以适应不同需求的重要性。  </li>
+<li>性别判断中的传感器使用及其在商业决策中的错误代价考量，说明不同错误代价在决策中的实质作用。</li>
 </ul>
 </li>
 </ul>
-<h3 id="参数估计与演化"><a href="#参数估计与演化" class="headerlink" title="参数估计与演化"></a>参数估计与演化</h3><ul>
-<li><p><strong>高斯分布及半参数法</strong>:  </p>
+<h3 id="最优贝叶斯分类器">最优贝叶斯分类器</h3>
 <ul>
-<li>讨论了半参数法在处理概率密度中的灵活性和高斯函数作为特例的统计特性。  </li>
+<li>
+<p><strong>依据代价函数与条件概率判别</strong>:</p>
+<ul>
+<li>课程体现了通过代价比较进行类别判定以及最大后验概率决策的最优性实践。</li>
 </ul>
 </li>
-<li><p><strong>特征空间应用与PCA</strong>:  </p>
+<li>
+<p><strong>决策面与判别函数</strong>:</p>
 <ul>
-<li>通过主成分分析探讨如何有效降低数据维度，最小化信息损失，并提升模式识别分析效率。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="实对称矩阵与特征提取"><a href="#实对称矩阵与特征提取" class="headerlink" title="实对称矩阵与特征提取"></a>实对称矩阵与特征提取</h3><ul>
-<li><p><strong>特征值与主成分</strong>:  </p>
-<ul>
-<li>探讨如何运用特征值分解协方差矩阵来简化数据分析，有效执行特征提取与降维。  </li>
-</ul>
-</li>
-<li><p><strong>线性变换与数据处理</strong>:  </p>
-<ul>
-<li>阐述正交变换在特征空间中的重要性，通过对协方差矩阵进行对角化来优化数据处理中模型的表现。  </li>
+<li>讨论了决策代价与条件密度比值对分类判定的重大影响，说明后验概率大小判断类别在实际应用中的普遍适用性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="高斯判别函数与决策面"><a href="#高斯判别函数与决策面" class="headerlink" title="高斯判别函数与决策面"></a>高斯判别函数与决策面</h3><ul>
-<li><p><strong>马氏距离与判别函数</strong>:  </p>
+<h3 id="贝叶斯决策中的不确定性">贝叶斯决策中的不确定性</h3>
 <ul>
-<li>详细探讨马氏距离的计算对分类模型准确性的重大影响，说明二次判别函数在特征独立假设下的简化方式。  </li>
+<li>
+<p><strong>不识别结果建议</strong>:</p>
+<ul>
+<li>建议在判断不确定时，采用不识别结果以减少严重后果，以普适的例子说明这一策略在应用中的重要性。</li>
 </ul>
 </li>
-<li><p><strong>超平面决策原理</strong>:  </p>
+<li>
+<p><strong>开放性模式识别</strong>:</p>
 <ul>
-<li>研究不同先验概率对决策面方向和位置的影响，形成对分类结果的内在理解。  </li>
+<li>针对不属于已有类别的输入问题，探讨设计开放类别分类器的必要以及未知类别中可能的复杂性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="广义线性和贝叶斯分类器"><a href="#广义线性和贝叶斯分类器" class="headerlink" title="广义线性和贝叶斯分类器"></a>广义线性和贝叶斯分类器</h3><ul>
-<li><p><strong>支持向量机与神经网络</strong>:  </p>
+<h3 id="分类器的设计原理">分类器的设计原理</h3>
 <ul>
-<li>借助广义线性判别函数，阐述特征提取与分类判定的有效方法，支持不同形式的数据分类需求。  </li>
+<li>
+<p><strong>数字与开放分类器</strong>:</p>
+<ul>
+<li>详细描述条件风险与先验计算在分类器构造中的作用，强调开放性模式识别对实际异常样本处理的重要性。</li>
 </ul>
 </li>
-<li><p><strong>贝叶斯方法与深度学习兼容性</strong>:  </p>
+<li>
+<p><strong>先验概率与条件概率结合</strong>:</p>
 <ul>
-<li>阐明贝叶斯分类器在理论上的最优性，通过后验概率提升分类效率，同时认识深度学习的特征增强功能。  </li>
+<li>探讨了处理未知类别时的假设分布策略，描述判别函数多样化以适应不同需求的重要性。</li>
+</ul>
+</li>
+</ul>
+<h3 id="参数估计与演化">参数估计与演化</h3>
+<ul>
+<li>
+<p><strong>高斯分布及半参数法</strong>:</p>
+<ul>
+<li>讨论了半参数法在处理概率密度中的灵活性和高斯函数作为特例的统计特性。</li>
+</ul>
+</li>
+<li>
+<p><strong>特征空间应用与PCA</strong>:</p>
+<ul>
+<li>通过主成分分析探讨如何有效降低数据维度，最小化信息损失，并提升模式识别分析效率。</li>
+</ul>
+</li>
+</ul>
+<h3 id="实对称矩阵与特征提取">实对称矩阵与特征提取</h3>
+<ul>
+<li>
+<p><strong>特征值与主成分</strong>:</p>
+<ul>
+<li>探讨如何运用特征值分解协方差矩阵来简化数据分析，有效执行特征提取与降维。</li>
+</ul>
+</li>
+<li>
+<p><strong>线性变换与数据处理</strong>:</p>
+<ul>
+<li>阐述正交变换在特征空间中的重要性，通过对协方差矩阵进行对角化来优化数据处理中模型的表现。</li>
+</ul>
+</li>
+</ul>
+<h3 id="高斯判别函数与决策面">高斯判别函数与决策面</h3>
+<ul>
+<li>
+<p><strong>马氏距离与判别函数</strong>:</p>
+<ul>
+<li>详细探讨马氏距离的计算对分类模型准确性的重大影响，说明二次判别函数在特征独立假设下的简化方式。</li>
+</ul>
+</li>
+<li>
+<p><strong>超平面决策原理</strong>:</p>
+<ul>
+<li>研究不同先验概率对决策面方向和位置的影响，形成对分类结果的内在理解。</li>
+</ul>
+</li>
+</ul>
+<h3 id="广义线性和贝叶斯分类器">广义线性和贝叶斯分类器</h3>
+<ul>
+<li>
+<p><strong>支持向量机与神经网络</strong>:</p>
+<ul>
+<li>借助广义线性判别函数，阐述特征提取与分类判定的有效方法，支持不同形式的数据分类需求。</li>
+</ul>
+</li>
+<li>
+<p><strong>贝叶斯方法与深度学习兼容性</strong>:</p>
+<ul>
+<li>阐明贝叶斯分类器在理论上的最优性，通过后验概率提升分类效率，同时认识深度学习的特征增强功能。</li>
 </ul>
 </li>
 </ul>

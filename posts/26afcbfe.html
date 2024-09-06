@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。   1. 状态机与计算机科学的核心观点 一切皆为状态机:    课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。   状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。 1. 状态机与计算机科学的核心观点   一切皆为状态机:  课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。 状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运行和管理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)">
 <meta property="og:url" content="http://mmwiki.cn/posts/26afcbfe.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。   1. 状态机与计算机科学的核心观点 一切皆为状态机:    课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。   状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运">
+<meta property="og:description" content="概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。 1. 状态机与计算机科学的核心观点   一切皆为状态机:  课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。 状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运行和管理">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-05-21T16:00:00.000Z">
@@ -198,67 +198,81 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-21T16:00:00.000Z" title="发表于 2021-05-22 00:00:00">2021-05-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">957</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。  </p>
-<h3 id="1-状态机与计算机科学的核心观点"><a href="#1-状态机与计算机科学的核心观点" class="headerlink" title="1. 状态机与计算机科学的核心观点"></a>1. 状态机与计算机科学的核心观点</h3><ul>
-<li><p><strong>一切皆为状态机</strong>:  </p>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-状态机模型的应用 (图灵机、Game of Life、状态机思想在编程世界的应用)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-21T16:00:00.000Z" title="发表于 2021-05-22 00:00:00">2021-05-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">957</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>概述了操作系统课程的关键理念，以状态机模型为核心，重点关注其在计算机科学中的作用。通过历史背景和现代计算的比较，全面探讨了如何将这种模型应用于操作系统的不同机制中。</p>
+<h3 id="1-状态机与计算机科学的核心观点">1. 状态机与计算机科学的核心观点</h3>
 <ul>
-<li>课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。  </li>
-<li>状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运行和管理。  </li>
+<li>
+<p><strong>一切皆为状态机</strong>:</p>
+<ul>
+<li>课程的核心思想是“一切都是状态机”。这是一种理解计算机科学的基本方式，有助于解析操作系统中的复杂问题。</li>
+<li>状态机提供了算法和程序设计的基础视角，帮助我们理解操作系统的运行和管理。</li>
 </ul>
 </li>
-<li><p><strong>图灵机的启示</strong>:  </p>
+<li>
+<p><strong>图灵机的启示</strong>:</p>
 <ul>
-<li>作为计算机科学的奠基模型，图灵机揭示了计算的基本可能性。通过学习图灵机，学生可以更好地理解计算的本质。  </li>
-<li>将图灵机与现代计算机进行比较，使得学生更深入地体会计算模型的演变，从中获益。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="2-状态机模型的现代应用"><a href="#2-状态机模型的现代应用" class="headerlink" title="2. 状态机模型的现代应用"></a>2. 状态机模型的现代应用</h3><ul>
-<li><p><strong>数学化与物理世界的联系</strong>:  </p>
-<ul>
-<li>状态机作为数学对象，为我们提供了观察和理解世界的新视角。这种视角体现于约翰·康威的生命游戏，其中展示了简单规则下的复杂行为。  </li>
-<li>状态机通过扩展至多维模型，更真实地模拟了物理世界的行为，为我们更好理解自然提供了工具。  </li>
-</ul>
-</li>
-<li><p><strong>现代计算和智能探索</strong>:  </p>
-<ul>
-<li>通过基本逻辑门构建复杂系统，展示了计算机科学的广度。此方法使我们能理解智能行为及其在虚拟环境中的模拟。  </li>
-<li>状态机帮助我们探讨智能的起源，并通过模拟图灵机与生命游戏，引发对复杂系统的深入思考。  </li>
+<li>作为计算机科学的奠基模型，图灵机揭示了计算的基本可能性。通过学习图灵机，学生可以更好地理解计算的本质。</li>
+<li>将图灵机与现代计算机进行比较，使得学生更深入地体会计算模型的演变，从中获益。</li>
 </ul>
 </li>
 </ul>
-<h3 id="3-四维空间与思想实验"><a href="#3-四维空间与思想实验" class="headerlink" title="3. 四维空间与思想实验"></a>3. 四维空间与思想实验</h3><ul>
-<li><strong>高维度思考的启示</strong>:  <ul>
-<li>四维空间下的状态机构建有助于理解复杂生物和现象，并推动对更高维度的科学探讨。  </li>
-<li>借用时间旅行和祖父悖论等思想实验，揭示复杂系统中因果关系的重要性，同时帮助理解程序执行的规则。  </li>
+<h3 id="2-状态机模型的现代应用">2. 状态机模型的现代应用</h3>
+<ul>
+<li>
+<p><strong>数学化与物理世界的联系</strong>:</p>
+<ul>
+<li>状态机作为数学对象，为我们提供了观察和理解世界的新视角。这种视角体现于约翰·康威的生命游戏，其中展示了简单规则下的复杂行为。</li>
+<li>状态机通过扩展至多维模型，更真实地模拟了物理世界的行为，为我们更好理解自然提供了工具。</li>
+</ul>
+</li>
+<li>
+<p><strong>现代计算和智能探索</strong>:</p>
+<ul>
+<li>通过基本逻辑门构建复杂系统，展示了计算机科学的广度。此方法使我们能理解智能行为及其在虚拟环境中的模拟。</li>
+<li>状态机帮助我们探讨智能的起源，并通过模拟图灵机与生命游戏，引发对复杂系统的深入思考。</li>
 </ul>
 </li>
 </ul>
-<h3 id="4-系统调用与复杂系统解析"><a href="#4-系统调用与复杂系统解析" class="headerlink" title="4. 系统调用与复杂系统解析"></a>4. 系统调用与复杂系统解析</h3><ul>
-<li><p><strong>操作系统的基础机制</strong>:  </p>
+<h3 id="3-四维空间与思想实验">3. 四维空间与思想实验</h3>
 <ul>
-<li>操作系统的复杂性不仅体现在程序运行，更揭示了如何通过系统调用控制软件行为。  </li>
-<li>在数学定义的世界中，系统调用机制帮助预测状态变化，为操作系统中的问题分析提供了新维度。  </li>
-</ul>
-</li>
-<li><p><strong>程序优化与调试</strong>:  </p>
+<li><strong>高维度思考的启示</strong>:
 <ul>
-<li>调试和优化始于对程序的状态机理解。通过记录和重放工具（如MOZA和QEMU），开发者能更好掌握程序的执行流。  </li>
-<li>状态机视角帮助识别程序性能瓶颈，并制定优化策略，有效提升系统效率。  </li>
+<li>四维空间下的状态机构建有助于理解复杂生物和现象，并推动对更高维度的科学探讨。</li>
+<li>借用时间旅行和祖父悖论等思想实验，揭示复杂系统中因果关系的重要性，同时帮助理解程序执行的规则。</li>
 </ul>
 </li>
 </ul>
-<h3 id="5-信号机制与进程管理"><a href="#5-信号机制与进程管理" class="headerlink" title="5. 信号机制与进程管理"></a>5. 信号机制与进程管理</h3><ul>
-<li><p><strong>信号的重要性</strong>:  </p>
+<h3 id="4-系统调用与复杂系统解析">4. 系统调用与复杂系统解析</h3>
 <ul>
-<li>信号机制在进程管理中至关重要，它通过信号中断进程，并支持灵活的用户交互响应。  </li>
-<li>对进程组和信号处理程序的深入探讨，让我们认识到系统中信号管理的复杂性及其在多用户环境中的应用。  </li>
+<li>
+<p><strong>操作系统的基础机制</strong>:</p>
+<ul>
+<li>操作系统的复杂性不仅体现在程序运行，更揭示了如何通过系统调用控制软件行为。</li>
+<li>在数学定义的世界中，系统调用机制帮助预测状态变化，为操作系统中的问题分析提供了新维度。</li>
 </ul>
 </li>
-<li><p><strong>操作系统的复杂性与未来展望</strong>:  </p>
+<li>
+<p><strong>程序优化与调试</strong>:</p>
 <ul>
-<li>操作系统课程旨在帮助学生使用状态机模型理解复杂概念，从信号机制到系统调用，为未来的系统设计奠定了基础。  </li>
-<li>比喻操作系统与航母的复杂系统，强调设计中简单接口与复杂内部机制的协作，这亦是操作系统课程的核心。  </li>
+<li>调试和优化始于对程序的状态机理解。通过记录和重放工具（如MOZA和QEMU），开发者能更好掌握程序的执行流。</li>
+<li>状态机视角帮助识别程序性能瓶颈，并制定优化策略，有效提升系统效率。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-信号机制与进程管理">5. 信号机制与进程管理</h3>
+<ul>
+<li>
+<p><strong>信号的重要性</strong>:</p>
+<ul>
+<li>信号机制在进程管理中至关重要，它通过信号中断进程，并支持灵活的用户交互响应。</li>
+<li>对进程组和信号处理程序的深入探讨，让我们认识到系统中信号管理的复杂性及其在多用户环境中的应用。</li>
+</ul>
+</li>
+<li>
+<p><strong>操作系统的复杂性与未来展望</strong>:</p>
+<ul>
+<li>操作系统课程旨在帮助学生使用状态机模型理解复杂概念，从信号机制到系统调用，为未来的系统设计奠定了基础。</li>
+<li>比喻操作系统与航母的复杂系统，强调设计中简单接口与复杂内部机制的协作，这亦是操作系统课程的核心。</li>
 </ul>
 </li>
 </ul>

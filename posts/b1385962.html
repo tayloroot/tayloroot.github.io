@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-并发控制：同步 (1) (生产者-消费者、条件变量) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在并发编程中，同步是一个超越了互斥的基本实现的重要概念。同步确保多个线程能够按特定的顺序执行，避免并发操作带来的冲突和不确定性。这不仅提高了程序的可靠性，还使得复杂的并发问题得以解决。通过乐队演奏和生产者-消费者模型的实例，可以更好地理解这一点。 核心内容1. 同步的基础概念 同步是并发控制中比互斥更重要的机制。互斥可以保障临界区的安全性，但无法控制线程执行的顺序。同步则确保多个线程在执行时保持特">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-并发控制：同步 (1) (生产者-消费者、条件变量) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="在并发编程中，同步是一个超越了互斥的基本实现的重要概念。同步确保多个线程能够按特定的顺序执行，避免并发操作带来的冲突和不确定性。这不仅提高了程序的可靠性，还使得复杂的并发问题得以解决。通过乐队演奏和生产者-消费者模型的实例，可以更好地理解这一点。 核心内容 1. 同步的基础概念  同步是并发控制中比互斥更重要的机制。互斥可以保障临界区的安全性，但无法控制线程执行的顺序。同步则确保多个线程在执行时保">
 <meta property="og:type" content="article">
 <meta property="og:title" content="南京大学-操作系统-并发控制：同步 (1) (生产者-消费者、条件变量)">
 <meta property="og:url" content="http://mmwiki.cn/posts/b1385962.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="在并发编程中，同步是一个超越了互斥的基本实现的重要概念。同步确保多个线程能够按特定的顺序执行，避免并发操作带来的冲突和不确定性。这不仅提高了程序的可靠性，还使得复杂的并发问题得以解决。通过乐队演奏和生产者-消费者模型的实例，可以更好地理解这一点。 核心内容1. 同步的基础概念 同步是并发控制中比互斥更重要的机制。互斥可以保障临界区的安全性，但无法控制线程执行的顺序。同步则确保多个线程在执行时保持特">
+<meta property="og:description" content="在并发编程中，同步是一个超越了互斥的基本实现的重要概念。同步确保多个线程能够按特定的顺序执行，避免并发操作带来的冲突和不确定性。这不仅提高了程序的可靠性，还使得复杂的并发问题得以解决。通过乐队演奏和生产者-消费者模型的实例，可以更好地理解这一点。 核心内容 1. 同步的基础概念  同步是并发控制中比互斥更重要的机制。互斥可以保障临界区的安全性，但无法控制线程执行的顺序。同步则确保多个线程在执行时保">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-04-19T16:00:00.000Z">
@@ -199,84 +199,108 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-并发控制：同步 (1) (生产者-消费者、条件变量)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-04-19T16:00:00.000Z" title="发表于 2021-04-20 00:00:00">2021-04-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>在并发编程中，<strong>同步</strong>是一个超越了<strong>互斥</strong>的基本实现的重要概念。同步确保多个线程能够按特定的顺序执行，避免并发操作带来的冲突和不确定性。这不仅提高了程序的可靠性，还使得复杂的并发问题得以解决。通过乐队演奏和生产者-消费者模型的实例，可以更好地理解这一点。</p>
-<h2 id="核心内容"><a href="#核心内容" class="headerlink" title="核心内容"></a>核心内容</h2><h3 id="1-同步的基础概念"><a href="#1-同步的基础概念" class="headerlink" title="1. 同步的基础概念"></a>1. 同步的基础概念</h3><ul>
-<li><strong>同步</strong>是并发控制中比<strong>互斥</strong>更重要的机制。互斥可以保障临界区的安全性，但无法控制线程执行的顺序。同步则确保多个线程在执行时保持特定的顺序关系，以满足现实世界中常见的需求。<ul>
+<h2 id="核心内容">核心内容</h2>
+<h3 id="1-同步的基础概念">1. 同步的基础概念</h3>
+<ul>
+<li><strong>同步</strong>是并发控制中比<strong>互斥</strong>更重要的机制。互斥可以保障临界区的安全性，但无法控制线程执行的顺序。同步则确保多个线程在执行时保持特定的顺序关系，以满足现实世界中常见的需求。
+<ul>
 <li><strong>乐队演奏</strong>中的指挥作用：每个乐器需要在同一节拍下演奏，以确保音乐的协调和和谐。</li>
 <li><strong>预约会面</strong>：两个人约定在特定时间见面，虽然可以提前到达，但只有在约定的时间，才能开始共同的活动，这体现了同步的必要性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="2-并发编程中的同步应用"><a href="#2-并发编程中的同步应用" class="headerlink" title="2. 并发编程中的同步应用"></a>2. 并发编程中的同步应用</h3><ul>
-<li>同步的概念在并发编程中尤为重要，它确保多个线程在某一时刻达成一致状态。<ul>
+<h3 id="2-并发编程中的同步应用">2. 并发编程中的同步应用</h3>
+<ul>
+<li>同步的概念在并发编程中尤为重要，它确保多个线程在某一时刻达成一致状态。
+<ul>
 <li>生活中的例子，如等待朋友或游戏，展示了在特定时刻互相了解的状态，有助于理解同步的重要性。</li>
 <li>在并发程序中，管理状态的迁移非常复杂。通过音乐演奏的例子，可以更好地理解如何在复杂环境中同步与协调，使每个线程能有效工作。</li>
 </ul>
 </li>
 </ul>
-<h3 id="3-线程同步机制与共享内存"><a href="#3-线程同步机制与共享内存" class="headerlink" title="3. 线程同步机制与共享内存"></a>3. 线程同步机制与共享内存</h3><ul>
-<li>在多线程编程中，可以通过<strong>共享内存</strong>和<strong>自旋机制</strong>实现线程间的同步。<ul>
+<h3 id="3-线程同步机制与共享内存">3. 线程同步机制与共享内存</h3>
+<ul>
+<li>在多线程编程中，可以通过<strong>共享内存</strong>和<strong>自旋机制</strong>实现线程间的同步。
+<ul>
 <li>共享内存中的变量用于指示当前音符的拍子，确保所有线程协同工作，避免音符的错位和混乱。</li>
 <li>实现多线程乐队的过程中，通过外部播放器播放生成的音源文件，指挥线程通过用户输入控制演奏节奏，提升了交互性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="4-自旋锁与互斥锁"><a href="#4-自旋锁与互斥锁" class="headerlink" title="4. 自旋锁与互斥锁"></a>4. 自旋锁与互斥锁</h3><ul>
-<li><strong>自旋锁</strong>和<strong>互斥锁</strong>是确保共享内存安全访问的重要工具。它们通过阻止多个线程同时访问共享资源，避免潜在的数据竞争问题。<ul>
+<h3 id="4-自旋锁与互斥锁">4. 自旋锁与互斥锁</h3>
+<ul>
+<li><strong>自旋锁</strong>和<strong>互斥锁</strong>是确保共享内存安全访问的重要工具。它们通过阻止多个线程同时访问共享资源，避免潜在的数据竞争问题。
+<ul>
 <li>自旋锁适用于短时间锁持有场景，通过持续轮询等待锁释放，减少上下文切换带来的开销。</li>
 <li><strong>生产者消费者问题</strong>是并发编程中常见的场景，通过管理缓冲区的使用，生产者和消费者之间的协调可以有效避免资源浪费和竞争。</li>
 </ul>
 </li>
 </ul>
-<h3 id="5-生产者-消费者问题的同步处理"><a href="#5-生产者-消费者问题的同步处理" class="headerlink" title="5. 生产者-消费者问题的同步处理"></a>5. 生产者-消费者问题的同步处理</h3><ul>
-<li>生产者-消费者问题涉及多个生产者向有限缓冲区中放数据和消费者从中取数据的过程。<ul>
+<h3 id="5-生产者-消费者问题的同步处理">5. 生产者-消费者问题的同步处理</h3>
+<ul>
+<li>生产者-消费者问题涉及多个生产者向有限缓冲区中放数据和消费者从中取数据的过程。
+<ul>
 <li>生产者在缓冲区已满时必须等待，消费者在缓冲区为空时也需要等待，这样才能保证数据的一致性。</li>
 <li>模型简化：使用左括号和右括号来代表生产和消费数据，便于理解生产者-消费者问题的同步条件。</li>
 </ul>
 </li>
 </ul>
-<h3 id="6-共享状态管理与锁机制"><a href="#6-共享状态管理与锁机制" class="headerlink" title="6. 共享状态管理与锁机制"></a>6. 共享状态管理与锁机制</h3><ul>
-<li>多线程环境中的<strong>共享状态管理</strong>非常复杂，尤其是在多线程条件下。即使是看似正确的代码也可能失效，需要仔细处理锁机制和状态检查。<ul>
+<h3 id="6-共享状态管理与锁机制">6. 共享状态管理与锁机制</h3>
+<ul>
+<li>多线程环境中的<strong>共享状态管理</strong>非常复杂，尤其是在多线程条件下。即使是看似正确的代码也可能失效，需要仔细处理锁机制和状态检查。
+<ul>
 <li>需要特别关注锁的持有与释放顺序，以避免潜在的<strong>死锁</strong>和资源争用问题。</li>
 <li>逻辑复杂的多生产者、多消费者情况下，锁和条件检查的设计至关重要，确保程序的正确性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="7-条件变量与资源管理优化"><a href="#7-条件变量与资源管理优化" class="headerlink" title="7. 条件变量与资源管理优化"></a>7. 条件变量与资源管理优化</h3><ul>
-<li><strong>条件变量</strong>的引入优化了同步过程，避免CPU资源浪费。<ul>
+<h3 id="7-条件变量与资源管理优化">7. 条件变量与资源管理优化</h3>
+<ul>
+<li><strong>条件变量</strong>的引入优化了同步过程，避免CPU资源浪费。
+<ul>
 <li>当条件不满足时，线程可以进入睡眠状态而非反复尝试，从而显著提高系统效率。</li>
 <li>条件变量允许线程在等待条件满足时释放锁，避免不必要的锁竞争和CPU使用，实现更高效的资源管理。</li>
 </ul>
 </li>
 </ul>
-<h3 id="8-条件变量与并发编程的高效实现"><a href="#8-条件变量与并发编程的高效实现" class="headerlink" title="8. 条件变量与并发编程的高效实现"></a>8. 条件变量与并发编程的高效实现</h3><ul>
-<li>在并发编程中，条件变量的使用至关重要。通过正确使用条件变量，可以确保线程之间的同步与协作，提高程序的效率和正确性。<ul>
+<h3 id="8-条件变量与并发编程的高效实现">8. 条件变量与并发编程的高效实现</h3>
+<ul>
+<li>在并发编程中，条件变量的使用至关重要。通过正确使用条件变量，可以确保线程之间的同步与协作，提高程序的效率和正确性。
+<ul>
 <li>每个线程都有其独特的同步条件，使用条件变量为不同线程设置适合的条件，确保在状态变化时能够及时响应。</li>
 <li>并行编程的本质在于任务的分解与调度，利用条件变量可以实现任务的高效分配与执行。</li>
 </ul>
 </li>
 </ul>
-<h3 id="9-计算图与并行算法"><a href="#9-计算图与并行算法" class="headerlink" title="9. 计算图与并行算法"></a>9. 计算图与并行算法</h3><ul>
-<li><strong>计算图</strong>在并行算法中的应用非常有效，通过线程池和条件变量可以实现更高效的并发编程。<ul>
+<h3 id="9-计算图与并行算法">9. 计算图与并行算法</h3>
+<ul>
+<li><strong>计算图</strong>在并行算法中的应用非常有效，通过线程池和条件变量可以实现更高效的并发编程。
+<ul>
 <li><strong>线程池</strong>模型能够高效管理多个工作线程，提高整体计算效率。</li>
 <li><strong>条件变量</strong>确保计算节点在其依赖的其他节点完成后再进行计算，保证计算的正确性和效率。</li>
 </ul>
 </li>
 </ul>
-<h3 id="10-算法并行化与同步挑战"><a href="#10-算法并行化与同步挑战" class="headerlink" title="10. 算法并行化与同步挑战"></a>10. 算法并行化与同步挑战</h3><ul>
-<li>并行编程的挑战在于算法之间的依赖关系。理解计算图的结构是并行化的关键。<ul>
+<h3 id="10-算法并行化与同步挑战">10. 算法并行化与同步挑战</h3>
+<ul>
+<li>并行编程的挑战在于算法之间的依赖关系。理解计算图的结构是并行化的关键。
+<ul>
 <li>通过合理设计计算图，使其<strong>宽而不深</strong>，可以有效提高算法的并行效率。</li>
 <li>同步问题仍是并发编程中的一大难点，如何保证多线程环境下的协调执行，仍是开发者需要解决的挑战。</li>
 </ul>
 </li>
 </ul>
-<h3 id="11-状态机设计与线程同步"><a href="#11-状态机设计与线程同步" class="headerlink" title="11. 状态机设计与线程同步"></a>11. 状态机设计与线程同步</h3><ul>
-<li><strong>状态机</strong>的设计是实现正确行为的关键。通过定义状态转换和同步条件，确保线程在正确时机执行相应操作。<ul>
+<h3 id="11-状态机设计与线程同步">11. 状态机设计与线程同步</h3>
+<ul>
+<li><strong>状态机</strong>的设计是实现正确行为的关键。通过定义状态转换和同步条件，确保线程在正确时机执行相应操作。
+<ul>
 <li>采用互斥锁和条件变量组合，可以有效管理线程间的资源访问，避免竞争条件的发生。</li>
 <li>通过共享内存设计合理的拓扑结构，可以实现并行处理，提高计算效率和响应速度。</li>
 </ul>
 </li>
 </ul>
-<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过学习并掌握这些同步机制和方法，开发者可以应对大部分并发编程中遇到的问题。理解同步的重要性，合理使用互斥锁、自旋锁、条件变量等工具，可以提高程序的可靠性和执行效率，最终解决复杂的并发挑战。</p>
+<h2 id="结论">结论</h2>
+<p>通过学习并掌握这些同步机制和方法，开发者可以应对大部分并发编程中遇到的问题。理解同步的重要性，合理使用互斥锁、自旋锁、条件变量等工具，可以提高程序的可靠性和执行效率，最终解决复杂的并发挑战。</p>
 </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mmwiki.cn">MrMatrix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mmwiki.cn/posts/b1385962.html">http://mmwiki.cn/posts/b1385962.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://mmwiki.cn" target="_blank">MM's Journal of Technology</a>！</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/4774ae28.html" title="南京大学-操作系统-并发控制：同步 (2) (信号量)"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">南京大学-操作系统-并发控制：同步 (2) (信号量)</div></div></a></div><div class="next-post pull-right"><a href="/posts/8786d407.html" title="南京大学-操作系统-调试理论与实践 (Fault, Error, Failure；调试一切)"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">南京大学-操作系统-调试理论与实践 (Fault, Error, Failure；调试一切)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/92f2ad55.html" title="OSTEP-操作系统导论-CPU虚拟化"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-02</div><div class="title">OSTEP-操作系统导论-CPU虚拟化</div></div></a></div><div><a href="/posts/7cff36d0.html" title="OSTEP-操作系统导论-并发"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-10</div><div class="title">OSTEP-操作系统导论-并发</div></div></a></div><div><a href="/posts/c860fcb3.html" title="OSTEP-操作系统导论-文件系统与存储设备"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-06-05</div><div class="title">OSTEP-操作系统导论-文件系统与存储设备</div></div></a></div><div><a href="/posts/475e734.html" title="OSTEP-操作系统导论-写在后面"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-30</div><div class="title">OSTEP-操作系统导论-写在后面</div></div></a></div><div><a href="/posts/cf8ac6d6.html" title="程序员的自我修养-阅读开始？"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-30</div><div class="title">程序员的自我修养-阅读开始？</div></div></a></div><div><a href="/posts/63253f81.html" title="南京大学-操作系统--虚拟化-Linux 操作系统 (initramfs; 最小 Linux 世界)"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-05-05</div><div class="title">南京大学-操作系统--虚拟化-Linux 操作系统 (initramfs; 最小 Linux 世界)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">187</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">62</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研、工作的过程中捕获到的有价值的课程与书籍，是面向我自己搭建的查漏补缺的备忘录和记事本</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%86%85%E5%AE%B9"><span class="toc-number">1.</span> <span class="toc-text">核心内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%90%8C%E6%AD%A5%E7%9A%84%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">1. 同步的基础概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%90%8C%E6%AD%A5%E5%BA%94%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">2. 并发编程中的同步应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98"><span class="toc-number">1.3.</span> <span class="toc-text">3. 线程同步机制与共享内存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%87%AA%E6%97%8B%E9%94%81%E4%B8%8E%E4%BA%92%E6%96%A5%E9%94%81"><span class="toc-number">1.4.</span> <span class="toc-text">4. 自旋锁与互斥锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%94%9F%E4%BA%A7%E8%80%85-%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98%E7%9A%84%E5%90%8C%E6%AD%A5%E5%A4%84%E7%90%86"><span class="toc-number">1.5.</span> <span class="toc-text">5. 生产者-消费者问题的同步处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%85%B1%E4%BA%AB%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E4%B8%8E%E9%94%81%E6%9C%BA%E5%88%B6"><span class="toc-number">1.6.</span> <span class="toc-text">6. 共享状态管理与锁机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E8%B5%84%E6%BA%90%E7%AE%A1%E7%90%86%E4%BC%98%E5%8C%96"><span class="toc-number">1.7.</span> <span class="toc-text">7. 条件变量与资源管理优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F%E4%B8%8E%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9A%84%E9%AB%98%E6%95%88%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.8.</span> <span class="toc-text">8. 条件变量与并发编程的高效实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-%E8%AE%A1%E7%AE%97%E5%9B%BE%E4%B8%8E%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95"><span class="toc-number">1.9.</span> <span class="toc-text">9. 计算图与并行算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E5%8C%96%E4%B8%8E%E5%90%8C%E6%AD%A5%E6%8C%91%E6%88%98"><span class="toc-number">1.10.</span> <span class="toc-text">10. 算法并行化与同步挑战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E7%8A%B6%E6%80%81%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">1.11.</span> <span class="toc-text">11. 状态机设计与线程同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">2.</span> <span class="toc-text">结论</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/402f9c9e.html" title="国科大-随机过程-马尔可夫链的特性及其简化">国科大-随机过程-马尔可夫链的特性及其简化</a><time datetime="2024-01-14T16:00:00.000Z" title="发表于 2024-01-15 00:00:00">2024-01-15</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a href="http://www.beian.gov.cn" target="_blank"><img class="lozad" data-src="/img/beian.png" onerror="onerror=null;src='/img/beian.png'" style="padding:0px;vertical-align: text-bottom;"/><span>浙ICP备2024121111号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {

@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第七章】链接-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-07-zhang-lian-jie 学习目标  理解从源代码转换到计算机可执行的二进制代码之间需要经过的处理 理解编译过程 理解链接过程，尤其是程序的组织部分 理解库的使用方式 理解 Library Interpostion 的机制及几种不同的类型  使用集成开发环境(IDE)很方便，但是在『执行">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第七章】链接-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-07-zhang-lian-jie 学习目标 理解从源代码转换到计算机可执行的二进制代码之间需要经过的处理 理解编译过程 理解链接过程，尤其是程序的组织部分 理解库的使用方式 理解 Library Interpostion 的机制及几种不同的类型  使用集成开发环境(IDE)很方便，但是在『执行』的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSAPP-【第七章】链接-补充阅读与总结【转载】">
 <meta property="og:url" content="http://mmwiki.cn/posts/882cf7d3.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-07-zhang-lian-jie 学习目标  理解从源代码转换到计算机可执行的二进制代码之间需要经过的处理 理解编译过程 理解链接过程，尤其是程序的组织部分 理解库的使用方式 理解 Library Interpostion 的机制及几种不同的类型  使用集成开发环境(IDE)很方便，但是在『执行">
+<meta property="og:description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-07-zhang-lian-jie 学习目标 理解从源代码转换到计算机可执行的二进制代码之间需要经过的处理 理解编译过程 理解链接过程，尤其是程序的组织部分 理解库的使用方式 理解 Library Interpostion 的机制及几种不同的类型  使用集成开发环境(IDE)很方便，但是在『执行』的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-01-08T16:00:00.000Z">
@@ -198,10 +198,8 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第七章】链接-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-08T16:00:00.000Z" title="发表于 2021-01-09 00:00:00">2021-01-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br>
-<a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-07-zhang-lian-jie">https://fengmuzi2003.gitbook.io/csapp3e/di-07-zhang-lian-jie</a></p>
-<h2 id="学习目标">学习目标</h2>
-<ol>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第七章】链接-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-08T16:00:00.000Z" title="发表于 2021-01-09 00:00:00">2021-01-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br><a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-07-zhang-lian-jie">https://fengmuzi2003.gitbook.io/csapp3e/di-07-zhang-lian-jie</a></p>
+<h2 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h2><ol>
 <li>理解从源代码转换到计算机可执行的二进制代码之间需要经过的处理</li>
 <li>理解编译过程</li>
 <li>理解链接过程，尤其是程序的组织部分</li>
@@ -209,8 +207,7 @@
 <li>理解 Library Interpostion 的机制及几种不同的类型</li>
 </ol>
 <p>使用集成开发环境(IDE)很方便，但是在『执行』的按钮背后，其实发生了太多太多的事情。当然，作为初学者，一开始避开过多的复杂专注于学习编写代码无可厚非，但是该学的永远逃不掉，不了解自己的代码是如何一步步成为计算机课执行的程序的，就很难在遇到各种疑难杂症的时候快速定位问题所在。另外，无论是编译器还是链接器，都可以通过不同的参数进行各种定制，如果不搞清楚，恐怕只能永远依赖 IDE 了。IDE 很好，但任何东西都不能过分依赖，真正合理的应该是庖丁解牛后，挑选最适合自己的。</p>
-<h2 id="编译">编译</h2>
-<p>C 语言代码最终成为机器可执行的程序，会像流水线上的产品一样接受各项处理：</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>C 语言代码最终成为机器可执行的程序，会像流水线上的产品一样接受各项处理：</p>
 <ul>
 <li><strong>预处理器</strong>：将 C 语言代码(da.c)转化成 <code>da.i</code> 文件(<code>gcc –E</code>)，对应于预处理命令 <code>cpp</code></li>
 <li><strong>编译器</strong>：C 语言代码(da.c, wang.c)经过编译器的处理(<code>gcc -0g -S</code>)成为汇编代码(da.s, wang.s)</li>
@@ -240,15 +237,16 @@
 </ul>
 <p>我们来看一个具体的例子，假设我们有这么两个代码文件，其中 <code>main</code> 函数调用了另一个函数 <code>sum</code>:</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br></pre></td><td><pre><span></span><br><span><span><span>int</span> <span>sum</span><span>(<span>int</span> *a, <span>int</span> n)</span></span>;</span><br><span></span><br><span><span>int</span> <span>array</span>[<span>2</span>] = {<span>1</span>, <span>2</span>};</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> val = sum(<span>array</span>, <span>2</span>);</span><br><span>    <span>return</span> val;</span><br><span>}</span><br><span></span><br><span></span><br><span></span><br><span><span><span>int</span> <span>sum</span><span>(<span>int</span> *a, <span>int</span> n)</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> i, s = <span>0</span>;</span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; n; i++)</span><br><span>        s += a[i];</span><br><span>    </span><br><span>    <span>return</span> s;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>我们用下面的命令来编译执行：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br></pre></td><td><pre><span>linux&gt; gcc -Og -o prog main.c sum.c</span><br><span>linux&gt; ./prog</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>编译器实际上会分别编译不同的源代码，生成 <code>.o</code> 文件，具体把这些文件链接在一起的是 Linker 链接器，整个过程如下图所示：</p>
 <p><img src="/img/post/csapp/14613261957551.jpg" alt=""></p>
 <p>编译器部分这里不做过多介绍，以后有机会会专门写文章来说明，接下来主要说说链接器。</p>
-<h2 id="链接基本知识">链接基本知识</h2>
-<blockquote>
+<h2 id="链接基本知识"><a href="#链接基本知识" class="headerlink" title="链接基本知识"></a>链接基本知识</h2><blockquote>
 <p>为什么要使用链接器？</p>
 </blockquote>
 <p>有如下两个原因。</p>
@@ -266,110 +264,90 @@
 <p><strong>第二步：重定位 Relocation</strong></p>
 <p>这一步所做的工作是把原先分开的代码和数据片段汇总成一个文件，会把原先在 <code>.o</code> 文件中的相对位置转换成在可执行程序的绝对位置，并且据此更新对应的引用符号（才能找到新的位置）</p>
 <p>在具体来看这两步做了啥之前，先要理解下面几个概念。</p>
-<h3 id="三种对象文件">三种对象文件</h3>
-<p>所谓的对象文件(Object File)实际上是一个统称，具体来说有以下三种形式：</p>
+<h3 id="三种对象文件"><a href="#三种对象文件" class="headerlink" title="三种对象文件"></a>三种对象文件</h3><p>所谓的对象文件(Object File)实际上是一个统称，具体来说有以下三种形式：</p>
 <ul>
-<li>可重定位目标文件 Relocatable object file (<code>.o</code> file)
-<ul>
+<li>可重定位目标文件 Relocatable object file (<code>.o</code> file)<ul>
 <li>每个 <code>.o</code> 文件都是由对应的 <code>.c</code> 文件通过编译器和汇编器生成，包含代码和数据，可以与其他可重定位目标文件合并创建一个可执行或共享的目标文件</li>
 </ul>
 </li>
-<li>可执行目标文件 Executable object file (<code>a.out</code> file)
-<ul>
+<li>可执行目标文件 Executable object file (<code>a.out</code> file)<ul>
 <li>由链接器生成，可以直接通过加载器加载到内存中充当进程执行的文件，包含代码和数据</li>
 </ul>
 </li>
-<li>共享目标文件 Shared object file (<code>.so</code> file)
-<ul>
+<li>共享目标文件 Shared object file (<code>.so</code> file)<ul>
 <li>在 windows 中被称为 Dynamic Link Libraries(DLLs)，是类特殊的可重定位目标文件，可以在链接(静态共享库)时加入目标文件或加载时或运行时(动态共享库)被动态的加载到内存并执行</li>
 </ul>
 </li>
 </ul>
-<h3 id="对象文件格式">对象文件格式</h3>
-<p>上面提到的三种对象文件有统一的格式，即 Executable and Linkable Format(ELF)，因为，我们把它们统称为 ELF binaries，具体的文件格式如下</p>
+<h3 id="对象文件格式"><a href="#对象文件格式" class="headerlink" title="对象文件格式"></a>对象文件格式</h3><p>上面提到的三种对象文件有统一的格式，即 Executable and Linkable Format(ELF)，因为，我们把它们统称为 ELF binaries，具体的文件格式如下</p>
 <p><img src="/img/post/csapp/14613276806705.jpg" alt=""></p>
 <p>下面分别介绍一下各个部分：</p>
 <ul>
-<li>ELF header
-<ul>
+<li>ELF header<ul>
 <li>包含 word size, byte ordering, file type (.o, exec, .so), machine type, etc</li>
 </ul>
 </li>
-<li>Segment header table
-<ul>
+<li>Segment header table<ul>
 <li>包含 page size, virtual addresses memory segments(sections), segment sizes</li>
 </ul>
 </li>
-<li>.text section
-<ul>
+<li>.text section<ul>
 <li>代码部分</li>
 </ul>
 </li>
-<li>.rodata section
-<ul>
+<li>.rodata section<ul>
 <li>只读数据部分，例如跳转表</li>
 </ul>
 </li>
-<li>.data section
-<ul>
+<li>.data section<ul>
 <li>初始化的全局变量</li>
 </ul>
 </li>
-<li>.bss section
-<ul>
+<li>.bss section<ul>
 <li>未初始化的全局变量</li>
 </ul>
 </li>
-<li>.symtab section
-<ul>
+<li>.symtab section<ul>
 <li>包含 symbol table, procudure 和 static variable names 以及 section names 和 location</li>
 </ul>
 </li>
-<li>.rel.txt section
-<ul>
+<li>.rel.txt section<ul>
 <li>.text section 的重定位信息</li>
 </ul>
 </li>
-<li>.rel.data section
-<ul>
+<li>.rel.data section<ul>
 <li>.data section 的重定位信息</li>
 </ul>
 </li>
-<li>.debug section
-<ul>
+<li>.debug section<ul>
 <li>包含 symbolic debugging (<code>gcc -g</code>) 的信息</li>
 </ul>
 </li>
-<li>Section header table
-<ul>
+<li>Section header table<ul>
 <li>每个 section 的大小和偏移量</li>
 </ul>
 </li>
 </ul>
 <p>链接器实际上会处理三种不同的符号，对应于代码中不同写法的部分：</p>
 <ul>
-<li>全局符号 Global symbols
-<ul>
+<li>全局符号 Global symbols<ul>
 <li>在当前模块中定义，且可以被其他代码引用的符号，例如非静态 C 函数和非静态全局变量</li>
 </ul>
 </li>
-<li>外部符号 External symbols
-<ul>
+<li>外部符号 External symbols<ul>
 <li>同样是全局符号，但是是在其他模块（也就是其他的源代码）中定义的，但是可以在当前模块中引用</li>
 </ul>
 </li>
-<li>本地符号 Local symbols
-<ul>
+<li>本地符号 Local symbols<ul>
 <li>在当前模块中定义，只能被当前模块引用的符号，例如静态函数和静态全局变量</li>
 <li>注意，Local linker symbol 并不是 local program variables</li>
 </ul>
 </li>
 </ul>
-<h2 id="链接过程">链接过程</h2>
-<p>链接器主要是将有关的目标文件彼此相连接生成可加载、可执行的目标文件。链接器的核心工作就是符号表解析和重定位。</p>
-<h3 id="第一步-符号解析-Symbol-resolution">第一步 符号解析 Symbol resolution</h3>
-<p>还是用刚才的代码为例子，我们从链接器的视角来看看</p>
+<h2 id="链接过程"><a href="#链接过程" class="headerlink" title="链接过程"></a>链接过程</h2><p>链接器主要是将有关的目标文件彼此相连接生成可加载、可执行的目标文件。链接器的核心工作就是符号表解析和重定位。</p>
+<h3 id="第一步-符号解析-Symbol-resolution"><a href="#第一步-符号解析-Symbol-resolution" class="headerlink" title="第一步 符号解析 Symbol resolution"></a>第一步 符号解析 Symbol resolution</h3><p>还是用刚才的代码为例子，我们从链接器的视角来看看</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br></pre></td><td><pre><span></span><br><span><span><span>int</span> <span>sum</span><span>(<span>int</span> *a, <span>int</span> n)</span></span>;</span><br><span></span><br><span><span>int</span> <span>array</span>[<span>2</span>] = {<span>1</span>, <span>2</span>}; </span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span> </span></span><br><span><span></span>{</span><br><span>    <span>int</span> val = sum(<span>array</span>, <span>2</span>);</span><br><span>    </span><br><span>    </span><br><span>    </span><br><span>    <span>return</span> val;</span><br><span>}</span><br><span></span><br><span></span><br><span></span><br><span><span><span>int</span> <span>sum</span><span>(<span>int</span> *a, <span>int</span> n)</span> </span></span><br><span><span></span>{</span><br><span>    <span>int</span> i, s = <span>0</span>;</span><br><span>    </span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; n; i++)</span><br><span>        s += a[i];</span><br><span>    </span><br><span>    <span>return</span> s;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>我们可以看到，链接器只知道非静态的全局变量/函数，而对于局部变量一无所知。然后我们来看看局部非静态变量和局部静态变量的区别：</p>
 <ul>
@@ -378,6 +356,7 @@
 </ul>
 <p>那如果两个函数中定义了同名的静态变量会怎么样呢？首先，编译器会在 <code>.data</code> 部分为每一个静态变量进行定义，如果遇到同名，就会在本地的符号表中自动给出唯一的编号，比如下面例子中的变量 <code>x</code>，可能在符号表中是 <code>x.1</code> 和 <code>x.2</code></p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br></pre></td><td><pre><span><span><span>int</span> <span>f</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>static</span> <span>int</span> x = <span>0</span>;</span><br><span>    <span>return</span> x;</span><br><span>}</span><br><span></span><br><span><span><span>int</span> <span>g</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>static</span> <span>int</span> x = <span>1</span>;</span><br><span>    <span>return</span> x;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>那如果两个文件中定义了同名的全局变量呢？要想弄清楚会发生什么，就先要知道，不同的符号是有强弱之分的：</p>
 <ul>
@@ -386,6 +365,7 @@
 </ul>
 <p>我们可以来看看下面的例子</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span></span><br><span><span>int</span> foo = <span>5</span>; </span><br><span>p1() { ... } </span><br><span></span><br><span></span><br><span></span><br><span><span>int</span> foo;     </span><br><span>p2() { ... } </span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>链接器在处理强弱符号的时候遵守以下规则：</p>
 <ol>
@@ -395,15 +375,19 @@
 </ol>
 <p>我们可以看看下面几个例子：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br></pre></td><td><pre><span></span><br><span><span>int</span> x; </span><br><span>p1() { ... } </span><br><span></span><br><span></span><br><span></span><br><span>p1() { ... }</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>可以看到上面代码中声明了两个同名的函数，都是强符号，所以会出现链接错误。</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span></span><br><span><span>int</span> x; </span><br><span>p1() { ... } </span><br><span></span><br><span></span><br><span></span><br><span><span>int</span> x;</span><br><span>p2() { ... }</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>上面的两个 x 实际上在执行时会引用同一个未初始化的整型，并不是两个独立的变量。</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br></pre></td><td><pre><span></span><br><span><span>int</span> x; </span><br><span><span>int</span> y;</span><br><span>p1() { ... } </span><br><span></span><br><span></span><br><span></span><br><span><span>double</span> x;</span><br><span>p2() { ... }</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>上面这个例子很有趣，这里 p1 和 p2 中定义的变量都是弱符号，我们对 p2 中的 x 进行写入时，居然可能会影响到 p1 中的 y！想想为什么？其实原因很简单，以为 x 实际上引用的是同一个地址，而 double 的字节数是 int 的两倍，所以 y 就『躺枪』了。</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br></pre></td><td><pre><span></span><br><span><span>int</span> x = <span>7</span>; </span><br><span><span>int</span> y = <span>4</span>;</span><br><span>p1() { ... } </span><br><span></span><br><span></span><br><span></span><br><span><span>double</span> x;</span><br><span>p2() { ... }</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>这个例子是强弱符号间的引用了，p1 中的变量因为初始化的缘故，是强符号，所以在 p2 中引用 x 时，实际上操作的是 p1 中定义的全局变量的值，而因为 p2 中 x 是 double 类型，所以一旦进行改动，实际上就 p1 中 x 和 y 都会受到影响。</p>
 <p>从这些例子中，我们已经能够看出链接中可能会出现的问题，更可怕的是两个同名的弱结构体引用，不同的编译器可能有不同的对齐方式，真正编译运行的时候，就会出现非常奇怪的行为，这种 bug 一旦出现，几乎是很难在短时间内发现并解决的。</p>
@@ -415,36 +399,37 @@
 <li>定义全局变量的时候初始化</li>
 <li>注意使用 <code>extern</code> 关键字</li>
 </ul>
-<h3 id="第二步-重定位-Relocation">第二步 重定位 Relocation</h3>
-<p>重定位的过程比较简单，大概的过程，通过下图就可以看得比较清楚，就是把不同可重定位对象文件拼成可执行对象文件：</p>
+<h3 id="第二步-重定位-Relocation"><a href="#第二步-重定位-Relocation" class="headerlink" title="第二步 重定位 Relocation"></a>第二步 重定位 Relocation</h3><p>重定位的过程比较简单，大概的过程，通过下图就可以看得比较清楚，就是把不同可重定位对象文件拼成可执行对象文件：</p>
 <p><img src="/img/post/csapp/14613302583660.jpg" alt=""></p>
 <p>我们从汇编代码的角度来看看具体链接器是如何工作的，还是之前的代码：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span><span><span>int</span> <span>sum</span><span>(<span>int</span> *a, <span>int</span> n)</span></span>;</span><br><span><span>int</span> <span>array</span>[<span>2</span>] = {<span>1</span>, <span>2</span>};</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> val = sum(<span>array</span>, <span>2</span>);</span><br><span>    <span>return</span> val;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>我们通过 <code>objdump -r -d main.o</code> 反编译对应的可重定位对象文件，可以得到如下的汇编代码：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br></pre></td><td><pre><span>0000000000000000 &lt;main&gt;:</span><br><span>    0: 48 83 ec 08      sub   $0x8, %rsp</span><br><span>    4: be 02 00 00 00   mov   $0x2, %esi </span><br><span>    9: bf 00 00 00 00   mov   $0x0, %edi  # %edi = &amp;array</span><br><span>                a: R_X86_64_32 array      # Relocation entry</span><br><span>    e: e8 00 00 00 00   callq 13 &lt;main+0x13&gt; # sum()</span><br><span>                f: R_X86_64_PC32 sum-0x4  # Relocation entry</span><br><span>   13: 48 83 c4 08      add   $0x8, %rsp</span><br><span>   17: c3               retq</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>这里我们可以看到，编译器用 relocation entry 来标记不同的调用（注意看对应的代码后面四组数字都是零，就是留出位置让链接器在链接的时候填上对应的实际内存地址）</p>
 <p>在完成链接之后我们得到 <code>prog</code> 这个程序，同样反编译 <code>objdump -dx prog</code> 可以看到：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br></pre></td><td><pre><span>00000000004004d0 &lt;main&gt;:</span><br><span>    4004d0: 48 83 ec 08      sub   $0x8, %rsp</span><br><span>    4004d4: be 02 00 00 00   mov   $0x2, %esi </span><br><span>    4004d9: bf 18 10 60 00   mov   $0x0, %edi  # %edi = &amp;array</span><br><span>    4004de: e8 05 00 00 00   callq 4004e8 &lt;sum&gt; # sum()</span><br><span>    4004e3: 48 83 c4 08      add   $0x8, %rsp</span><br><span>    4004e7: c3               retq </span><br><span></span><br><span>00000000004004e8 &lt;sum&gt;:</span><br><span>    4004e8: b8 00 00 00 00   mov   $0x0, %eax</span><br><span>    ...</span><br><span>    ...</span><br><span>    400501: f3 c3            repz retq</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>对应的地址已经被填上去了，这里注意用的是相对的位置，比方说 <code>0x4004de</code> 中的 <code>05 00 00 00</code> 的意思实际上是说要在下一句的基础上加上 <code>0x5</code>，也就是 <code>0x4004e8</code>，即 <code>sum</code> 函数的开始位置。</p>
 <p>具体载入内存的时候，大概是这样的</p>
 <p><img src="/img/post/csapp/14613335526946.jpg" alt=""></p>
 <p>需要注意左边的部分地址从上往下（上面地址较小），右边则是从下往上（下面地址较小），这也是为什么黄色和蓝色的顺序在两边是不一样的。</p>
-<h2 id="打包常用程序">打包常用程序</h2>
-<p>基本上每个程序都会用到某些特定的函数，比如：数学计算, 输入输出, 内存管理, 字符串操作等等，我们能用什么方法把它们结合到程序中呢，有以下两个思路：</p>
+<h2 id="打包常用程序"><a href="#打包常用程序" class="headerlink" title="打包常用程序"></a>打包常用程序</h2><p>基本上每个程序都会用到某些特定的函数，比如：数学计算, 输入输出, 内存管理, 字符串操作等等，我们能用什么方法把它们结合到程序中呢，有以下两个思路：</p>
 <ul>
 <li>思路 1：把所有的函数放到一个源文件中，程序员每次把这一整个大块头链接到自己的程序中，这种做法从时间和空间上来说都比较低效</li>
 <li>思路 2：不同的函数放到不同的源文件中，由程序员显式链接所需要的函数，这种做法效率更高，但是相当于是给程序员增加负担了</li>
 </ul>
-<h3 id="静态库-Static-Library">静态库 Static Library</h3>
-<p>比较老式的做法就是所谓的静态库(Static Libraries, <code>.a</code> 表示 archive files)</p>
+<h3 id="静态库-Static-Library"><a href="#静态库-Static-Library" class="headerlink" title="静态库 Static Library"></a>静态库 Static Library</h3><p>比较老式的做法就是所谓的静态库(Static Libraries, <code>.a</code> 表示 archive files)</p>
 <p>静态库是一个外部函数与变量的集合体。静态库的文件内容，通常包含一堆程序员自定的变量与函数，其内容不像动态链接库那么复杂，在编译期间由编译器与连接器将它集成至应用程序内，并制作成目标文件以及可以独立运作的可执行文件。而这个可执行文件与编译可执行文件的程序，都是一种程序的静态创建（static build）</p>
 <p>具体过程就是把不同文件的 .o 文件通过 Archiver 打包成为一个 .a 文件。Archiver 支持增量更新，如果有函数变动，只需要重新编译改动的部分。</p>
 <p>在 C 语言中最常用的是 C 标准库与 C 数学库。C 标准库一般可以通过 <code>libc.a</code> 来进行引用，大小 4.6 MB，包含 1496 个对象文件，主要负责输入输出、内存分配、信号处理、字符串处理、操作数据和实践、生成随机数及整型的数学运算。C 数学库可以通过 <code>libm.a</code> 来引用，大小 2 MB，包含 444 个对象文件，主要是提供浮点数运算的支持（比如三角函数、幂次等等）</p>
 <p>我们来看一个具体的例子，自己编写一个向量运算库 <code>libvector.a</code>，其中包含两个函数 <code>addvec</code> 和 <code>multvec</code>，代码为：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br></pre></td><td><pre><span></span><br><span><span>#<span>include</span> <span>&lt;stdio.h&gt;</span></span></span><br><span><span>#<span>include</span> <span>"vector.h"</span></span></span><br><span></span><br><span><span>int</span> x[<span>2</span>] = {<span>1</span>, <span>2</span>};</span><br><span><span>int</span> y[<span>2</span>] = {<span>3</span>, <span>4</span>};</span><br><span><span>int</span> z[<span>2</span>];</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    addvec(x, y, z, <span>2</span>);</span><br><span>    <span>printf</span>(<span>"z = [%d %d]\n"</span>, z[<span>0</span>], z[<span>1</span>]);</span><br><span>    <span>return</span> <span>0</span>;</span><br><span>}</span><br><span></span><br><span></span><br><span></span><br><span><span><span>void</span> <span>addvec</span><span>(<span>int</span> *x, <span>int</span> *y, <span>int</span> *z, <span>int</span> n)</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> i;</span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; n; i++)</span><br><span>        z[i] = x[i] + y[i];</span><br><span>}</span><br><span></span><br><span></span><br><span></span><br><span><span><span>void</span> <span>multvec</span><span>(<span>int</span> *x, <span>int</span> *y, <span>int</span> *z, <span>int</span> n)</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> i;</span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; n; i++)</span><br><span>        z[i] = x[i] * y[i];</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>具体过程可见下图：</p>
 <p><img src="/img/post/csapp/14613353540958.jpg" alt=""></p>
@@ -457,18 +442,17 @@
 </ul>
 <p>因为是按顺序查找，所以实际上是有引用依赖问题的，也就是说写编译命令的时候，顺序是很重要的！我们看下面这个例子，这里 <code>libtest.o</code> 中引用了 <code>lmine</code> 库中的 <code>libfun</code> 函数，仔细比较两个的顺序：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span>unix&gt; gcc -L. libtest.o -lmine</span><br><span></span><br><span>unix&gt; gcc -L. -lmine libtest.o</span><br><span>libtest.o: In <span>function</span> `main`:</span><br><span>libtest.o(.text+0x4): Undefined reference to `libfun`</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>第一条命令中，在编译链接的时候，如果在 libtest.o 中发现了外部引用，就会在 -lmine 中查找，但是如果反过来，在第二条语句中 libtest.o 后面没有东西，就会出现找不到引用的错误。从中我们可以得到一个写编译命令的技巧：</p>
 <p><strong>把静态库都放到后面去</strong></p>
-<h3 id="共享库-Shared-Library">共享库 Shared Library</h3>
-<p>静态库很方便，但是如果我们只是想用库中的某一个函数，却仍然得把所有的内容都链接进去。一个更现代的方法则是使用共享库，避免了在文件中静态库的大量重复。</p>
-<p>动态链接可以在首次载入的时候执行(load-time linking)，这是 Linux 的标准做法，会由动态链接器 <code>ld-linux.so</code> 完成，比方标准 C 库(<a target="_blank" rel="noopener" href="http://libc.so">libc.so</a>) 通常就是动态链接的，这样所有的程序可以共享同一个库，而不用分别进行封装。</p>
+<h3 id="共享库-Shared-Library"><a href="#共享库-Shared-Library" class="headerlink" title="共享库 Shared Library"></a>共享库 Shared Library</h3><p>静态库很方便，但是如果我们只是想用库中的某一个函数，却仍然得把所有的内容都链接进去。一个更现代的方法则是使用共享库，避免了在文件中静态库的大量重复。</p>
+<p>动态链接可以在首次载入的时候执行(load-time linking)，这是 Linux 的标准做法，会由动态链接器 <code>ld-linux.so</code> 完成，比方标准 C 库(libc.so) 通常就是动态链接的，这样所有的程序可以共享同一个库，而不用分别进行封装。</p>
 <p>还是用刚才的例子，如果我们使用动态链接，过程如下：</p>
 <p><img src="/img/post/csapp/14613373029640.jpg" alt=""></p>
 <p>动态链接也可以在程序开始执行的时候完成(run-time linking)，在 Linux 中使用 <code>dlopen()</code> 接口来完成（会使用函数指针），通常用于分布式软件，高性能服务器上。而且共享库也可以在多个进程间共享，这在后面学习到虚拟内存的时候会介绍。</p>
 <p>链接使得我们可以用多个对象文件构造我们的程序。可以在程序的不同阶段进行（编译、载入、运行期间均可），理解链接可以帮助我们避免遇到奇怪的错误。</p>
-<h2 id="案例学习-Library-Interpositioning">案例学习 Library Interpositioning</h2>
-<p>这是一个非常有意思的技术，我们可以通过这个技术让程序运行任意我们想要的代码，比方说我们的程序中使用了 <code>malloc</code>，我们可以通过 library interpositioning 让程序执行我们自定义的 <code>malloc</code> 而不是标准库中的 <code>malloc</code>。</p>
+<h2 id="案例学习-Library-Interpositioning"><a href="#案例学习-Library-Interpositioning" class="headerlink" title="案例学习 Library Interpositioning"></a>案例学习 Library Interpositioning</h2><p>这是一个非常有意思的技术，我们可以通过这个技术让程序运行任意我们想要的代码，比方说我们的程序中使用了 <code>malloc</code>，我们可以通过 library interpositioning 让程序执行我们自定义的 <code>malloc</code> 而不是标准库中的 <code>malloc</code>。</p>
 <p>因为这相当于是某种链接技术，所以同样可以在不同的时候发生，如：</p>
 <ul>
 <li>编译时</li>
@@ -477,19 +461,16 @@
 </ul>
 <p>这个技术可以应用在</p>
 <ul>
-<li>安全方面
-<ul>
+<li>安全方面<ul>
 <li>沙盒机制</li>
 <li>加密</li>
 </ul>
 </li>
-<li>调试方面
-<ul>
+<li>调试方面<ul>
 <li>可以找到隐藏比较深的 bug</li>
 </ul>
 </li>
-<li>监控和查看性能
-<ul>
+<li>监控和查看性能<ul>
 <li>统计函数调用的次数</li>
 <li>检测内存泄露</li>
 <li>生成地址记录</li>
@@ -497,11 +478,9 @@
 </li>
 </ul>
 <p>具体的例子可以参考<a target="_blank" rel="noopener" href="http://jayconrod.com/posts/23/tutorial-function-interposition-in-linux">Tutorial: Function Interposition in Linux</a>，这里不再赘述。</p>
-<h2 id="总结"><a target="_blank" rel="noopener" href="https://wdxtub.com/csapp/thin-csapp-4/2016/04/16/#%E6%80%BB%E7%BB%93" title="总结"></a>总结</h2>
-<p>这一讲中，我们从编译阶段入手，通过具体的例子了解了链接过程中的相关知识和技术。链接主要包括符号解析和重定向两个步骤，在链接的基础上，可以采用静态库或者动态链接的方式引用外部的代码。最后我们简单介绍了基于链接的 Library Interpositioning 技术。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><a target="_blank" rel="noopener" href="https://wdxtub.com/csapp/thin-csapp-4/2016/04/16/#%E6%80%BB%E7%BB%93" title="总结"></a>总结</h2><p>这一讲中，我们从编译阶段入手，通过具体的例子了解了链接过程中的相关知识和技术。链接主要包括符号解析和重定向两个步骤，在链接的基础上，可以采用静态库或者动态链接的方式引用外部的代码。最后我们简单介绍了基于链接的 Library Interpositioning 技术。</p>
 <p>这一讲可以看做是前半部分的收尾，之后我们从代码级进入到系统级，具体看看操作系统是如何完成各项复杂工作的。</p>
-<h2 id="参考资料"><a target="_blank" rel="noopener" href="https://wdxtub.com/csapp/thin-csapp-4/2016/04/16/#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" title="参考资料"></a>参考资料</h2>
-<ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><a target="_blank" rel="noopener" href="https://wdxtub.com/csapp/thin-csapp-4/2016/04/16/#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" title="参考资料"></a>参考资料</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/oubo/archive/2011/12/06/2394631.html">C编译器、链接器、加载器详解</a></li>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9D%99%E6%80%81%E5%BA%93">静态库</a></li>
 </ul>

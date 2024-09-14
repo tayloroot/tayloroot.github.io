@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-系统调用、中断和上下文切换 (50 行实现操作系统内核) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课深入探讨了操作系统中的关键机制——系统调用、中断及上下文切换，展示了操作系统如何通过抽象和API简化应用程序的执行。课程详细分析了复杂的动态链接和加载过程，CISC指令如何实现系统调用，以及操作系统如何通过中断机制保证系统运行的稳定性。 1. 动态链接与API的角色   动态链接和加载的挑战及实现:  动态链接和加载涉及正确地调用与访问外部变量和函数，要求对操作系统的对象和API有深入理解。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-系统调用、中断和上下文切换 (50 行实现操作系统内核) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课深入探讨了操作系统中的关键机制——系统调用、中断及上下文切换，展示了操作系统如何通过抽象和API简化应用程序的执行。课程详细分析了复杂的动态链接和加载过程，CISC指令如何实现系统调用，以及操作系统如何通过中断机制保证系统运行的稳定性。   1. 动态链接与API的角色 动态链接和加载的挑战及实现:    动态链接和加载涉及正确地调用与访问外部变量和函数，要求对操作系统的对象和API有深入理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="南京大学-操作系统-系统调用、中断和上下文切换 (50 行实现操作系统内核)">
 <meta property="og:url" content="http://mmwiki.cn/posts/94d3c879.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="本节课深入探讨了操作系统中的关键机制——系统调用、中断及上下文切换，展示了操作系统如何通过抽象和API简化应用程序的执行。课程详细分析了复杂的动态链接和加载过程，CISC指令如何实现系统调用，以及操作系统如何通过中断机制保证系统运行的稳定性。 1. 动态链接与API的角色   动态链接和加载的挑战及实现:  动态链接和加载涉及正确地调用与访问外部变量和函数，要求对操作系统的对象和API有深入理解。">
+<meta property="og:description" content="本节课深入探讨了操作系统中的关键机制——系统调用、中断及上下文切换，展示了操作系统如何通过抽象和API简化应用程序的执行。课程详细分析了复杂的动态链接和加载过程，CISC指令如何实现系统调用，以及操作系统如何通过中断机制保证系统运行的稳定性。   1. 动态链接与API的角色 动态链接和加载的挑战及实现:    动态链接和加载涉及正确地调用与访问外部变量和函数，要求对操作系统的对象和API有深入理">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-05-18T16:00:00.000Z">
@@ -198,75 +198,60 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-系统调用、中断和上下文切换 (50 行实现操作系统内核)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-18T16:00:00.000Z" title="发表于 2021-05-19 00:00:00">2021-05-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">881</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>本节课深入探讨了操作系统中的关键机制——系统调用、中断及上下文切换，展示了操作系统如何通过抽象和API简化应用程序的执行。课程详细分析了复杂的动态链接和加载过程，CISC指令如何实现系统调用，以及操作系统如何通过中断机制保证系统运行的稳定性。</p>
-<h3 id="1-动态链接与API的角色">1. 动态链接与API的角色</h3>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-系统调用、中断和上下文切换 (50 行实现操作系统内核)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-18T16:00:00.000Z" title="发表于 2021-05-19 00:00:00">2021-05-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">881</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>本节课深入探讨了操作系统中的关键机制——系统调用、中断及上下文切换，展示了操作系统如何通过抽象和API简化应用程序的执行。课程详细分析了复杂的动态链接和加载过程，CISC指令如何实现系统调用，以及操作系统如何通过中断机制保证系统运行的稳定性。  </p>
+<h3 id="1-动态链接与API的角色"><a href="#1-动态链接与API的角色" class="headerlink" title="1. 动态链接与API的角色"></a>1. 动态链接与API的角色</h3><ul>
+<li><p><strong>动态链接和加载的挑战及实现</strong>:  </p>
 <ul>
-<li>
-<p><strong>动态链接和加载的挑战及实现</strong>:</p>
-<ul>
-<li>动态链接和加载涉及正确地调用与访问外部变量和函数，要求对操作系统的对象和API有深入理解。</li>
-<li>操作系统的结构由对象和API构成，它们决定了应用程序如何通过静态和动态链接运行，以实现高效的资源管理。</li>
+<li>动态链接和加载涉及正确地调用与访问外部变量和函数，要求对操作系统的对象和API有深入理解。  </li>
+<li>操作系统的结构由对象和API构成，它们决定了应用程序如何通过静态和动态链接运行，以实现高效的资源管理。  </li>
 </ul>
 </li>
-<li>
-<p><strong>动态链接库的重定位与性能挑战</strong>:</p>
+<li><p><strong>动态链接库的重定位与性能挑战</strong>:  </p>
 <ul>
-<li>在动态链接中，重定位是确保库在不同内存地址运行的关键。位置无关代码（PIC）使动态库在多种环境中高效执行。</li>
-<li>此外，编译器需要解决外部符号的引用，因而生成的跳转指令可能影响程序性能。</li>
+<li>在动态链接中，重定位是确保库在不同内存地址运行的关键。位置无关代码（PIC）使动态库在多种环境中高效执行。  </li>
+<li>此外，编译器需要解决外部符号的引用，因而生成的跳转指令可能影响程序性能。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="2-人工智能与动态链接学习">2. 人工智能与动态链接学习</h3>
-<ul>
-<li><strong>AI对技术概念的直观解析</strong>:
-<ul>
-<li>人工智能能够帮助理解如动态链接二进制文件等复杂概念，通过拆解问题和逐步指导，提高学习效率。</li>
-<li>AI辅助下，执行动态链接和加载的多个组件如loader和动态链接器的理解变得简化。</li>
+<h3 id="2-人工智能与动态链接学习"><a href="#2-人工智能与动态链接学习" class="headerlink" title="2. 人工智能与动态链接学习"></a>2. 人工智能与动态链接学习</h3><ul>
+<li><strong>AI对技术概念的直观解析</strong>:  <ul>
+<li>人工智能能够帮助理解如动态链接二进制文件等复杂概念，通过拆解问题和逐步指导，提高学习效率。  </li>
+<li>AI辅助下，执行动态链接和加载的多个组件如loader和动态链接器的理解变得简化。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="3-系统调用与操作系统接口">3. 系统调用与操作系统接口</h3>
-<ul>
-<li><strong>CISC与系统调用的关系</strong>:
-<ul>
-<li>CISC（复杂指令集计算机）指令是应用程序与操作系统内核间的桥梁，支持资源管理和任务执行。</li>
-<li>理解CISC指令如何实现系统调用，帮助优化软件性能并增强理解现代操作系统的变化，如32位到64位转变。</li>
+<h3 id="3-系统调用与操作系统接口"><a href="#3-系统调用与操作系统接口" class="headerlink" title="3. 系统调用与操作系统接口"></a>3. 系统调用与操作系统接口</h3><ul>
+<li><strong>CISC与系统调用的关系</strong>:  <ul>
+<li>CISC（复杂指令集计算机）指令是应用程序与操作系统内核间的桥梁，支持资源管理和任务执行。  </li>
+<li>理解CISC指令如何实现系统调用，帮助优化软件性能并增强理解现代操作系统的变化，如32位到64位转变。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="4-高权限模式与多任务处理">4. 高权限模式与多任务处理</h3>
-<ul>
-<li><strong>多任务处理实现机制</strong>:
-<ul>
-<li>在高权限模式下，操作系统控制寄存器和内存环境，通过中断与特定指令支持多任务处理。</li>
-<li>通过虚拟内存和分页技术，Linux内核高效管理进程地址空间。</li>
+<h3 id="4-高权限模式与多任务处理"><a href="#4-高权限模式与多任务处理" class="headerlink" title="4. 高权限模式与多任务处理"></a>4. 高权限模式与多任务处理</h3><ul>
+<li><strong>多任务处理实现机制</strong>:  <ul>
+<li>在高权限模式下，操作系统控制寄存器和内存环境，通过中断与特定指令支持多任务处理。  </li>
+<li>通过虚拟内存和分页技术，Linux内核高效管理进程地址空间。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="5-中断机制与系统稳定性">5. 中断机制与系统稳定性</h3>
-<ul>
-<li><strong>中断与调度实现</strong>:
-<ul>
-<li>中断机制能处理死循环和异常事件，通过重置保障系统稳定性。它承载多线程调度和资源管理的重要任务。</li>
-<li>中断设计指导了现代RISC（精简指令集计算机）架构下，系统调用与中断处理的整合。</li>
+<h3 id="5-中断机制与系统稳定性"><a href="#5-中断机制与系统稳定性" class="headerlink" title="5. 中断机制与系统稳定性"></a>5. 中断机制与系统稳定性</h3><ul>
+<li><strong>中断与调度实现</strong>:  <ul>
+<li>中断机制能处理死循环和异常事件，通过重置保障系统稳定性。它承载多线程调度和资源管理的重要任务。  </li>
+<li>中断设计指导了现代RISC（精简指令集计算机）架构下，系统调用与中断处理的整合。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="6-过程切换与上下文管理">6. 过程切换与上下文管理</h3>
-<ul>
-<li><strong>上下文保存与恢复</strong>:
-<ul>
-<li>操作系统通过保存寄存器状态，确保上下文切换时，程序正确恢复，提高并发性能。</li>
-<li>操作系统使用简洁高效的中断处理程序（例如仅三行代码）实现寄存器状态的快速切换。</li>
+<h3 id="6-过程切换与上下文管理"><a href="#6-过程切换与上下文管理" class="headerlink" title="6. 过程切换与上下文管理"></a>6. 过程切换与上下文管理</h3><ul>
+<li><strong>上下文保存与恢复</strong>:  <ul>
+<li>操作系统通过保存寄存器状态，确保上下文切换时，程序正确恢复，提高并发性能。  </li>
+<li>操作系统使用简洁高效的中断处理程序（例如仅三行代码）实现寄存器状态的快速切换。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="7-操作系统中的进程与线程管理">7. 操作系统中的进程与线程管理</h3>
-<ul>
-<li><strong>资源分配与进程调度</strong>:
-<ul>
-<li>通过保存和管理进程状态，操作系统实现高效的多任务处理。寄存器和内存被优化用于存储信息，保持系统流畅运行。</li>
-<li>在中断和时钟驱动下，操作系统实现进程调度，确保计算不中断，并有效利用计算资源。</li>
+<h3 id="7-操作系统中的进程与线程管理"><a href="#7-操作系统中的进程与线程管理" class="headerlink" title="7. 操作系统中的进程与线程管理"></a>7. 操作系统中的进程与线程管理</h3><ul>
+<li><strong>资源分配与进程调度</strong>:  <ul>
+<li>通过保存和管理进程状态，操作系统实现高效的多任务处理。寄存器和内存被优化用于存储信息，保持系统流畅运行。  </li>
+<li>在中断和时钟驱动下，操作系统实现进程调度，确保计算不中断，并有效利用计算资源。  </li>
 </ul>
 </li>
 </ul>

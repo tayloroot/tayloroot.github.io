@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="现代操作系统广泛采用动态链接和加载机制，使多个程序可以共享同一份库函数，从而大大减少了内存和磁盘空间的占用。课程探讨了动态链接在资源节约和系统灵活性方面的重要性，同时指出了其引入的复杂性，特别是在数据访问和安全性方面的挑战。通过符号表与全局偏移表（GOT）的使用，动态链接在运行时解析函数地址，保证了程序的灵活与可扩展性。 动态链接的重要性   角色与实现:  动态链接在现代软件生态系统中至关重要，">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="现代操作系统广泛采用动态链接和加载机制，使多个程序可以共享同一份库函数，从而大大减少了内存和磁盘空间的占用。课程探讨了动态链接在资源节约和系统灵活性方面的重要性，同时指出了其引入的复杂性，特别是在数据访问和安全性方面的挑战。通过符号表与全局偏移表（GOT）的使用，动态链接在运行时解析函数地址，保证了程序的灵活与可扩展性。   动态链接的重要性 角色与实现:    动态链接在现代软件生态系统中至关重">
 <meta property="og:type" content="article">
 <meta property="og:title" content="南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接)">
 <meta property="og:url" content="http://mmwiki.cn/posts/c694e90c.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="现代操作系统广泛采用动态链接和加载机制，使多个程序可以共享同一份库函数，从而大大减少了内存和磁盘空间的占用。课程探讨了动态链接在资源节约和系统灵活性方面的重要性，同时指出了其引入的复杂性，特别是在数据访问和安全性方面的挑战。通过符号表与全局偏移表（GOT）的使用，动态链接在运行时解析函数地址，保证了程序的灵活与可扩展性。 动态链接的重要性   角色与实现:  动态链接在现代软件生态系统中至关重要，">
+<meta property="og:description" content="现代操作系统广泛采用动态链接和加载机制，使多个程序可以共享同一份库函数，从而大大减少了内存和磁盘空间的占用。课程探讨了动态链接在资源节约和系统灵活性方面的重要性，同时指出了其引入的复杂性，特别是在数据访问和安全性方面的挑战。通过符号表与全局偏移表（GOT）的使用，动态链接在运行时解析函数地址，保证了程序的灵活与可扩展性。   动态链接的重要性 角色与实现:    动态链接在现代软件生态系统中至关重">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-05-14T16:00:00.000Z">
@@ -198,84 +198,67 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-14T16:00:00.000Z" title="发表于 2021-05-15 00:00:00">2021-05-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">883</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>现代操作系统广泛采用动态链接和加载机制，使多个程序可以共享同一份库函数，从而大大减少了内存和磁盘空间的占用。课程探讨了动态链接在资源节约和系统灵活性方面的重要性，同时指出了其引入的复杂性，特别是在数据访问和安全性方面的挑战。通过符号表与全局偏移表（GOT）的使用，动态链接在运行时解析函数地址，保证了程序的灵活与可扩展性。</p>
-<h3 id="动态链接的重要性">动态链接的重要性</h3>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-动态链接和加载 (dlbox; 翻车之 ELF 的动态链接)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-14T16:00:00.000Z" title="发表于 2021-05-15 00:00:00">2021-05-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">883</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>现代操作系统广泛采用动态链接和加载机制，使多个程序可以共享同一份库函数，从而大大减少了内存和磁盘空间的占用。课程探讨了动态链接在资源节约和系统灵活性方面的重要性，同时指出了其引入的复杂性，特别是在数据访问和安全性方面的挑战。通过符号表与全局偏移表（GOT）的使用，动态链接在运行时解析函数地址，保证了程序的灵活与可扩展性。  </p>
+<h3 id="动态链接的重要性"><a href="#动态链接的重要性" class="headerlink" title="动态链接的重要性"></a>动态链接的重要性</h3><ul>
+<li><p><strong>角色与实现</strong>:  </p>
 <ul>
-<li>
-<p><strong>角色与实现</strong>:</p>
-<ul>
-<li>动态链接在现代软件生态系统中至关重要，它分离了应用程序与库，提高了资源利用效率和软件维护性。</li>
-<li>为了解决静态链接带来的瓶颈，动态链接成为解决复杂软件系统的关键技术。</li>
+<li>动态链接在现代软件生态系统中至关重要，它分离了应用程序与库，提高了资源利用效率和软件维护性。  </li>
+<li>为了解决静态链接带来的瓶颈，动态链接成为解决复杂软件系统的关键技术。  </li>
 </ul>
 </li>
-<li>
-<p><strong>资源节约与项目管理</strong>:</p>
+<li><p><strong>资源节约与项目管理</strong>:  </p>
 <ul>
-<li>动态链接通过共用库函数减少内存占用量和加载时间，提高了系统性能。</li>
-<li>在大型项目中，动态链接库的拆分有助于团队协作，使得项目的开发与维护更为灵活。</li>
+<li>动态链接通过共用库函数减少内存占用量和加载时间，提高了系统性能。  </li>
+<li>在大型项目中，动态链接库的拆分有助于团队协作，使得项目的开发与维护更为灵活。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="安全性与开源软件中的问题">安全性与开源软件中的问题</h3>
-<ul>
-<li><strong>安全隐患与漏洞</strong>:
-<ul>
-<li>在开源社区，恶意代码的植入可能导致严重的安全漏洞，伴随高昂的更新及维护成本。</li>
-<li>虽然通过自动化工具检测漏洞很常见，但依然难以发现一些精心隐藏的有害代码。</li>
+<h3 id="安全性与开源软件中的问题"><a href="#安全性与开源软件中的问题" class="headerlink" title="安全性与开源软件中的问题"></a>安全性与开源软件中的问题</h3><ul>
+<li><strong>安全隐患与漏洞</strong>:  <ul>
+<li>在开源社区，恶意代码的植入可能导致严重的安全漏洞，伴随高昂的更新及维护成本。  </li>
+<li>虽然通过自动化工具检测漏洞很常见，但依然难以发现一些精心隐藏的有害代码。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="动态链接的技术实现">动态链接的技术实现</h3>
-<ul>
-<li><strong>动态与静态链接对比</strong>:
-<ul>
-<li>静态链接将库直接嵌入程序中，用于解决磁盘空间问题，但增加了内存浪费。</li>
-<li>动态链接改善了这种情况，通过操作系统设计，多个进程能够共享同一份动态链接库。</li>
+<h3 id="动态链接的技术实现"><a href="#动态链接的技术实现" class="headerlink" title="动态链接的技术实现"></a>动态链接的技术实现</h3><ul>
+<li><strong>动态与静态链接对比</strong>:  <ul>
+<li>静态链接将库直接嵌入程序中，用于解决磁盘空间问题，但增加了内存浪费。  </li>
+<li>动态链接改善了这种情况，通过操作系统设计，多个进程能够共享同一份动态链接库。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="动态链接的内存与性能优化">动态链接的内存与性能优化</h3>
-<ul>
-<li><strong>内存使用的优化</strong>:
-<ul>
-<li>使用动态链接库能够节省内存空间，保证系统在高效状态下运行。</li>
-<li>Out of Memory Killer等机制用来在内存不足时终止某些进程，维持系统稳定。</li>
+<h3 id="动态链接的内存与性能优化"><a href="#动态链接的内存与性能优化" class="headerlink" title="动态链接的内存与性能优化"></a>动态链接的内存与性能优化</h3><ul>
+<li><strong>内存使用的优化</strong>:  <ul>
+<li>使用动态链接库能够节省内存空间，保证系统在高效状态下运行。  </li>
+<li>Out of Memory Killer等机制用来在内存不足时终止某些进程，维持系统稳定。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="虚拟内存与地址管理">虚拟内存与地址管理</h3>
-<ul>
-<li><strong>虚拟内存的概念</strong>:
-<ul>
-<li>通过虚拟内存，操作系统为进程提供了抽象的连续内存空间，提升了系统的稳定性和安全性。</li>
-<li>动态链接通过符号解析增强了内存和资源管理的灵活性。</li>
+<h3 id="虚拟内存与地址管理"><a href="#虚拟内存与地址管理" class="headerlink" title="虚拟内存与地址管理"></a>虚拟内存与地址管理</h3><ul>
+<li><strong>虚拟内存的概念</strong>:  <ul>
+<li>通过虚拟内存，操作系统为进程提供了抽象的连续内存空间，提升了系统的稳定性和安全性。  </li>
+<li>动态链接通过符号解析增强了内存和资源管理的灵活性。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="编译器与符号表">编译器与符号表</h3>
-<ul>
-<li><strong>符号表的作用</strong>:
-<ul>
-<li>符号表在动态链接中记录并解析符号地址，是程序有效利用共享库的关键。</li>
-<li>在链接过程中，全局偏移表（GOT）的使用使函数调用和地址解析得以优化。</li>
+<h3 id="编译器与符号表"><a href="#编译器与符号表" class="headerlink" title="编译器与符号表"></a>编译器与符号表</h3><ul>
+<li><strong>符号表的作用</strong>:  <ul>
+<li>符号表在动态链接中记录并解析符号地址，是程序有效利用共享库的关键。  </li>
+<li>在链接过程中，全局偏移表（GOT）的使用使函数调用和地址解析得以优化。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="动态链接的编译与链接复杂性">动态链接的编译与链接复杂性</h3>
-<ul>
-<li><strong>函数调用与地址解析</strong>:
-<ul>
-<li>处理动态链接时编译器面临函数调用的复杂问题，间接跳转和PRT/GOT的引入有助于解决地址限制。</li>
-<li>不同库中同名变量的地址访问差异性，增加了编译与动态重定位的复杂性。</li>
+<h3 id="动态链接的编译与链接复杂性"><a href="#动态链接的编译与链接复杂性" class="headerlink" title="动态链接的编译与链接复杂性"></a>动态链接的编译与链接复杂性</h3><ul>
+<li><strong>函数调用与地址解析</strong>:  <ul>
+<li>处理动态链接时编译器面临函数调用的复杂问题，间接跳转和PRT/GOT的引入有助于解决地址限制。  </li>
+<li>不同库中同名变量的地址访问差异性，增加了编译与动态重定位的复杂性。  </li>
 </ul>
 </li>
 </ul>
-<h3 id="变量和数据的复杂性">变量和数据的复杂性</h3>
-<ul>
-<li><strong>变量地址与动态重定位</strong>:
-<ul>
-<li>动态链接库中的变量赋值与动态重定位涉及运行时地址确认和复杂处理，影响代码执行性能。</li>
-<li>性能问题主要源于编译器在地址和变量来源的动态不确定性。</li>
+<h3 id="变量和数据的复杂性"><a href="#变量和数据的复杂性" class="headerlink" title="变量和数据的复杂性"></a>变量和数据的复杂性</h3><ul>
+<li><strong>变量地址与动态重定位</strong>:  <ul>
+<li>动态链接库中的变量赋值与动态重定位涉及运行时地址确认和复杂处理，影响代码执行性能。  </li>
+<li>性能问题主要源于编译器在地址和变量来源的动态不确定性。  </li>
 </ul>
 </li>
 </ul>

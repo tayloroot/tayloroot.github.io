@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-06-zhang-cun-chu-qi-ceng-ci-jie-gou 学习目标 了解存储相关的概念 理解传统机械硬盘的工作机制以及如何通过总线进行数据传输 掌握局部性原理 了解内存的不同层级以及具体的应用方法 掌握缓存的机制，如何存储、载入和替换  缓存是一个非常精妙的系统，利用有限的资源给系统带">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-06-zhang-cun-chu-qi-ceng-ci-jie-gou 学习目标  了解存储相关的概念 理解传统机械硬盘的工作机制以及如何通过总线进行数据传输 掌握局部性原理 了解内存的不同层级以及具体的应用方法 掌握缓存的机制，如何存储、载入和替换  缓存是一个非常精妙的系统，利用有限的资源给系">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】">
 <meta property="og:url" content="http://mmwiki.cn/posts/618b80aa.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-06-zhang-cun-chu-qi-ceng-ci-jie-gou 学习目标 了解存储相关的概念 理解传统机械硬盘的工作机制以及如何通过总线进行数据传输 掌握局部性原理 了解内存的不同层级以及具体的应用方法 掌握缓存的机制，如何存储、载入和替换  缓存是一个非常精妙的系统，利用有限的资源给系统带">
+<meta property="og:description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;di-06-zhang-cun-chu-qi-ceng-ci-jie-gou 学习目标  了解存储相关的概念 理解传统机械硬盘的工作机制以及如何通过总线进行数据传输 掌握局部性原理 了解内存的不同层级以及具体的应用方法 掌握缓存的机制，如何存储、载入和替换  缓存是一个非常精妙的系统，利用有限的资源给系">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-01-01T16:00:00.000Z">
@@ -198,8 +198,10 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-01T16:00:00.000Z" title="发表于 2021-01-02 00:00:00">2021-01-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br><a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-06-zhang-cun-chu-qi-ceng-ci-jie-gou">https://fengmuzi2003.gitbook.io/csapp3e/di-06-zhang-cun-chu-qi-ceng-ci-jie-gou</a></p>
-<h2 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h2><ol>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-01T16:00:00.000Z" title="发表于 2021-01-02 00:00:00">2021-01-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br>
+<a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-06-zhang-cun-chu-qi-ceng-ci-jie-gou">https://fengmuzi2003.gitbook.io/csapp3e/di-06-zhang-cun-chu-qi-ceng-ci-jie-gou</a></p>
+<h2 id="学习目标">学习目标</h2>
+<ol>
 <li>了解存储相关的概念</li>
 <li>理解传统机械硬盘的工作机制以及如何通过总线进行数据传输</li>
 <li>掌握局部性原理</li>
@@ -207,10 +209,13 @@
 <li>掌握缓存的机制，如何存储、载入和替换</li>
 </ol>
 <p>缓存是一个非常精妙的系统，利用有限的资源给系统带来了显著的性能提升。这一讲前半部分主要是存储系统相关的概念介绍，之后我们会深入研究缓存系统并用实际的例子来学习如何最大程度利用好缓存。</p>
-<h2 id="概念学习"><a href="#概念学习" class="headerlink" title="概念学习"></a>概念学习</h2><h3 id="随机存取存储器"><a href="#随机存取存储器" class="headerlink" title="随机存取存储器"></a>随机存取存储器</h3><p>了解存储设备所用的技术以及发展趋势，对我们理解内存层级背后的原因很有帮助。</p>
+<h2 id="概念学习">概念学习</h2>
+<h3 id="随机存取存储器">随机存取存储器</h3>
+<p>了解存储设备所用的技术以及发展趋势，对我们理解内存层级背后的原因很有帮助。</p>
 <p>随机存取存储器(RAM, Random-Access Memory) 有两种类型：SRAM(Static RAM) 和 DRAM(Dynamic RAM)，SRAM 非常快，也不需要定期刷新，通常用在处理器做缓存，但是比较贵；DRAM 稍慢一点（大概是 SRAM 速度的十分之一），需要刷新，通常用作主内存，相比来说很便宜（是 SRAM 价格的百分之一）。</p>
 <p>无论是 DRAM 还是 SRAM，一旦不通电，所有的信息都会丢失。如果想要让数据持久化，可以考虑 ROM, PROM, EPROM, EEPROM 等介质。固件程序会存储在 ROM 中（比如 BIOS，磁盘控制器，网卡，图形加速器，安全子系统等等）。另外一个趋势就是 SSD 固态硬盘，取消了机械结构，更稳定速度更快更省电。</p>
-<h3 id="传统机械硬盘"><a href="#传统机械硬盘" class="headerlink" title="传统机械硬盘"></a>传统机械硬盘</h3><p>虽然现在越来越多电脑已经改为使用固态硬盘，但是还是有必要了解一下硬盘的组成的。传统的机械硬盘有许多不同的部件：</p>
+<h3 id="传统机械硬盘">传统机械硬盘</h3>
+<p>虽然现在越来越多电脑已经改为使用固态硬盘，但是还是有必要了解一下硬盘的组成的。传统的机械硬盘有许多不同的部件：</p>
 <p><img src="/img/post/csapp/14612434554342.jpg" alt=""></p>
 <p>机械硬盘有许多片磁盘(platter)组成，每一片磁盘有两面；每一面由一圈圈的磁道(track)组成，而每个磁道会被分隔成不同的扇区(sector)。这里概念层层递进，可以结合下图仔细辨析清楚。</p>
 <p><img src="/img/post/csapp/14612437020652.jpg" alt=""></p>
@@ -249,19 +254,22 @@
 </ul>
 <p>从这里可以看出，主要决定访问时间的是寻址时间和旋转延迟；读取一个扇区的第一个比特是非常耗时的，之后的都几乎可以忽略不计；硬盘比 SRAM 慢 40,000 倍，比 DRAM 慢 2500 倍。</p>
 <p>最后需要知道的就是逻辑分区和实际的物理分区的区别，为了使用方便，会用连续的数字来标志所有可用的扇区，具体的映射工作由磁盘控制器完成。</p>
-<h3 id="固态硬盘"><a href="#固态硬盘" class="headerlink" title="固态硬盘"></a>固态硬盘</h3><p>接下来介绍一下固态硬盘，内部结构如下</p>
+<h3 id="固态硬盘">固态硬盘</h3>
+<p>接下来介绍一下固态硬盘，内部结构如下</p>
 <p><img src="/img/post/csapp/14612490867850.jpg" alt=""></p>
 <p>固态硬盘中分成很多的块(Block)，每个块又有很多页(Page)，大约 32-128 个，每个页可以存放一定数据（大概 4-512KB），页是进行数据读写的最小单位。但是有一点需要注意，对一个页进行写入操作的时候，需要先把整个块清空（设计限制），而一个块大概在 100,000 次写入之后就会报废。</p>
 <p>与传统的机械硬盘相比，固态硬盘在读写速度上有很大的优势。但是因为设计本身的约束，连续访问会比随机访问快，而且如果需要写入 Page，那么需要移动其他 Page，擦除整个 Block，然后才能写入。现在固态硬盘的读写速度差距已经没有以前那么大了，但是仍然有一些差距。</p>
 <p>不过与机械硬盘相比，固态硬盘存在一个具体的寿命限制，价格也比较贵，但是因为速度上的优势，越来越多设备开始使用固态硬盘。</p>
-<h3 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h3><p>总线是用来传输地址、数据和控制信号的一组平行的电线，通常来说由多个设备共享，类似于不同城市之间的高速公路，可以传输各类数据。CPU 通过总线和对应的接口来从不同的设备中获得所需要的数据，放入寄存器中等待运算，像下面这样：</p>
+<h3 id="总线">总线</h3>
+<p>总线是用来传输地址、数据和控制信号的一组平行的电线，通常来说由多个设备共享，类似于不同城市之间的高速公路，可以传输各类数据。CPU 通过总线和对应的接口来从不同的设备中获得所需要的数据，放入寄存器中等待运算，像下面这样：</p>
 <p><img src="/img/post/csapp/14612508854709.jpg" alt=""></p>
 <p>假设 CPU 需要从硬盘中读取一些数据，会给定指令，逻辑块编号和目标地址，并发送给磁盘控制器。然后磁盘控制器会读取对应的数据，并通过 DMA(direct memory access)把数据传输到内存中；传输完成后，磁盘控制器通过中断的方式通知 CPU，然后 CPU 完成之后的工作。</p>
 <p>总线上连接的各个设备，其访问速度有天壤之别，不同的技术发展速度不同，更加剧了这个情况</p>
 <p><img src="/img/post/csapp/14612509876691.jpg" alt=""></p>
 <p>比方说磁盘的读写速度，30 年大概只提高了一个数量级多一点，所以固态硬盘的出现，以下拯救了劳苦大众（提高了两个数量级），DRAM 的发展，一路从 DDR12345 发展来，速度大概提高了一个数量级，不过 SRAM 则是在同一个起点愣是多跑了一个数量级，总体来说是跟着 CPU 的发展走的。不过 CPU 的发展在 2003 年也遇到了问题（单个核心基本到极限），不过多核的出现以及技术优化，总体来说还是使得执行速度越来越快。</p>
 <p>那么这么大的时间差距，怎么办呢？难道根据木桶理论，都要取决于最慢的那个吗？不一定！局部性原理(Locality)可以在一定程度上拯救世界。</p>
-<h3 id="局部性原理-Locality"><a href="#局部性原理-Locality" class="headerlink" title="局部性原理 Locality"></a>局部性原理 Locality</h3><p>局部性的思路很简单[2]：</p>
+<h3 id="局部性原理-Locality">局部性原理 Locality</h3>
+<p>局部性的思路很简单[2]：</p>
 <ul>
 <li>时间局部性(Temporal Locality): 如果一个信息项正在被访问，那么在近期它很可能还会被再次访问。程序循环、堆栈等是产生时间局部性的原因。</li>
 <li>空间局部性(Spatial Locality): 在最近的将来将用到的信息很可能与现在正在使用的信息在空间地址上是临近的</li>
@@ -269,15 +277,14 @@
 </ul>
 <p>举个例子：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span>sum = <span>0</span>;</span><br><span><span>for</span> (i = <span>0</span>; i &lt; n; i++){</span><br><span>    sum += a[i];</span><br><span>}</span><br><span><span>return</span> sum;</span><br></pre></td></tr></tbody></table>
-
 <p>复制</p>
 <p>这里每次循环都会访问 <code>sum</code> 是满足时间局部性的；数组的访问是连续的，属于空间局部性。</p>
 <p>根据这个特性，在写遍历数组的时候（尤其是高维），尤其要注意按照内存排列顺序来访问，不然性能会惨不忍睹。</p>
-<h2 id="存储体系-Memory-Hierarchy"><a href="#存储体系-Memory-Hierarchy" class="headerlink" title="存储体系 Memory Hierarchy"></a>存储体系 Memory Hierarchy</h2><p>一种介质的速度越快就会越贵，同时也消耗更多的电量，所以一般容量比较小。而 CPU 和内存之间的速度差距越来越大，所以好的程序都会尽可能利用局部性。而根据这些特性，引申出了安排存储的方式，称为金字塔式存储体系(Memory Hierarch)。</p>
+<h2 id="存储体系-Memory-Hierarchy">存储体系 Memory Hierarchy</h2>
+<p>一种介质的速度越快就会越贵，同时也消耗更多的电量，所以一般容量比较小。而 CPU 和内存之间的速度差距越来越大，所以好的程序都会尽可能利用局部性。而根据这些特性，引申出了安排存储的方式，称为金字塔式存储体系(Memory Hierarch)。</p>
 <p><img src="/img/post/csapp/14612515449186.jpg" alt=""></p>
 <p>这里就涉及到一个技术：缓存。缓存可以看作是把大且缓慢的设备中的数据的一部分拿出来存储到其中的更快的存储设备。在金字塔式存储体系[3]中，每一层都可以看作是下一层的缓存。利用局部性原理，程序会更倾向于访问第 k 层的数据，而非第 k+1 层，这样就减少了访问时间。</p>
 <p>通过下表我们可以了解更多细节：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -361,24 +368,27 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p>存储体系的设计，可以说是利用最便宜的存储的价格，提供了最快速的存储的性能。在我看来真的是做到了『又要马儿跑，又要马儿不吃草』！在各种限制条件下能够找到如此优美的解决方案，真可谓『带着镣铐跳舞』的最高境界！</p>
 <p>这里我们举一个具体的例子来感受一下存储体系的设计。假设我们有一个包含 20 个元素的数组，而目前在高速缓存中保存着前 10 个元素，那么在访问数组元素的时候，如果我们只用到前 5 个，那么都可以从高速缓存中获取，这种情况就叫做『缓存命中』，要比内存的访问快得多。而如果访问了缓存中没有的元素，就需要从内存中获取了，由于高速缓存大小的限制，还需要对其中的元素进行替换（具体之后会介绍）。</p>
-<h3 id="缓存未命中的类型"><a href="#缓存未命中的类型" class="headerlink" title="缓存未命中的类型"></a>缓存未命中的类型</h3><p>缓存未命中有三种，这里进行简要介绍</p>
+<h3 id="缓存未命中的类型">缓存未命中的类型</h3>
+<p>缓存未命中有三种，这里进行简要介绍</p>
 <ul>
 <li>强制性失效(Cold/compulsory Miss): CPU 第一次访问相应缓存块，缓存中肯定没有对应数据，这是不可避免的</li>
-<li>冲突失效(Confilict Miss): 在直接相联或组相联的缓存中，不同的缓存块由于索引相同相互替换，引起的失效叫做冲突失效<ul>
+<li>冲突失效(Confilict Miss): 在直接相联或组相联的缓存中，不同的缓存块由于索引相同相互替换，引起的失效叫做冲突失效
+<ul>
 <li>假设这里有 32KB 直接相联的缓存</li>
 <li>如果有两个 8KB 的数据需要来回访问，但是这两个数组都映射到相同的地址，缓存大小足够存储全部的数据，但是因为相同地址发生了冲突需要来回替换，发生的失效则全都是冲突失效（第一次访问失效依旧是强制性失效），这时缓存并没有存满</li>
 </ul>
 </li>
-<li>容量失效(Capacity Miss): 有限的缓存容量导致缓存放不下而被替换，被替换出去的缓存块再被访问，引起的失效叫做容量失效<ul>
+<li>容量失效(Capacity Miss): 有限的缓存容量导致缓存放不下而被替换，被替换出去的缓存块再被访问，引起的失效叫做容量失效
+<ul>
 <li>假设这里有 32KB 直接相联的缓存</li>
 <li>如果有一个 64KB 的数组需要重复访问，数组的大小远远大于缓存大小，没办法全部放入缓存。第一次访问数组发生的失效全都是强制性失效。之后再访问数组，再发生的失效则全都是容量失效，这时缓存已经存满，容量不足以存储全部数据</li>
 </ul>
 </li>
 </ul>
-<h2 id="深入理解高速缓冲存储器-Cache-Memory"><a href="#深入理解高速缓冲存储器-Cache-Memory" class="headerlink" title="深入理解高速缓冲存储器 Cache Memory"></a>深入理解高速缓冲存储器 Cache Memory</h2><p>高速缓存存储器(Cache Memory)是 CPU 缓存系统甚至是金字塔式存储体系中最有代表性的缓存机制，前面我们了解了许多概念，这一节我们具体来看看高速缓存存储器是如何工作的。</p>
+<h2 id="深入理解高速缓冲存储器-Cache-Memory">深入理解高速缓冲存储器 Cache Memory</h2>
+<p>高速缓存存储器(Cache Memory)是 CPU 缓存系统甚至是金字塔式存储体系中最有代表性的缓存机制，前面我们了解了许多概念，这一节我们具体来看看高速缓存存储器是如何工作的。</p>
 <p>首先要知道的是，高速缓存存储器是由硬件自动管理的 SRAM 内存，CPU 会首先从这里找数据，其所处的位置如下（蓝色部分）：</p>
 <p><img src="/img/post/csapp/14612615839808.jpg" alt=""></p>
 <p>然后我们需要关注高速缓冲存储器的三个关键组成部分（注意区分大小写）：</p>
@@ -390,11 +400,12 @@
 <p>在图上表示出来就是</p>
 <p><img src="/img/post/csapp/14612628563878.jpg" alt=""></p>
 <p>所以缓存中存放数据的空间大小为：</p>
-<p>C\=S×E×B</p>
+<p>C=S×E×B</p>
 <p>实际上可以理解为三种层级关系，对应不同的索引，这样分层的好处在于，通过层级关系简化搜索需要的时间，并且和字节的排布也是一一对应的（之后介绍缓存的时候就体现得更加明显）。</p>
 <p>当处理器需要访问一个地址时，会先在高速缓冲存储器中进行查找，查找过程中我们首先在概念上把这个地址划分成三个部分：</p>
 <p><img src="/img/post/csapp/14612633441722.jpg" alt=""></p>
-<h3 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h3><p>具体在从缓存中读取一个地址时，首先我们通过 set index 确定要在哪个 set 中寻找，确定后利用 tag 和同一个 set 中的每个 line 进行比对，找到 tag 相同的那个 line，最后再根据 block offset 确定要从 line 的哪个位置读起（这里的而 line 和 block 是一个意思）。</p>
+<h3 id="读取">读取</h3>
+<p>具体在从缓存中读取一个地址时，首先我们通过 set index 确定要在哪个 set 中寻找，确定后利用 tag 和同一个 set 中的每个 line 进行比对，找到 tag 相同的那个 line，最后再根据 block offset 确定要从 line 的哪个位置读起（这里的而 line 和 block 是一个意思）。</p>
 <p>当 E=1 时，也就是每个 set 只有 1 个 line 的时候，称之为直接映射缓存(Direct Mapped Cache)，如下图所示</p>
 <p><img src="/img/post/csapp/14612642281687.jpg" alt=""></p>
 <p>这种情况下，因为每个 set 对应 1 个 line，反过来看，1 个 line 就需要一个 set，所以 set index 的位数就会较多（和之后的多路映射对比）。具体的检索过程就是先通过 set index 确定哪个 set，然后看是否 valid，然后比较那个 set 里唯一 line 的 tag 和地址的 t bits 是否一致，就可以确定是否缓存命中。</p>
@@ -409,7 +420,6 @@
 </ul>
 <p>缓存中的具体情况是，这里 x 表示没有任何内容</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span>       v  Tag   Block</span><br><span>Set 0  1   0    M[0-1]</span><br><span>Set 1  x   x      x</span><br><span>Set 2  x   x      x</span><br><span>Set 3  1   0    M[6-7]</span><br></pre></td></tr></tbody></table>
-
 <p>复制</p>
 <p>缓存的大小如图所示，对应就是有 4 个 set，所以需要 2 位的 set index，所以进行读入的时候，会根据中间两位来确定在哪个 set 中查找，其中 8 和 0，因为中间两位相同，会产生冲突，导致连续 miss，这个问题可以用多路映射来解决。</p>
 <p>当 E 大于 1 时，也就是每个 set 有 E 个 line 的时候，称之为 E 路联结缓存。这里每个 set 有两个 line，所以就没有那么多 set，也就是说 set index 可以少一位（集合数量少一倍）。</p>
@@ -424,10 +434,10 @@
 </ul>
 <p>缓存中的具体情况是，这里 x 表示没有任何内容</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span>       v   Tag   Block</span><br><span>Set 0  1   00    M[0-1]</span><br><span>Set 0  1   10    M[8-9]</span><br><span>Set 1  1   01    M[6-7]</span><br><span>Set 1  0   x     x</span><br></pre></td></tr></tbody></table>
-
 <p>复制</p>
 <p>可以看到因为每个 set 有 2 个 line，所以只有 2 个 set，set index 也只需要 1 位了，这个情况下即使 8 和 0 的 set index 一致，因为一个 set 可以容纳两个数据，所以最后一次访问 0，就不会 miss 了。</p>
-<h3 id="写入"><a href="#写入" class="headerlink" title="写入"></a>写入</h3><p>在整个存储层级中，不同的层级可能会存放同一个数据的不同拷贝（如 L1, L2, L3, 主内存, 硬盘）。如果发生写入命中的时候（也就是要写入的地址在缓存中有），有两种策略：</p>
+<h3 id="写入">写入</h3>
+<p>在整个存储层级中，不同的层级可能会存放同一个数据的不同拷贝（如 L1, L2, L3, 主内存, 硬盘）。如果发生写入命中的时候（也就是要写入的地址在缓存中有），有两种策略：</p>
 <ul>
 <li>Write-through: 命中后更新缓存，同时写入到内存中</li>
 <li>Write-back: 直到这个缓存需要被置换出去，才写入到内存中（需要额外的 dirty bit 来表示缓存中的数据是否和内存中相同，因为可能在其他的时候内存中对应地址的数据已经更新，那么重复写入就会导致原有数据丢失）</li>
@@ -443,9 +453,11 @@
 <li>Write-back + Write-allocate</li>
 </ul>
 <p>其中第一种可以保证绝对的数据一致性，第二种效率会比较高（通常情况下）。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲我们从 RAM 和硬盘讲起，简单了解了计算机系统中用来存储数据的硬件，然后主要介绍了高速缓冲存储器(Cache Memory)的结构和工作方式。</p>
+<h2 id="总结">总结</h2>
+<p>这一讲我们从 RAM 和硬盘讲起，简单了解了计算机系统中用来存储数据的硬件，然后主要介绍了高速缓冲存储器(Cache Memory)的结构和工作方式。</p>
 <p>说到底，缓存就是要尽量利用局部性原理，这个是一个非常值得探讨的话题，会在<a target="_blank" rel="noopener" href="https://wdxtub.com/csapp/thin-csapp-3/2016/04/16/2016/04/16/thick-csapp-lab-4/">【读厚 CSAPP】IV Cache Lab</a>用具体实例中详细介绍。</p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
+<h2 id="参考链接">参考链接</h2>
+<ol>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9A%8F%E6%9C%BA%E5%AD%98%E5%8F%96%E5%AD%98%E5%82%A8%E5%99%A8">随机存取存储器</a></li>
 <li><a target="_blank" rel="noopener" href="http://baike.baidu.com/view/1656353.htm">局部性原理</a></li>
 <li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/CPU%E7%BC%93%E5%AD%98">CPU缓存</a></li>

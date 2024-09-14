@@ -198,73 +198,90 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统--虚拟化-进程的实现 (虚拟地址空间；UNIX 和 xv6)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-19T16:00:00.000Z" title="发表于 2021-05-20 00:00:00">2021-05-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>在本节课中，探讨了操作系统的进程实现，包括虚拟地址空间、UNIX和xv6等主题。通过一个简单的50行代码实验框架，创建了线程数据结构，并探讨了操作系统如何处理中断和进程调度。课程强调了进程与线程的区别，进程拥有独立的虚拟地址空间，而线程共享物理内存。此外，还详细介绍了虚拟地址到物理地址的转换机制，页表的作用，以及通过高效的数据结构实现地址映射。最后，讨论了UNIX的历史背景及其对现代操作系统的影响。  </p>
-<h3 id="1-操作系统中的线程管理"><a href="#1-操作系统中的线程管理" class="headerlink" title="1. 操作系统中的线程管理"></a>1. 操作系统中的线程管理</h3><ul>
-<li><p><strong>线程创建与管理</strong>:  </p>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统--虚拟化-进程的实现 (虚拟地址空间；UNIX 和 xv6)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-19T16:00:00.000Z" title="发表于 2021-05-20 00:00:00">2021-05-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>在本节课中，探讨了操作系统的进程实现，包括虚拟地址空间、UNIX和xv6等主题。通过一个简单的50行代码实验框架，创建了线程数据结构，并探讨了操作系统如何处理中断和进程调度。课程强调了进程与线程的区别，进程拥有独立的虚拟地址空间，而线程共享物理内存。此外，还详细介绍了虚拟地址到物理地址的转换机制，页表的作用，以及通过高效的数据结构实现地址映射。最后，讨论了UNIX的历史背景及其对现代操作系统的影响。</p>
+<h3 id="1-操作系统中的线程管理">1. 操作系统中的线程管理</h3>
 <ul>
-<li>复习了操作系统中的线程管理内容，特别是线程的创建和中断处理机制。操作系统有效地管理多个线程的运行，通过对寄存器的保存和进程调度。  </li>
-<li>每个线程都有自己的名字和入口地址，线程创建时会被分配相应的堆栈，从而便于管理和调度。  </li>
-</ul>
-</li>
-<li><p><strong>中断处理与进程调度</strong>:  </p>
+<li>
+<p><strong>线程创建与管理</strong>:</p>
 <ul>
-<li>中断处理是操作系统的关键任务之一，在中断时，操作系统保存当前寄存器状态，并进行进程调度，以保证系统的流畅运行。  </li>
-<li>进程与线程的主要区别在于线程共享内存，而进程则拥有独立的虚拟内存空间。  </li>
+<li>复习了操作系统中的线程管理内容，特别是线程的创建和中断处理机制。操作系统有效地管理多个线程的运行，通过对寄存器的保存和进程调度。</li>
+<li>每个线程都有自己的名字和入口地址，线程创建时会被分配相应的堆栈，从而便于管理和调度。</li>
 </ul>
 </li>
-</ul>
-<h3 id="2-虚拟内存与内存管理"><a href="#2-虚拟内存与内存管理" class="headerlink" title="2. 虚拟内存与内存管理"></a>2. 虚拟内存与内存管理</h3><ul>
-<li><p><strong>内存隔离与安全管理</strong>:  </p>
+<li>
+<p><strong>中断处理与进程调度</strong>:</p>
 <ul>
-<li>操作系统使用虚拟内存管理实现进程之间的内存隔离，系统通过虚拟地址映射到物理地址，有效管理内存资源，提升系统安全性与稳定性。  </li>
+<li>中断处理是操作系统的关键任务之一，在中断时，操作系统保存当前寄存器状态，并进行进程调度，以保证系统的流畅运行。</li>
+<li>进程与线程的主要区别在于线程共享内存，而进程则拥有独立的虚拟内存空间。</li>
 </ul>
 </li>
-<li><p><strong>系统调用与内存访问</strong>:  </p>
+</ul>
+<h3 id="2-虚拟内存与内存管理">2. 虚拟内存与内存管理</h3>
 <ul>
-<li>系统调用机制促使进程安全请求操作系统服务，通过简化指令集处理请求，保障系统安全性和性能。  </li>
-<li>以虚拟内存为基础的页面机制，通过将物理内存分割多个页面实现内存管理和优化，每个页面具有独立编号。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="3-数据结构在内存翻译中的应用"><a href="#3-数据结构在内存翻译中的应用" class="headerlink" title="3. 数据结构在内存翻译中的应用"></a>3. 数据结构在内存翻译中的应用</h3><ul>
-<li><strong>高效地址映射</strong>:  <ul>
-<li>数据结构对计算机系统性能至关重要，特别是在虚拟地址空间管理中，合适的数据结构提高地址翻译和指令执行速度。  </li>
-<li>采用链表和二叉搜索树等数据结构实现整数到整数的映射，关键在于迅速处理内存请求，以支持如VR技术的高效执行。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="4-内存分配与页面结构的实现"><a href="#4-内存分配与页面结构的实现" class="headerlink" title="4. 内存分配与页面结构的实现"></a>4. 内存分配与页面结构的实现</h3><ul>
-<li><strong>内存分配与指针结构</strong>:  <ul>
-<li>内存分配基本单位为4KB，简化了数据结构实现，提高了地址翻译效率，减少了内存分配的频繁性。  </li>
-<li>32位和64位指针对数据结构的影响显著，64位指针的页面中可存储的指针数量相对减少。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="5-CPU与内存交互中的地址翻译"><a href="#5-CPU与内存交互中的地址翻译" class="headerlink" title="5. CPU与内存交互中的地址翻译"></a>5. CPU与内存交互中的地址翻译</h3><ul>
-<li><strong>缓存机制与TLB</strong>:  <ul>
-<li>VR眼镜的分段设计通过指针和缓存促进高效数据访问。Translation Lookaside Buffer（TLB）降低了内存频繁访问的代价。  </li>
-<li>页表结构灵活变化，根据不同内存管理需求进行优化，通过软件管理页表促进高效进程切换。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="6-进程切换与共享内存"><a href="#6-进程切换与共享内存" class="headerlink" title="6. 进程切换与共享内存"></a>6. 进程切换与共享内存</h3><ul>
-<li><strong>反向页表和上下文切换</strong>:  <ul>
-<li>进程切换时使用反向页表与哈希表，调整CR3寄存器以实现上下文切换，减少内存浪费。  </li>
-<li>反向页表通过虚拟地址与进程号结合，简化地址空间管理，实现共享内存，以减少占用。  </li>
-</ul>
-</li>
-</ul>
-<h3 id="7-UNIX的发展与操作系统启示"><a href="#7-UNIX的发展与操作系统启示" class="headerlink" title="7. UNIX的发展与操作系统启示"></a>7. UNIX的发展与操作系统启示</h3><ul>
-<li><p><strong>UNIX与开源运动</strong>:  </p>
+<li>
+<p><strong>内存隔离与安全管理</strong>:</p>
 <ul>
-<li>UNIX的开发历程展示了其对操作系统的持久影响，开源形式促进技术传播。  </li>
-<li>UNIX的理念和机制为现代开源运动提供了基础，示例包括1988年ROBERT MORRIS的蠕虫病毒事件。  </li>
+<li>操作系统使用虚拟内存管理实现进程之间的内存隔离，系统通过虚拟地址映射到物理地址，有效管理内存资源，提升系统安全性与稳定性。</li>
 </ul>
 </li>
-<li><p><strong>XV6教学操作系统</strong>:  </p>
+<li>
+<p><strong>系统调用与内存访问</strong>:</p>
 <ul>
-<li>使用简单精巧的操作系统如XV6帮助理解复杂的操作系统基础，实现有效地系统调用与上下文切换。  </li>
-<li>学习者通过XV6获取Unix操作系统的基本体验，理解内核和用户态程序的互动。  </li>
+<li>系统调用机制促使进程安全请求操作系统服务，通过简化指令集处理请求，保障系统安全性和性能。</li>
+<li>以虚拟内存为基础的页面机制，通过将物理内存分割多个页面实现内存管理和优化，每个页面具有独立编号。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-数据结构在内存翻译中的应用">3. 数据结构在内存翻译中的应用</h3>
+<ul>
+<li><strong>高效地址映射</strong>:
+<ul>
+<li>数据结构对计算机系统性能至关重要，特别是在虚拟地址空间管理中，合适的数据结构提高地址翻译和指令执行速度。</li>
+<li>采用链表和二叉搜索树等数据结构实现整数到整数的映射，关键在于迅速处理内存请求，以支持如VR技术的高效执行。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-内存分配与页面结构的实现">4. 内存分配与页面结构的实现</h3>
+<ul>
+<li><strong>内存分配与指针结构</strong>:
+<ul>
+<li>内存分配基本单位为4KB，简化了数据结构实现，提高了地址翻译效率，减少了内存分配的频繁性。</li>
+<li>32位和64位指针对数据结构的影响显著，64位指针的页面中可存储的指针数量相对减少。</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-CPU与内存交互中的地址翻译">5. CPU与内存交互中的地址翻译</h3>
+<ul>
+<li><strong>缓存机制与TLB</strong>:
+<ul>
+<li>VR眼镜的分段设计通过指针和缓存促进高效数据访问。Translation Lookaside Buffer（TLB）降低了内存频繁访问的代价。</li>
+<li>页表结构灵活变化，根据不同内存管理需求进行优化，通过软件管理页表促进高效进程切换。</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-进程切换与共享内存">6. 进程切换与共享内存</h3>
+<ul>
+<li><strong>反向页表和上下文切换</strong>:
+<ul>
+<li>进程切换时使用反向页表与哈希表，调整CR3寄存器以实现上下文切换，减少内存浪费。</li>
+<li>反向页表通过虚拟地址与进程号结合，简化地址空间管理，实现共享内存，以减少占用。</li>
+</ul>
+</li>
+</ul>
+<h3 id="7-UNIX的发展与操作系统启示">7. UNIX的发展与操作系统启示</h3>
+<ul>
+<li>
+<p><strong>UNIX与开源运动</strong>:</p>
+<ul>
+<li>UNIX的开发历程展示了其对操作系统的持久影响，开源形式促进技术传播。</li>
+<li>UNIX的理念和机制为现代开源运动提供了基础，示例包括1988年ROBERT MORRIS的蠕虫病毒事件。</li>
+</ul>
+</li>
+<li>
+<p><strong>XV6教学操作系统</strong>:</p>
+<ul>
+<li>使用简单精巧的操作系统如XV6帮助理解复杂的操作系统基础，实现有效地系统调用与上下文切换。</li>
+<li>学习者通过XV6获取Unix操作系统的基本体验，理解内核和用户态程序的互动。</li>
 </ul>
 </li>
 </ul>

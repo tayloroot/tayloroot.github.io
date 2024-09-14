@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-概论-数学视角 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课深入探讨了操作系统从数学视角出发的严格性，并通过状态机模型来理解操作系统的基本原理。讲师展示了如何使用Python定义和实现状态机，以模拟进程的创建与执行，同时强调了数学方法在验证程序正确性方面的重要性。课程还介绍了模型检查技术来处理并发带来的不确定性，进一步探讨了如何通过数学证明来提高软件的可靠性。 操作系统的数学视角 数学视角的引入：操作系统可以被视为一种数学严格的对象，通过这种视角，我">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-概论-数学视角 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课深入探讨了操作系统从数学视角出发的严格性，并通过状态机模型来理解操作系统的基本原理。讲师展示了如何使用Python定义和实现状态机，以模拟进程的创建与执行，同时强调了数学方法在验证程序正确性方面的重要性。课程还介绍了模型检查技术来处理并发带来的不确定性，进一步探讨了如何通过数学证明来提高软件的可靠性。 操作系统的数学视角  数学视角的引入：操作系统可以被视为一种数学严格的对象，通过这种视角，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="南京大学-操作系统-概论-数学视角">
 <meta property="og:url" content="http://mmwiki.cn/posts/5e43ae9.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="本节课深入探讨了操作系统从数学视角出发的严格性，并通过状态机模型来理解操作系统的基本原理。讲师展示了如何使用Python定义和实现状态机，以模拟进程的创建与执行，同时强调了数学方法在验证程序正确性方面的重要性。课程还介绍了模型检查技术来处理并发带来的不确定性，进一步探讨了如何通过数学证明来提高软件的可靠性。 操作系统的数学视角 数学视角的引入：操作系统可以被视为一种数学严格的对象，通过这种视角，我">
+<meta property="og:description" content="本节课深入探讨了操作系统从数学视角出发的严格性，并通过状态机模型来理解操作系统的基本原理。讲师展示了如何使用Python定义和实现状态机，以模拟进程的创建与执行，同时强调了数学方法在验证程序正确性方面的重要性。课程还介绍了模型检查技术来处理并发带来的不确定性，进一步探讨了如何通过数学证明来提高软件的可靠性。 操作系统的数学视角  数学视角的引入：操作系统可以被视为一种数学严格的对象，通过这种视角，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-03-28T15:15:12.000Z">
@@ -199,63 +199,75 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-概论-数学视角</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-03-28T15:15:12.000Z" title="发表于 2021-03-28 23:15:12">2021-03-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>本节课深入探讨了操作系统从数学视角出发的严格性，并通过状态机模型来理解操作系统的基本原理。讲师展示了如何使用Python定义和实现状态机，以模拟进程的创建与执行，同时强调了数学方法在验证程序正确性方面的重要性。课程还介绍了模型检查技术来处理并发带来的不确定性，进一步探讨了如何通过数学证明来提高软件的可靠性。</p>
-<h3 id="操作系统的数学视角"><a href="#操作系统的数学视角" class="headerlink" title="操作系统的数学视角"></a>操作系统的数学视角</h3><ul>
+<h3 id="操作系统的数学视角">操作系统的数学视角</h3>
+<ul>
 <li><strong>数学视角的引入</strong>：操作系统可以被视为一种数学严格的对象，通过这种视角，我们能够更深入地理解计算机系统的运作和设计。尤其是在程序设计和资源管理方面，数学视角提供了可靠的基础。</li>
 <li><strong>系统调用与交互</strong>：应用程序通过系统调用与操作系统交互，操纵内部对象，这种交互形式在理解操作系统的运作中至关重要。了解这些机制可以帮助我们更有效地利用和管理计算机资源。</li>
 <li><strong>CPU复位的确定性</strong>：讲师详细讨论了CPU复位后的状态及其对固件执行的影响，这种机制保证了系统的稳定性和可预测性，从而为操作系统的启动提供了可靠的基础。</li>
 <li><strong>数学证明的可靠性</strong>：尽管数学具有严谨性，但其推导过程中的错误可能会影响程序的设计与实现。这一部分内容通过例子说明了数学视角在程序设计中的重要性，特别是在编写和验证代码时。</li>
 </ul>
-<h3 id="编程的严谨性与挑战"><a href="#编程的严谨性与挑战" class="headerlink" title="编程的严谨性与挑战"></a>编程的严谨性与挑战</h3><ul>
+<h3 id="编程的严谨性与挑战">编程的严谨性与挑战</h3>
+<ul>
 <li><strong>初学者的挑战</strong>：编程对初学者而言常常感到困难，因为它需要严格的符号和逻辑。许多初学者在书写代码时容易忽视细节，从而导致逻辑错误。</li>
 <li><strong>编程中的常见错误</strong>：即使是看似正确的代码，有时运行结果与预期不符，这反映了编程中的严谨性。计算机执行指令的过程是严格的，因此程序员必须适应这种严格性以确保代码的正确性。</li>
 <li><strong>编程语言与自然语言的关联</strong>：程序的关键字和语法结构源自人类的表达方式，使得编程语言在某种程度上与人类思维过程相结合。然而，这种关联也可能导致初学者忽略编程语言的严谨性。</li>
 </ul>
-<h3 id="程序正确性的验证方法"><a href="#程序正确性的验证方法" class="headerlink" title="程序正确性的验证方法"></a>程序正确性的验证方法</h3><ul>
+<h3 id="程序正确性的验证方法">程序正确性的验证方法</h3>
+<ul>
 <li><strong>暴力枚举法</strong>：第一种方法是暴力枚举，即通过遍历所有可能状态来验证程序的正确性。其核心是创建状态机图，通过从初始状态开始执行不同操作，生成并检查每个状态是否满足条件。</li>
 <li><strong>数学证明法</strong>：第二种方法是数学证明，通过定义函数并证明其性质，可以确认程序的正确性。这种方法类似于数学中的证明过程，能够为程序的行为提供严格的验证。</li>
 <li><strong>形式化验证工具的使用</strong>：讲师提到了使用专门用于证明的编程语言，如Coq，这些工具可以帮助程序员验证程序的逻辑和数学性质，确保程序的可靠性。</li>
 </ul>
-<h3 id="归纳法与计算机验证工具"><a href="#归纳法与计算机验证工具" class="headerlink" title="归纳法与计算机验证工具"></a>归纳法与计算机验证工具</h3><ul>
+<h3 id="归纳法与计算机验证工具">归纳法与计算机验证工具</h3>
+<ul>
 <li><strong>归纳法的应用</strong>：在程序正确性的证明中，归纳法是非常重要的手段。数学证明的严谨性直接影响程序的可靠性，计算机辅助验证工具则能够确保这些证明的准确性，从而提高程序的安全性与稳定性。</li>
 <li><strong>计算机验证工具的广泛应用</strong>：这些工具在数学和计算机科学中被广泛认可，特别是在涉及复杂系统时，确保代码的安全性至关重要。</li>
 <li><strong>assertion的使用</strong>：在复杂程序设计中，通过assertion可以表达隐藏的正确性条件，并帮助程序员及时发现潜在问题。这一工具能够有效确保数据结构和程序逻辑的正确性。</li>
 </ul>
-<h3 id="代码调试的复杂性与形式化验证"><a href="#代码调试的复杂性与形式化验证" class="headerlink" title="代码调试的复杂性与形式化验证"></a>代码调试的复杂性与形式化验证</h3><ul>
+<h3 id="代码调试的复杂性与形式化验证">代码调试的复杂性与形式化验证</h3>
+<ul>
 <li><strong>调试过程中的挑战</strong>：调试复杂数据结构如红黑树或AVL树时，指针和数据结构的更新非常关键。即使一个小错误也可能导致程序崩溃，因此在代码中添加assertion尤为重要。</li>
 <li><strong>形式化验证的重要性</strong>：虽然编写证明可能增加代码量，但它能帮助开发者更清楚地理解代码的行为与逻辑。未来的编程语言和编译器可能会具备自动验证代码正确性的能力，进一步提升代码的可靠性和安全性。</li>
 <li><strong>未来编程工具的发展方向</strong>：随着编程工具的发展，编译器将能够自动检测潜在错误，结合assertions进一步增强代码的可靠性。</li>
 </ul>
-<h3 id="操作系统中的状态机模型"><a href="#操作系统中的状态机模型" class="headerlink" title="操作系统中的状态机模型"></a>操作系统中的状态机模型</h3><ul>
+<h3 id="操作系统中的状态机模型">操作系统中的状态机模型</h3>
+<ul>
 <li><strong>操作系统作为状态机容器</strong>：操作系统可以被视为状态机的容器，每个程序都是一个独立的状态机，操作系统则负责管理这些状态机的执行与资源分配。理解操作系统的这一模型有助于我们掌握并发和资源管理的概念。</li>
 <li><strong>多任务处理与系统调用</strong>：通过将程序视为状态机，操作系统能够实现多任务处理，使得多个程序看似同时运行。系统调用则是状态机与操作系统交互的主要方式，是理解操作系统工作原理的重要组成部分。</li>
 <li><strong>现代编程语言的优势</strong>：使用Python或JavaScript等现代编程语言，可以更方便地定义和实现状态机。这种方式简化了传统的图形化描述，让操作系统的建模变得更加直观和易于理解。</li>
 </ul>
-<h3 id="实现与调试操作系统模型"><a href="#实现与调试操作系统模型" class="headerlink" title="实现与调试操作系统模型"></a>实现与调试操作系统模型</h3><ul>
+<h3 id="实现与调试操作系统模型">实现与调试操作系统模型</h3>
+<ul>
 <li><strong>状态机的管理</strong>：操作系统的实现涉及多个状态机的管理，能够有效地处理系统调用和状态迁移。通过Python语言，可以定义这些状态机，并模拟其在操作系统中的运行机制。</li>
 <li><strong>系统调用的实现</strong>：系统调用如读取和写入数据的操作，能够与外部设备进行交互。通过定义简单的read和write操作，可以有效地管理输入输出流，提升系统性能。</li>
 <li><strong>生成器的使用</strong>：在Python中，生成器（generators）可以用来管理状态机的执行，允许在多个执行路径间切换。这种实现方式使得操作系统能够高效地分配资源和时间片给不同的状态机。</li>
 </ul>
-<h3 id="Python中的操作系统模型"><a href="#Python中的操作系统模型" class="headerlink" title="Python中的操作系统模型"></a>Python中的操作系统模型</h3><ul>
+<h3 id="Python中的操作系统模型">Python中的操作系统模型</h3>
+<ul>
 <li><strong>简单的操作系统模型</strong>：讲师在课程中演示了如何在Python中实现一个简化的操作系统模型，通过模拟系统调用和状态机的基本概念，帮助学生理解操作系统的基本原理。</li>
 <li><strong>状态机与进程管理</strong>：通过创建process，系统能够管理多个状态的转换，实现并发操作。这部分内容展示了状态机在操作系统中的关键角色，以及如何通过简单代码来模拟其运行机制。</li>
 <li><strong>系统调用的处理</strong>：视频中还介绍了如何实现和处理系统调用及其返回值，例如read和write操作的具体实现，揭示了操作系统内部如何通过不同的操作进行数据交互。</li>
 </ul>
-<h3 id="操作系统的核心概念与模型"><a href="#操作系统的核心概念与模型" class="headerlink" title="操作系统的核心概念与模型"></a>操作系统的核心概念与模型</h3><ul>
+<h3 id="操作系统的核心概念与模型">操作系统的核心概念与模型</h3>
+<ul>
 <li><strong>操作系统模型的展示</strong>：这个视频展示了一个简洁的操作系统模型，涵盖了进程、系统调用和上下文切换等关键概念。通过直观的代码演示，观众可以理解操作系统的基本工作原理。</li>
 <li><strong>生成器与状态机</strong>：讲师使用Python语言展示了如何通过生成器对象模拟操作系统的状态机。这一方法让观众能够更好地理解进程管理和状态切换的机制。</li>
 <li><strong>动态性与资源管理</strong>：通过不断运行和调试代码，观众能观察到操作系统如何处理系统调用，并随机选择当前运行的进程。这种动态性展示了系统资源管理的复杂性和灵活性。</li>
 </ul>
-<h3 id="操作系统的学习路径"><a href="#操作系统的学习路径" class="headerlink" title="操作系统的学习路径"></a>操作系统的学习路径</h3><ul>
+<h3 id="操作系统的学习路径">操作系统的学习路径</h3>
+<ul>
 <li><strong>玩具操作系统的意义</strong>：理解简化的玩具操作系统能够帮助学生掌握真实系统的工作原理。通过学习这些基本概念，学生可以更深入地理解操作系统的复杂性，尤其是在并发和资源管理方面。</li>
 <li><strong>并发与不确定性</strong>：并发是操作系统中的核心概念，允许多个进程共享资源并同时运行。然而，并发也带来了不确定性，增加了系统编程的复杂性。理解这种不确定性有助于开发更稳定和高效的程序。</li>
 <li><strong>操作系统中的挑战</strong>：操作系统中的不确定性使得编程和调试变得更为复杂，尤其是在处理状态选择和资源共享时。掌握这些挑战对开发高可靠性的程序至关重要。</li>
 </ul>
-<h3 id="并发与模型检查"><a href="#并发与模型检查" class="headerlink" title="并发与模型检查"></a>并发与模型检查</h3><ul>
+<h3 id="并发与模型检查">并发与模型检查</h3>
+<ul>
 <li><strong>并发的复杂性</strong>：在并发执行的情况下，状态空间的指数膨胀使得程序的预测和调试变得几乎不可能。这种复杂性对软件的可靠性提出了巨大挑战。</li>
 <li><strong>不确定性与调试困难</strong>：确定性程序的执行是可预测的，但并发性引入了复杂的执行路径，使得程序结果难以预测。这种不确定性需要借助数学手段来辅助理解和验证。</li>
 <li><strong>模型检查的应用</strong>：模型检查是一种有效的技术，能够帮助我们对操作系统模型进行验证。通过构建状态图并遍历所有可能状态，我们可以判断程序的正确性，提高软件的可靠性。</li>
 </ul>
-<h3 id="拓展模型与自动化工具"><a href="#拓展模型与自动化工具" class="headerlink" title="拓展模型与自动化工具"></a>拓展模型与自动化工具</h3><ul>
+<h3 id="拓展模型与自动化工具">拓展模型与自动化工具</h3>
+<ul>
 <li><strong>自动化模型构建</strong>：通过扩展操作系统的模型，我们可以模拟各种系统调用，从而提高系统效率。这一过程能够通过程序自动绘制状态图，避免手动绘制的繁琐。</li>
 <li><strong>系统调用模拟</strong>：例如，通过模拟磁盘断电对数据的影响，可以深入理解系统的可靠性和稳定性。这种模拟不仅帮助学生掌握复杂概念，也使得学习过程更加有趣。</li>
 <li><strong>模型检查器的优势</strong>：使用模型检查器可以有效验证并发算法的正确性，特别是在处理复杂算法时。通过可视化工具，学生可以更清晰地看到程序的执行流和状态转换，进一步提升理解和掌握。</li>

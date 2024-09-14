@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-模式识别-参数估计与EM算法 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课主要讲解了统计模式识别中的参数估计方法，特别关注最大似然估计和期望最大化（EM）算法。课程复习了概率密度函数的参数估计，并深入探讨了生成模型与判别模型的区别。重点介绍了EM算法在处理缺失数据时的应用，及其通过迭代计算来估计模型参数的效率。此外，课程还涵盖隐马尔可夫模型的基本概念，包括状态转移概率、释放概率和初始概率的估计方法。  参数估计与理论联系 半参数法与EM算法:   深入理解参数估计">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-模式识别-参数估计与EM算法 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课主要讲解了统计模式识别中的参数估计方法，特别关注最大似然估计和期望最大化（EM）算法。课程复习了概率密度函数的参数估计，并深入探讨了生成模型与判别模型的区别。重点介绍了EM算法在处理缺失数据时的应用，及其通过迭代计算来估计模型参数的效率。此外，课程还涵盖隐马尔可夫模型的基本概念，包括状态转移概率、释放概率和初始概率的估计方法。 参数估计与理论联系  半参数法与EM算法:  深入理解参数估计中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="国科大-模式识别-参数估计与EM算法">
 <meta property="og:url" content="http://mmwiki.cn/posts/c470c801.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="本节课主要讲解了统计模式识别中的参数估计方法，特别关注最大似然估计和期望最大化（EM）算法。课程复习了概率密度函数的参数估计，并深入探讨了生成模型与判别模型的区别。重点介绍了EM算法在处理缺失数据时的应用，及其通过迭代计算来估计模型参数的效率。此外，课程还涵盖隐马尔可夫模型的基本概念，包括状态转移概率、释放概率和初始概率的估计方法。  参数估计与理论联系 半参数法与EM算法:   深入理解参数估计">
+<meta property="og:description" content="本节课主要讲解了统计模式识别中的参数估计方法，特别关注最大似然估计和期望最大化（EM）算法。课程复习了概率密度函数的参数估计，并深入探讨了生成模型与判别模型的区别。重点介绍了EM算法在处理缺失数据时的应用，及其通过迭代计算来估计模型参数的效率。此外，课程还涵盖隐马尔可夫模型的基本概念，包括状态转移概率、释放概率和初始概率的估计方法。 参数估计与理论联系  半参数法与EM算法:  深入理解参数估计中">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2023-05-05T16:00:00.000Z">
@@ -197,70 +197,88 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-参数估计与EM算法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-05-05T16:00:00.000Z" title="发表于 2023-05-06 00:00:00">2023-05-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">📺国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><p>本节课主要讲解了统计模式识别中的参数估计方法，特别关注最大似然估计和期望最大化（EM）算法。课程复习了概率密度函数的参数估计，并深入探讨了生成模型与判别模型的区别。重点介绍了EM算法在处理缺失数据时的应用，及其通过迭代计算来估计模型参数的效率。此外，课程还涵盖隐马尔可夫模型的基本概念，包括状态转移概率、释放概率和初始概率的估计方法。 </p>
-<h3 id="参数估计与理论联系"><a href="#参数估计与理论联系" class="headerlink" title="参数估计与理论联系"></a>参数估计与理论联系</h3><ul>
-<li><strong>半参数法与EM算法</strong>:  <ul>
-<li>深入理解参数估计中的最大似然估计和贝叶斯估计，为学习复杂的半参数法奠定基础。  </li>
-<li>介绍了生成模型与判别模型的应用场景与理论基础，帮助学生掌握复杂模型与算法。  </li>
-<li>强调理解公式时，从整体入手，逐步掌握符号的物理意义，帮助学习复杂理论。  </li>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-参数估计与EM算法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-05-05T16:00:00.000Z" title="发表于 2023-05-06 00:00:00">2023-05-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">📺国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><p>本节课主要讲解了统计模式识别中的参数估计方法，特别关注最大似然估计和期望最大化（EM）算法。课程复习了概率密度函数的参数估计，并深入探讨了生成模型与判别模型的区别。重点介绍了EM算法在处理缺失数据时的应用，及其通过迭代计算来估计模型参数的效率。此外，课程还涵盖隐马尔可夫模型的基本概念，包括状态转移概率、释放概率和初始概率的估计方法。</p>
+<h3 id="参数估计与理论联系">参数估计与理论联系</h3>
+<ul>
+<li><strong>半参数法与EM算法</strong>:
+<ul>
+<li>深入理解参数估计中的最大似然估计和贝叶斯估计，为学习复杂的半参数法奠定基础。</li>
+<li>介绍了生成模型与判别模型的应用场景与理论基础，帮助学生掌握复杂模型与算法。</li>
+<li>强调理解公式时，从整体入手，逐步掌握符号的物理意义，帮助学习复杂理论。</li>
 </ul>
 </li>
 </ul>
-<h3 id="理论基础与应用"><a href="#理论基础与应用" class="headerlink" title="理论基础与应用"></a>理论基础与应用</h3><ul>
-<li><strong>基础理论的重要性</strong>:  <ul>
-<li>掌握最大似然估计和贝叶斯估计的区别：前者提供确定的参数值，后者提供参数的概率分布。  </li>
-<li>通过理解特征维度对分类错误率的影响，提升贝叶斯决策在高斯分布情况下的分类准确性。  </li>
-<li>特征选择对分类性能的显著影响：有效特征选择不仅提高精度，还能减少计算量。  </li>
+<h3 id="理论基础与应用">理论基础与应用</h3>
+<ul>
+<li><strong>基础理论的重要性</strong>:
+<ul>
+<li>掌握最大似然估计和贝叶斯估计的区别：前者提供确定的参数值，后者提供参数的概率分布。</li>
+<li>通过理解特征维度对分类错误率的影响，提升贝叶斯决策在高斯分布情况下的分类准确性。</li>
+<li>特征选择对分类性能的显著影响：有效特征选择不仅提高精度，还能减少计算量。</li>
 </ul>
 </li>
 </ul>
-<h3 id="特征降维与维度影响"><a href="#特征降维与维度影响" class="headerlink" title="特征降维与维度影响"></a>特征降维与维度影响</h3><ul>
-<li><strong>特征降维和马氏距离</strong>:  <ul>
-<li>将高维特征空间简化为一维特征空间可保持相同错误率，利用马氏距离评估分类效果。  </li>
-<li>探讨特征维度增加的利弊：提高可分性但增加过拟合风险，在样本不足时尤为突出。  </li>
+<h3 id="特征降维与维度影响">特征降维与维度影响</h3>
+<ul>
+<li><strong>特征降维和马氏距离</strong>:
+<ul>
+<li>将高维特征空间简化为一维特征空间可保持相同错误率，利用马氏距离评估分类效果。</li>
+<li>探讨特征维度增加的利弊：提高可分性但增加过拟合风险，在样本不足时尤为突出。</li>
 </ul>
 </li>
 </ul>
-<h3 id="特征提取与选择"><a href="#特征提取与选择" class="headerlink" title="特征提取与选择"></a>特征提取与选择</h3><ul>
-<li><strong>机器学习中的重要概念</strong>:  <ul>
-<li>讨论特征提取与选择的差异，提到特征选择能通过减少维度来克服过拟合。  </li>
-<li>参数共享和平滑技术应对高维问题，正则化和政治化判别分析确保协方差矩阵稳定。  </li>
+<h3 id="特征提取与选择">特征提取与选择</h3>
+<ul>
+<li><strong>机器学习中的重要概念</strong>:
+<ul>
+<li>讨论特征提取与选择的差异，提到特征选择能通过减少维度来克服过拟合。</li>
+<li>参数共享和平滑技术应对高维问题，正则化和政治化判别分析确保协方差矩阵稳定。</li>
 </ul>
 </li>
 </ul>
-<h3 id="EM算法的应用"><a href="#EM算法的应用" class="headerlink" title="EM算法的应用"></a>EM算法的应用</h3><ul>
-<li><strong>EM算法的处理能力</strong>:  <ul>
-<li>强调EM算法在处理缺失数据上的效率，通过数据推测来优化模型参数。  </li>
-<li>特征完整性对模型性能的直接影响，精细的特征选择和预处理可以显著提升模型。  </li>
-<li>初始参数选择对EM算法结果的影响，迭代过程可逐渐收敛至最优解。  </li>
+<h3 id="EM算法的应用">EM算法的应用</h3>
+<ul>
+<li><strong>EM算法的处理能力</strong>:
+<ul>
+<li>强调EM算法在处理缺失数据上的效率，通过数据推测来优化模型参数。</li>
+<li>特征完整性对模型性能的直接影响，精细的特征选择和预处理可以显著提升模型。</li>
+<li>初始参数选择对EM算法结果的影响，迭代过程可逐渐收敛至最优解。</li>
 </ul>
 </li>
 </ul>
-<h3 id="高斯混合模型与EM算法步骤"><a href="#高斯混合模型与EM算法步骤" class="headerlink" title="高斯混合模型与EM算法步骤"></a>高斯混合模型与EM算法步骤</h3><ul>
-<li><strong>高斯混合模型与EM算法</strong>:  <ul>
-<li>针对高斯混合模型的复杂性，EM算法在参数估计中的迭代更新。  </li>
-<li>通过E步和M步的交替更新，逐步求解样本所属高斯成分的问题，实现参数最优估计。  </li>
+<h3 id="高斯混合模型与EM算法步骤">高斯混合模型与EM算法步骤</h3>
+<ul>
+<li><strong>高斯混合模型与EM算法</strong>:
+<ul>
+<li>针对高斯混合模型的复杂性，EM算法在参数估计中的迭代更新。</li>
+<li>通过E步和M步的交替更新，逐步求解样本所属高斯成分的问题，实现参数最优估计。</li>
 </ul>
 </li>
 </ul>
-<h3 id="动态规划与隐马尔可夫模型"><a href="#动态规划与隐马尔可夫模型" class="headerlink" title="动态规划与隐马尔可夫模型"></a>动态规划与隐马尔可夫模型</h3><ul>
-<li><strong>动态规划与维特比算法</strong>:  <ul>
-<li>维特比算法使用动态规划求解最优状态序列，通过回溯与路径优化实现最大后验概率。  </li>
-<li>动态规划在处理中广泛应用，通过问题分解与贝尔曼最优性原理简化复杂计算。  </li>
+<h3 id="动态规划与隐马尔可夫模型">动态规划与隐马尔可夫模型</h3>
+<ul>
+<li><strong>动态规划与维特比算法</strong>:
+<ul>
+<li>维特比算法使用动态规划求解最优状态序列，通过回溯与路径优化实现最大后验概率。</li>
+<li>动态规划在处理中广泛应用，通过问题分解与贝尔曼最优性原理简化复杂计算。</li>
 </ul>
 </li>
 </ul>
-<h3 id="状态概率计算与前向算法"><a href="#状态概率计算与前向算法" class="headerlink" title="状态概率计算与前向算法"></a>状态概率计算与前向算法</h3><ul>
-<li><strong>前向算法与概率计算</strong>:  <ul>
-<li>介绍前向算法的应用，计算观测序列的联合概率，强调初始概率与递归更新的高效性。  </li>
-<li>动态规划思想在提高计算效率中的重要性，特别是大规模数据处理。  </li>
+<h3 id="状态概率计算与前向算法">状态概率计算与前向算法</h3>
+<ul>
+<li><strong>前向算法与概率计算</strong>:
+<ul>
+<li>介绍前向算法的应用，计算观测序列的联合概率，强调初始概率与递归更新的高效性。</li>
+<li>动态规划思想在提高计算效率中的重要性，特别是大规模数据处理。</li>
 </ul>
 </li>
 </ul>
-<h3 id="隐马尔可夫模型与EM算法"><a href="#隐马尔可夫模型与EM算法" class="headerlink" title="隐马尔可夫模型与EM算法"></a>隐马尔可夫模型与EM算法</h3><ul>
-<li><strong>HMM中的EM算法应用</strong>:  <ul>
-<li>通过EM算法实现HMM的参数估计，包括连续信号的概率密度函数表示。  </li>
-<li>将HMM与神经网络结合，提升条件概率估计的准确性，增强模型性能。  </li>
+<h3 id="隐马尔可夫模型与EM算法">隐马尔可夫模型与EM算法</h3>
+<ul>
+<li><strong>HMM中的EM算法应用</strong>:
+<ul>
+<li>通过EM算法实现HMM的参数估计，包括连续信号的概率密度函数表示。</li>
+<li>将HMM与神经网络结合，提升条件概率估计的准确性，增强模型性能。</li>
 </ul>
 </li>
 </ul>

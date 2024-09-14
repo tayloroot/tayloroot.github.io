@@ -197,50 +197,62 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-非参数概率密度估计与k近邻方法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-05-20T16:00:00.000Z" title="发表于 2023-05-21 00:00:00">2023-05-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">📺国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><p>本课程主要聚焦于统计生成模型中的非参数方法，尤其是基于贝叶斯决策的概率密度估计。与传统的参数方法不同，非参数方法不依赖于特定概率密度函数的形式，而是结合样本数据动态地估计概率密度。课程讨论了两种主要的非参数估计方法：固定窗口估计和k近邻估计。其中，固定窗口估计假设一个恒定的窗口大小，而k近邻估计则在样本数量固定的情况下动态调整窗口大小。此外，课程还涉及到距离度量对分类器性能的优化，并探讨了切线距离和泰勒展开的概念，旨在强调概率密度估计在模式识别和机器学习中的关键作用及其应用。  </p>
-<h3 id="非参数概率密度估计的重要性"><a href="#非参数概率密度估计的重要性" class="headerlink" title="非参数概率密度估计的重要性"></a>非参数概率密度估计的重要性</h3><ul>
-<li><strong>灵活性和应用</strong>:  <ul>
-<li>非参数概率密度估计的灵活性使其能适应任意分布，是现代统计分析中的重要工具。它允许根据样本数量动态调整参数，从而适应复杂数据。  </li>
-<li>与参数方法对比，非参数方法不对密度函数的形式作出假设，而参数方法依赖于特定的函数形式，这给予了非参数方法在复杂数据情况下更强的适应性。  </li>
-<li>半参数方法如高斯混合模型则结合了两者的优点，通过多个成分来描述复杂分布，适用于聚类和分类任务。  </li>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-非参数概率密度估计与k近邻方法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-05-20T16:00:00.000Z" title="发表于 2023-05-21 00:00:00">2023-05-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">📺国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><p>本课程主要聚焦于统计生成模型中的非参数方法，尤其是基于贝叶斯决策的概率密度估计。与传统的参数方法不同，非参数方法不依赖于特定概率密度函数的形式，而是结合样本数据动态地估计概率密度。课程讨论了两种主要的非参数估计方法：固定窗口估计和k近邻估计。其中，固定窗口估计假设一个恒定的窗口大小，而k近邻估计则在样本数量固定的情况下动态调整窗口大小。此外，课程还涉及到距离度量对分类器性能的优化，并探讨了切线距离和泰勒展开的概念，旨在强调概率密度估计在模式识别和机器学习中的关键作用及其应用。</p>
+<h3 id="非参数概率密度估计的重要性">非参数概率密度估计的重要性</h3>
+<ul>
+<li><strong>灵活性和应用</strong>:
+<ul>
+<li>非参数概率密度估计的灵活性使其能适应任意分布，是现代统计分析中的重要工具。它允许根据样本数量动态调整参数，从而适应复杂数据。</li>
+<li>与参数方法对比，非参数方法不对密度函数的形式作出假设，而参数方法依赖于特定的函数形式，这给予了非参数方法在复杂数据情况下更强的适应性。</li>
+<li>半参数方法如高斯混合模型则结合了两者的优点，通过多个成分来描述复杂分布，适用于聚类和分类任务。</li>
 </ul>
 </li>
 </ul>
-<h3 id="方法与技术"><a href="#方法与技术" class="headerlink" title="方法与技术"></a>方法与技术</h3><ul>
-<li><strong>固定窗与k近邻估计</strong>:  <ul>
-<li>固定窗口估计假设局部区域的体积不变，适用于处理样本动态变化的情况。k近邻估计通过固定样本数量，动态调整窗口大小，适配不同的概率密度。  </li>
-<li>窗口函数是估计中的核心，标准立方体和高斯窗口函数用于调节数据的平滑性和准确性。合理的样本数量和窗口宽度的选择至关重要，需要在过拟合和欠拟合之间找到平衡。  </li>
-<li>样本数无穷时，估计结果趋于真实密度，通过卷积与归一化操作来实现准确的密度表示。  </li>
+<h3 id="方法与技术">方法与技术</h3>
+<ul>
+<li><strong>固定窗与k近邻估计</strong>:
+<ul>
+<li>固定窗口估计假设局部区域的体积不变，适用于处理样本动态变化的情况。k近邻估计通过固定样本数量，动态调整窗口大小，适配不同的概率密度。</li>
+<li>窗口函数是估计中的核心，标准立方体和高斯窗口函数用于调节数据的平滑性和准确性。合理的样本数量和窗口宽度的选择至关重要，需要在过拟合和欠拟合之间找到平衡。</li>
+<li>样本数无穷时，估计结果趋于真实密度，通过卷积与归一化操作来实现准确的密度表示。</li>
 </ul>
 </li>
 </ul>
-<h3 id="k近邻与最近邻方法"><a href="#k近邻与最近邻方法" class="headerlink" title="k近邻与最近邻方法"></a>k近邻与最近邻方法</h3><ul>
-<li><strong>分类性能与误差分析</strong>:  <ul>
-<li>k近邻方法通过邻近样本的混合来估计后验概率，动态计算样本距离实现精准分类。当样本数无穷时，其分类决策错误率接近理想状态。  </li>
-<li>最近邻分类规则通过与已知样本的距离进行类别分类，尽管简单，但在样本量大时，其错误率接近贝叶斯错误率。  </li>
-<li>在多类别分类中，k近邻方法通过距离计算实现样本类别预测，并在贝叶斯分类器框架下优化错误率。  </li>
+<h3 id="k近邻与最近邻方法">k近邻与最近邻方法</h3>
+<ul>
+<li><strong>分类性能与误差分析</strong>:
+<ul>
+<li>k近邻方法通过邻近样本的混合来估计后验概率，动态计算样本距离实现精准分类。当样本数无穷时，其分类决策错误率接近理想状态。</li>
+<li>最近邻分类规则通过与已知样本的距离进行类别分类，尽管简单，但在样本量大时，其错误率接近贝叶斯错误率。</li>
+<li>在多类别分类中，k近邻方法通过距离计算实现样本类别预测，并在贝叶斯分类器框架下优化错误率。</li>
 </ul>
 </li>
 </ul>
-<h3 id="效率与计算优化"><a href="#效率与计算优化" class="headerlink" title="效率与计算优化"></a>效率与计算优化</h3><ul>
-<li><strong>距离计算与快速分类</strong>:  <ul>
-<li>k近邻和最近邻的分类性能优秀，但高计算量是瓶颈。通过快速距离计算技术，如部分距离计算和分层搜索，可以改善效率。  </li>
-<li>距离度量的设计对分类影响深远。优化技术包括自动设计距离度量和选择适合的度量方式（如欧氏距离、曼哈顿距离等）。  </li>
+<h3 id="效率与计算优化">效率与计算优化</h3>
+<ul>
+<li><strong>距离计算与快速分类</strong>:
+<ul>
+<li>k近邻和最近邻的分类性能优秀，但高计算量是瓶颈。通过快速距离计算技术，如部分距离计算和分层搜索，可以改善效率。</li>
+<li>距离度量的设计对分类影响深远。优化技术包括自动设计距离度量和选择适合的度量方式（如欧氏距离、曼哈顿距离等）。</li>
 </ul>
 </li>
 </ul>
-<h3 id="深度神经网络与概率密度估计"><a href="#深度神经网络与概率密度估计" class="headerlink" title="深度神经网络与概率密度估计"></a>深度神经网络与概率密度估计</h3><ul>
-<li><strong>深度学习进步与解释性</strong>:  <ul>
-<li>深度神经网络的表现稳步提升，借助显著性图等工具提高模型决策的解释性。显著性图展示了对输出影响最大的输入特征，帮助理解网络的决策过程。  </li>
-<li>剖析输出与输入之间的关系，基于泰勒展开法计算输出相关度，显示了深度学习模型内部的重要性和潜力。  </li>
+<h3 id="深度神经网络与概率密度估计">深度神经网络与概率密度估计</h3>
+<ul>
+<li><strong>深度学习进步与解释性</strong>:
+<ul>
+<li>深度神经网络的表现稳步提升，借助显著性图等工具提高模型决策的解释性。显著性图展示了对输出影响最大的输入特征，帮助理解网络的决策过程。</li>
+<li>剖析输出与输入之间的关系，基于泰勒展开法计算输出相关度，显示了深度学习模型内部的重要性和潜力。</li>
 </ul>
 </li>
 </ul>
-<h3 id="非参数估计与机器学习模型"><a href="#非参数估计与机器学习模型" class="headerlink" title="非参数估计与机器学习模型"></a>非参数估计与机器学习模型</h3><ul>
-<li><strong>贝叶斯估计与分类模型分析</strong>:  <ul>
-<li>在贝叶斯决策中，通过采样参数生成多个分类器并对结果平均化以提高分类效果。  </li>
-<li>K近邻估计能逼近真实概率密度分布，其在样本数无穷时表现良好，需要注意计算优化。  </li>
-<li>分类器的表现分析涉及支持向量机和神经网络，它们在非线性分类任务中表现出色。贝叶斯分类原理还能应用于分析复杂模型，提升理解深度。  </li>
+<h3 id="非参数估计与机器学习模型">非参数估计与机器学习模型</h3>
+<ul>
+<li><strong>贝叶斯估计与分类模型分析</strong>:
+<ul>
+<li>在贝叶斯决策中，通过采样参数生成多个分类器并对结果平均化以提高分类效果。</li>
+<li>K近邻估计能逼近真实概率密度分布，其在样本数无穷时表现良好，需要注意计算优化。</li>
+<li>分类器的表现分析涉及支持向量机和神经网络，它们在非线性分类任务中表现出色。贝叶斯分类原理还能应用于分析复杂模型，提升理解深度。</li>
 </ul>
 </li>
 </ul>

@@ -1,17 +1,17 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;dixzhang-xu-ni-nei-cun 学习目标  了解物理地址和虚拟地址的区别 理解虚拟内存在缓存、内存管理与保护中所扮演的角色 掌握虚拟内存到物理内存的翻译机制 理解现代计算机系统中虚拟内存的应用 理解动态内存分配的基本概念 区别内部碎片与外部碎片 掌握管理动态内存分配的三种方法 了解垃圾回收">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;dixzhang-xu-ni-nei-cun 学习目标 了解物理地址和虚拟地址的区别 理解虚拟内存在缓存、内存管理与保护中所扮演的角色 掌握虚拟内存到物理内存的翻译机制 理解现代计算机系统中虚拟内存的应用 理解动态内存分配的基本概念 区别内部碎片与外部碎片 掌握管理动态内存分配的三种方法 了解垃圾回收的基">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】">
 <meta property="og:url" content="http://mmwiki.cn/posts/525342f9.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="补充阅读材料： https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;dixzhang-xu-ni-nei-cun 学习目标  了解物理地址和虚拟地址的区别 理解虚拟内存在缓存、内存管理与保护中所扮演的角色 掌握虚拟内存到物理内存的翻译机制 理解现代计算机系统中虚拟内存的应用 理解动态内存分配的基本概念 区别内部碎片与外部碎片 掌握管理动态内存分配的三种方法 了解垃圾回收">
+<meta property="og:description" content="补充阅读材料：https:&#x2F;&#x2F;fengmuzi2003.gitbook.io&#x2F;csapp3e&#x2F;dixzhang-xu-ni-nei-cun 学习目标 了解物理地址和虚拟地址的区别 理解虚拟内存在缓存、内存管理与保护中所扮演的角色 掌握虚拟内存到物理内存的翻译机制 理解现代计算机系统中虚拟内存的应用 理解动态内存分配的基本概念 区别内部碎片与外部碎片 掌握管理动态内存分配的三种方法 了解垃圾回收的基">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-01-22T16:00:00.000Z">
 <meta property="article:modified_time" content="2024-09-13T01:53:00.296Z">
 <meta property="article:author" content="MrMatrix">
 <meta property="article:tag" content="编程">
-<meta property="article:tag" content="计算机基础">
 <meta property="article:tag" content="深入理解计算机系统">
+<meta property="article:tag" content="计算机基础">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://mmwiki.cn/img/sea.jpg"><link rel="shortcut icon" href="/img/m.png"><link rel="canonical" href="http://mmwiki.cn/posts/525342f9.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
       const saveToLocal = {
@@ -198,10 +198,8 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-22T16:00:00.000Z" title="发表于 2021-01-23 00:00:00">2021-01-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br>
-<a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/dixzhang-xu-ni-nei-cun">https://fengmuzi2003.gitbook.io/csapp3e/dixzhang-xu-ni-nei-cun</a></p>
-<h2 id="学习目标">学习目标</h2>
-<ol>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第九章】虚拟内存-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-22T16:00:00.000Z" title="发表于 2021-01-23 00:00:00">2021-01-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>16分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br><a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/dixzhang-xu-ni-nei-cun">https://fengmuzi2003.gitbook.io/csapp3e/dixzhang-xu-ni-nei-cun</a></p>
+<h2 id="学习目标"><a href="#学习目标" class="headerlink" title="学习目标"></a>学习目标</h2><ol>
 <li>了解物理地址和虚拟地址的区别</li>
 <li>理解虚拟内存在缓存、内存管理与保护中所扮演的角色</li>
 <li>掌握虚拟内存到物理内存的翻译机制</li>
@@ -213,8 +211,7 @@
 <li>了解内存使用中常见的错误</li>
 </ol>
 <p>这一讲的内容，跟之前介绍的缓存系统有异曲同工之妙，唯一的差别是，因为涉及的概念和横跨的系统层级增多，难度更大了。如果遇到不明白的地方，一定要结合原书进行细致阅读理解。</p>
-<h2 id="从物理内存到虚拟内存">从物理内存到虚拟内存</h2>
-<p>物理地址一般应用在简单的嵌入式微控制器中（汽车、电梯、电子相框等），因为应用的范围有严格的限制，不需要在内存管理中引入过多的复杂度。</p>
+<h2 id="从物理内存到虚拟内存"><a href="#从物理内存到虚拟内存" class="headerlink" title="从物理内存到虚拟内存"></a>从物理内存到虚拟内存</h2><p>物理地址一般应用在简单的嵌入式微控制器中（汽车、电梯、电子相框等），因为应用的范围有严格的限制，不需要在内存管理中引入过多的复杂度。</p>
 <p>但是对于计算机（以及其他智能设备）来说，虚拟地址则是必不可少的，通过 MMU(Memory management unit)把虚拟地址(Virtual Address, VA)转换为物理地址(Physical Address, PA)，再由此进行实际的数据传输。大致的过程如下图所示</p>
 <p><img src="/img/post/csapp/14615011037796.jpg" alt=""></p>
 <p>使用虚拟内存主要是基于下面三个考虑：</p>
@@ -223,16 +220,13 @@
 <li>简化内存管理：每个进程都有统一的线性地址空间</li>
 <li>隔离地址控件：进程之间不会相互影响；用户程序不能访问内核信息和代码</li>
 </ol>
-<h2 id="虚拟内存的三个角色">虚拟内存的三个角色</h2>
-<h3 id="作为缓存工具">作为缓存工具</h3>
-<p>概念上来说，虚拟内存就是存储在磁盘上的 N 个连续字节的数组。这个数组的部分内容，会缓存在 DRAM 中，在 DRAM 中的每个缓存块(cache block)就称为页(page)，如下图所示：</p>
+<h2 id="虚拟内存的三个角色"><a href="#虚拟内存的三个角色" class="headerlink" title="虚拟内存的三个角色"></a>虚拟内存的三个角色</h2><h3 id="作为缓存工具"><a href="#作为缓存工具" class="headerlink" title="作为缓存工具"></a>作为缓存工具</h3><p>概念上来说，虚拟内存就是存储在磁盘上的 N 个连续字节的数组。这个数组的部分内容，会缓存在 DRAM 中，在 DRAM 中的每个缓存块(cache block)就称为页(page)，如下图所示：</p>
 <p><img src="/img/post/csapp/14615017442915.jpg" alt=""></p>
 <p>大致的思路和之前的 cache memory 是类似的，就是利用 DRAM 比较快的特性，把最常用的数据换缓存起来。如果要访问磁盘的话，大约会比访问 DRAM 慢一万倍，所以我们的目标就是尽可能从 DRAM 中拿数据。为此，我们需要：</p>
 <ul>
 <li>更大的页尺寸(page size)：通常是 4KB，有的时候可以达到 4MB</li>
 <li>全相联(Fully associative)：每一个虚拟页(virual page)可以放在任意的物理页(physical page)中，没有限制。</li>
-<li>映射函数非常复杂，所以没有办法用硬件实现，通常使用 Write-back 而非 Write-through 机制
-<ul>
+<li>映射函数非常复杂，所以没有办法用硬件实现，通常使用 Write-back 而非 Write-through 机制<ul>
 <li>Write-through: 命中后更新缓存，同时写入到内存中</li>
 <li>Write-back: 直到这个缓存需要被置换出去，才写入到内存中（需要额外的 dirty bit 来表示缓存中的数据是否和内存中相同，因为可能在其他的时候内存中对应地址的数据已经更新，那么重复写入就会导致原有数据丢失）</li>
 </ul>
@@ -251,17 +245,14 @@
 <p>复制过程中的等待时间称为 demand paging。</p>
 <p>仔细留意上面的页表，会发现有一个条目是 null，也就是没有分配。具体的分配过程（比方说声明了一个大数组），就是让该条目指向虚拟内存（在磁盘上）的某个页，但并不复制到 DRAM，只有当出现 page fault 的时候才需要拷贝数据。</p>
 <p>看起来『多此一举』，但是由于局部性原理，虚拟内存其实是非常高效的机制，这一部分最后提到了工作集(working set)[1]的概念，比较简单，这里不再赘述。</p>
-<h3 id="作为内存管理工具">作为内存管理工具</h3>
-<p>前面提到，每个进程都有自己的虚拟地址空间，这样一来，对于进程来说，它们看到的就是简单的线性空间（但实际上在物理内存中可能是间隔、支离破碎的），具体的映射过程可以用下图表示：</p>
+<h3 id="作为内存管理工具"><a href="#作为内存管理工具" class="headerlink" title="作为内存管理工具"></a>作为内存管理工具</h3><p>前面提到，每个进程都有自己的虚拟地址空间，这样一来，对于进程来说，它们看到的就是简单的线性空间（但实际上在物理内存中可能是间隔、支离破碎的），具体的映射过程可以用下图表示：</p>
 <p><img src="/img/post/csapp/14615040688550.jpg" alt=""></p>
 <p>在内存分配中没有太多限制，每个虚拟页都可以被映射到任何的物理页上。这样也带来一个好处，如果两个进程间有共享的数据，那么直接指向同一个物理页即可（也就是上图 PP 6 的状况，只读数据）</p>
 <p>虚拟内存带来的另一个好处就是可以简化链接和载入的结构（因为有了统一的抽象，不需要纠结细节）</p>
-<h3 id="作为内存保护工具">作为内存保护工具</h3>
-<p>页表中的每个条目的高位部分是表示权限的位，MMU 可以通过检查这些位来进行权限控制（读、写、执行），如下图所示：</p>
+<h3 id="作为内存保护工具"><a href="#作为内存保护工具" class="headerlink" title="作为内存保护工具"></a>作为内存保护工具</h3><p>页表中的每个条目的高位部分是表示权限的位，MMU 可以通过检查这些位来进行权限控制（读、写、执行），如下图所示：</p>
 <p><img src="/img/post/csapp/14615862225552.jpg" alt=""></p>
-<h2 id="地址翻译">地址翻译</h2>
-<p>开始之前先来了解以下参数：</p>
-<p>N=2n,M=2m,P=2p</p>
+<h2 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h2><p>开始之前先来了解以下参数：</p>
+<p>N\=2n,M\=2m,P\=2p</p>
 <p>其中 <code>N</code> 表示虚拟地址空间中的地址数量，<code>M</code> 表示物理地址空间中的地址数量，<code>P</code> 是每一页包含的字节数(page size)。</p>
 <p>虚拟地址(VA, Virtual Address)中的元素：</p>
 <ul>
@@ -293,14 +284,12 @@
 <p>虽然缓存已经很快了，但是能不能更快呢，为什么不能直接在 MMU 进行一部分的工作呢？于是就有了另外一个设计：Translation Lookaside Buffer(TLB)。TLB 实际上可以认为是页表在处理芯片上的缓存，整体的机制和前面提到的缓存很像，我们通过下面的图进行讲解：</p>
 <p><img src="/img/post/csapp/14619349692957.jpg" alt=""></p>
 <p>这里 VPN + VPO 就是虚拟地址，同样分成三部分，分别用于匹配标签、确定集合，如果 TLB 中有对应的记录，那么直接返回对应页表项(PTE)即可，如果没有的话，就要从缓存/内存中获取，并更新 TLB 的对应集合。</p>
-<h3 id="多层页表-Multi-Level-Page-Table">多层页表 Multi-Level Page Table</h3>
-<p>虽然页表是一个表，但因为往往虚拟地址的位数比物理内存的位数要大得多，所以保存页表项(PTE) 所需要的空间也是一个问题。举个例子：</p>
+<h3 id="多层页表-Multi-Level-Page-Table"><a href="#多层页表-Multi-Level-Page-Table" class="headerlink" title="多层页表 Multi-Level Page Table"></a>多层页表 Multi-Level Page Table</h3><p>虽然页表是一个表，但因为往往虚拟地址的位数比物理内存的位数要大得多，所以保存页表项(PTE) 所需要的空间也是一个问题。举个例子：</p>
 <p>假设每个页的大小是 4KB（2 的 12 次方），每个地址有 48 位，一条 PTE 记录有 8 个字节，那么要全部保存下来，需要的大小是：</p>
-<p>248×2−12×23=239bytes</p>
+<p>248×2−12×23\=239bytes</p>
 <p>整整 512 GB！所以我们采用多层页表，第一层的页表中的条目指向第二层的页表，一个一个索引下去，最终寻找具体的物理地址，整个翻译过程如下：</p>
 <p><img src="/img/post/csapp/14619365087673.jpg" alt=""></p>
-<h3 id="地址翻译实例">地址翻译实例</h3>
-<p>来看一个简单的例子，我们的内存系统设定如下：</p>
+<h3 id="地址翻译实例"><a href="#地址翻译实例" class="headerlink" title="地址翻译实例"></a>地址翻译实例</h3><p>来看一个简单的例子，我们的内存系统设定如下：</p>
 <ul>
 <li>14 位的虚拟地址</li>
 <li>12 位的物理地址</li>
@@ -337,8 +326,7 @@
 </blockquote>
 <p>（物理地址已更正，感谢网友小新指出）</p>
 <p><img src="/img/post/csapp/14619405964352.jpg" alt=""></p>
-<h2 id="动态内存分配">动态内存分配</h2>
-<p>前面了解了虚拟内存的相关知识，这一节我们来看看动态内存分配的基本概念，相信这之后就知道诸如 <code>malloc</code> 和 <code>new</code> 这类方法是怎么做的了。</p>
+<h2 id="动态内存分配"><a href="#动态内存分配" class="headerlink" title="动态内存分配"></a>动态内存分配</h2><p>前面了解了虚拟内存的相关知识，这一节我们来看看动态内存分配的基本概念，相信这之后就知道诸如 <code>malloc</code> 和 <code>new</code> 这类方法是怎么做的了。</p>
 <p>程序员通过动态内存分配（例如 <code>malloc</code>）来让程序在运行时得到虚拟内存。动态内存分配器会管理一个虚拟内存区域，称为堆(heap)。</p>
 <p>分配器以块为单位来维护堆，可以进行分配或释放。有两种类型的分配器：</p>
 <ul>
@@ -347,6 +335,7 @@
 </ul>
 <p>先来看看一个简单的使用 <code>malloc</code> 和 <code>free</code> 的例子</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br></pre></td><td><pre><span><span>#<span>include</span> <span>&lt;stdio.h&gt;</span></span></span><br><span><span>#<span>include</span> <span>&lt;stdlib.h&gt;</span></span></span><br><span></span><br><span><span><span>void</span> <span>foo</span><span>(<span>int</span> n)</span> </span>{</span><br><span>    <span>int</span> i, *p;</span><br><span>    </span><br><span>    </span><br><span>    p = (<span>int</span> *) <span>malloc</span>(n * <span>sizeof</span>(<span>int</span>));</span><br><span>    <span>if</span> (p == <span>NULL</span>) {</span><br><span>        perror(<span>"malloc"</span>);</span><br><span>        <span>exit</span>(<span>0</span>);</span><br><span>    }</span><br><span>    </span><br><span>    </span><br><span>    <span>for</span> (i=<span>0</span>; i&lt;n; i++)</span><br><span>        p[i] = i;</span><br><span></span><br><span>    </span><br><span>    <span>free</span>(p);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>为了讲述方便，我们做如下假设：</p>
 <ul>
@@ -365,8 +354,7 @@
 <li>只能操作和修改未分配的内存</li>
 <li>不能移动已分配的块</li>
 </ul>
-<h3 id="性能指标">性能指标</h3>
-<p>现在我们可以来看看如何去评测具体的分配算法了。假设给定一个 <code>malloc</code> 和 <code>free</code> 的请求的序列：</p>
+<h3 id="性能指标"><a href="#性能指标" class="headerlink" title="性能指标"></a>性能指标</h3><p>现在我们可以来看看如何去评测具体的分配算法了。假设给定一个 <code>malloc</code> 和 <code>free</code> 的请求的序列：</p>
 <p>R0,R1,…,Rk,…,Rn−1</p>
 <p>目标是尽可能提高吞吐量以及内存利用率（注意，这两个目标常常是冲突的）</p>
 <p>吞吐量是在单位时间内完成的请求数量。假设在 10 秒中之内进行了 5000 次 <code>malloc</code> 和 5000 次 <code>free</code> 调用，那么吞吐量是 1000 operations/second</p>
@@ -379,8 +367,7 @@
 <p><strong>外部碎片</strong></p>
 <p>指的是内存中没有足够的连续空间，如下图所示，内存中有足够的空间，但是空间不连续，所以成为了碎片：</p>
 <p><img src="/img/post/csapp/14619429933039.jpg" alt=""></p>
-<h3 id="实现细节">实现细节</h3>
-<p>我们已经知道了原理，现在就来看看怎么样能够实现一个高效的内存分配算法吧！在具体实现之前，需要考虑以下问题：</p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><p>我们已经知道了原理，现在就来看看怎么样能够实现一个高效的内存分配算法吧！在具体实现之前，需要考虑以下问题：</p>
 <ul>
 <li>给定一个指针，我们如何知道需要释放多少内存？</li>
 <li>如何记录未分配的块？</li>
@@ -403,9 +390,9 @@
 <li>Best Fit: 每次遍历列表，找到最合适的块，碎片较少，但是速度最慢</li>
 </ol>
 <p>更详细可以参考这两篇文章：<a target="_blank" rel="noopener" href="http://wdxtub.com/vault/csapp-18.html">Dynamic Memory Allocation - Basic Concept</a> 和 <a target="_blank" rel="noopener" href="http://wdxtub.com/vault/csapp-19.html">Dynamic Memory Allocation - Advanced Concept</a></p>
-<h2 id="垃圾回收">垃圾回收</h2>
-<p>所谓垃圾回收，就是我们不再需要显式释放所申请内存空间了，例如：</p>
+<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>所谓垃圾回收，就是我们不再需要显式释放所申请内存空间了，例如：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></pre></td><td><pre><span><span><span>void</span> <span>foo</span><span>()</span> </span>{</span><br><span>    <span>int</span> *p = <span>malloc</span>(<span>128</span>);</span><br><span>    <span>return</span>; </span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>这种机制在许多动态语言中都有实现：Python, Ruby, Java, Perl, ML, Lisp, Mathematica。C 和 C++ 中也有类似的变种，但是需要注意的是，是不可能回收所有的垃圾的。</p>
 <p>我们如何知道什么东西才是『垃圾』呢？简单！只要没有任何指针指向的地方，不管有没有用，因为都不可能被使用，当然可以直接清理掉啦。不过这其实是需要一些前提条件的：</p>
@@ -422,8 +409,7 @@
 <li>Generational Collectors(Lieberman and Hewitt, 1983)</li>
 </ul>
 <p>大部分比较常用的算法居然都有五十多年历史了，神奇。更多相关细节在维基百科[2]中都有详细介绍（中文版本质量较差，这里给出英文版）。</p>
-<h2 id="内存陷阱">内存陷阱</h2>
-<p>关于内存的使用需要注意避免以下问题：</p>
+<h2 id="内存陷阱"><a href="#内存陷阱" class="headerlink" title="内存陷阱"></a>内存陷阱</h2><p>关于内存的使用需要注意避免以下问题：</p>
 <ul>
 <li>解引用错误指针</li>
 <li>读取未初始化的内存</li>
@@ -433,57 +419,60 @@
 <li>引用已释放的块</li>
 <li>释放块失败</li>
 </ul>
-<h3 id="Dereferencing-Bad-Pointers">Dereferencing Bad Pointers</h3>
-<p>这是非常常见的例子，没有引用对应的地址，少了 <code>&amp;</code></p>
+<h3 id="Dereferencing-Bad-Pointers"><a href="#Dereferencing-Bad-Pointers" class="headerlink" title="Dereferencing Bad Pointers"></a>Dereferencing Bad Pointers</h3><p>这是非常常见的例子，没有引用对应的地址，少了 <code>&amp;</code></p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br></pre></td><td><pre><span><span>int</span> val;</span><br><span>...</span><br><span><span>scanf</span>(<span>"%d"</span>, val);</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="Reading-Uninitialized-Memory">Reading Uninitialized Memory</h3>
-<p>不能假设堆中的数据会自动初始化为 0，下面的代码就会出现奇怪的问题</p>
+<h3 id="Reading-Uninitialized-Memory"><a href="#Reading-Uninitialized-Memory" class="headerlink" title="Reading Uninitialized Memory"></a>Reading Uninitialized Memory</h3><p>不能假设堆中的数据会自动初始化为 0，下面的代码就会出现奇怪的问题</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br></pre></td><td><pre><span></span><br><span><span><span>int</span> *<span>matvec</span><span>(<span>int</span> **A, <span>int</span> *x)</span> </span>{</span><br><span>    <span>int</span> *y = <span>malloc</span>(N * <span>sizeof</span>(<span>int</span>));</span><br><span>    <span>int</span> i, j;</span><br><span>    </span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; N; i++)</span><br><span>        <span>for</span> (j = <span>0</span>; j &lt; N; j++)</span><br><span>            y[i] += A[i][j] * x[j];</span><br><span>    <span>return</span> y;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="Overwriting-Memory">Overwriting Memory</h3>
-<p>这里有挺多问题，第一种是分配了错误的大小，下面的例子中，一开始不能用 <code>sizeof(int)</code>，因为指针的长度不一定和 int 一样。</p>
+<h3 id="Overwriting-Memory"><a href="#Overwriting-Memory" class="headerlink" title="Overwriting Memory"></a>Overwriting Memory</h3><p>这里有挺多问题，第一种是分配了错误的大小，下面的例子中，一开始不能用 <code>sizeof(int)</code>，因为指针的长度不一定和 int 一样。</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span><span>int</span> **p;</span><br><span>p = <span>malloc</span>(N * <span>sizeof</span>(<span>int</span>));</span><br><span></span><br><span><span>for</span> (i = <span>0</span>; i &lt; N; i++) </span><br><span>    p[i] = <span>malloc</span>(M * <span>sizeof</span>(<span>int</span>));</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>第二个问题是超出了分配的空间，下面代码的 for 循环中，因为使用了 <code>&lt;=</code>，会写入到其他位置</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br></pre></td><td><pre><span><span>int</span> **p;</span><br><span></span><br><span>p = <span>malloc</span>(N * <span>sizeof</span> (<span>int</span> *));</span><br><span></span><br><span><span>for</span> (i = <span>0</span>; i &lt;= N; i++)</span><br><span>    p[i] = <span>malloc</span>(M * <span>sizeof</span>(<span>int</span>));</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>第三种是因为没有检查字符串的长度，超出部分就写到其他地方去了（经典的缓冲区溢出攻击也是利用相同的机制）</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></pre></td><td><pre><span><span>char</span> s[<span>8</span>];</span><br><span><span>int</span> i;</span><br><span></span><br><span>gets(s); </span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>第四种是没有正确理解指针的大小以及对应的操作，应该使用 <code>sizeof(int *)</code></p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br></pre></td><td><pre><span><span><span>int</span> *<span>search</span><span>(<span>int</span> *p, <span>int</span> val)</span> </span>{</span><br><span>    <span>while</span> (*p &amp;&amp; *p != null)</span><br><span>        p += <span>sizeof</span>(<span>int</span>);</span><br><span>    </span><br><span>    <span>return</span> p;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>第五种是引用了指针，而不是其指向的对象，下面的例子中，<code>*size--</code> 一句因为 <code>--</code> 的优先级比较高，所以实际上是对指针进行了操作，正确的应该是 <code>(*size)--</code></p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span><span><span>int</span> *<span>BinheapDelete</span><span>(<span>int</span> **binheap, <span>int</span> *<span>size</span>)</span> </span>{</span><br><span>    <span>int</span> *packet;</span><br><span>    packet = binheap[<span>0</span>];</span><br><span>    binheap[<span>0</span>] = binheap[*<span>size</span> - <span>1</span>];</span><br><span>    *<span>size</span>--;</span><br><span>    Heapify(binheap, *<span>size</span>, <span>0</span>);</span><br><span>    <span>return</span> (packet);</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="Referencing-Nonexistent-Variables">Referencing Nonexistent Variables</h3>
-<p>下面的情况中，没有注意到局部变量会在函数返回的时候失效（所以对应的指针也会无效），这是传引用和返回引用需要注意的，传值的话则不用担心</p>
+<h3 id="Referencing-Nonexistent-Variables"><a href="#Referencing-Nonexistent-Variables" class="headerlink" title="Referencing Nonexistent Variables"></a>Referencing Nonexistent Variables</h3><p>下面的情况中，没有注意到局部变量会在函数返回的时候失效（所以对应的指针也会无效），这是传引用和返回引用需要注意的，传值的话则不用担心</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span><span><span>int</span> *<span>foo</span><span>()</span> </span>{</span><br><span>    <span>int</span> val;</span><br><span>    </span><br><span>    <span>return</span> &amp;val;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="Freeing-Blocks-Multiple-Times">Freeing Blocks Multiple Times</h3>
-<p>这个不用多说，不能重复搞两次</p>
+<h3 id="Freeing-Blocks-Multiple-Times"><a href="#Freeing-Blocks-Multiple-Times" class="headerlink" title="Freeing Blocks Multiple Times"></a>Freeing Blocks Multiple Times</h3><p>这个不用多说，不能重复搞两次</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br></pre></td><td><pre><span>x = <span>malloc</span>(N * <span>sizeof</span>(<span>int</span>));</span><br><span></span><br><span><span>free</span>(x);</span><br><span></span><br><span>y = <span>malloc</span>(M * <span>sizeof</span>(<span>int</span>));</span><br><span></span><br><span><span>free</span>(x);</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="Referencing-Freed-Blocks">Referencing Freed Blocks</h3>
-<p>同样是很明显的错误，不要犯</p>
+<h3 id="Referencing-Freed-Blocks"><a href="#Referencing-Freed-Blocks" class="headerlink" title="Referencing Freed Blocks"></a>Referencing Freed Blocks</h3><p>同样是很明显的错误，不要犯</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span>x = <span>malloc</span>(N * <span>sizeof</span>(<span>int</span>));</span><br><span></span><br><span><span>free</span>(x);</span><br><span></span><br><span></span><br><span>y = <span>malloc</span>(M * <span>sizeof</span>(<span>int</span>));</span><br><span><span>for</span> (i = <span>0</span>; i &lt; M; i++)</span><br><span>    y[i] = x[i]++;</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h3 id="Memory-Leaks">Memory Leaks</h3>
-<p>用完没有释放，就是内存泄露啦</p>
+<h3 id="Memory-Leaks"><a href="#Memory-Leaks" class="headerlink" title="Memory Leaks"></a>Memory Leaks</h3><p>用完没有释放，就是内存泄露啦</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span>foo() {</span><br><span>    <span>int</span> *x = <span>malloc</span>(N * <span>sizeof</span>(<span>int</span>));</span><br><span>    </span><br><span>    <span>return</span> ;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
 <p>或者只释放了数据结构的一部分：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br></pre></td><td><pre><span><span><span>struct</span> <span>list</span> {</span></span><br><span>    <span>int</span> val;</span><br><span>    <span><span>struct</span> <span>list</span> *<span>next</span>;</span></span><br><span>};</span><br><span></span><br><span>foo() {</span><br><span>    <span><span>struct</span> <span>list</span> *<span>head</span> = <span>malloc</span>(<span>sizeof</span>(<span>struct</span> <span>list</span>));</span></span><br><span>    head-&gt;val = <span>0</span>;</span><br><span>    head-&gt;next = <span>NULL</span>;</span><br><span>    </span><br><span>    <span>free</span>(head);</span><br><span>    <span>return</span>;</span><br><span>}</span><br></pre></td></tr></tbody></table>
+
 <p>复制</p>
-<h2 id="总结">总结</h2>
-<p>这一讲的内容比较多，再加上各种不同的映射，可能是最需要花时间去理解的一讲了。我们先了解了物理地址和虚拟地址的区别，然后在此基础上理解虚拟内存在缓存、内存管理与保护中所扮演的角色，并通过实际的例子学习虚拟内存到物理内存的翻译机制。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一讲的内容比较多，再加上各种不同的映射，可能是最需要花时间去理解的一讲了。我们先了解了物理地址和虚拟地址的区别，然后在此基础上理解虚拟内存在缓存、内存管理与保护中所扮演的角色，并通过实际的例子学习虚拟内存到物理内存的翻译机制。</p>
 <p>有了前面的基础，简要介绍了动态内存分配的基本概念和管理动态内存分配的三种算法。最后提及了垃圾回收的基本原理和内存使用中常见的错误。</p>
 <p>尤其是动态内存分配和垃圾回收的部分，因为篇幅限制说得比较简单，一定要对照书本进行阅读和理解。</p>
-<h2 id="参考链接">参考链接</h2>
-<ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Working_set">Working set</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)">Garbage collection</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science">Garbage collection</a>)</li>
 </ol>
 </article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">小土刀</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://wdxtub.com/work/">https://wdxtub.com/work/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">此文章版权归原作者所有，如有转载，请注明来自原作者-</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/b1fb9525.html" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div><div class="next-post pull-right"><a href="/posts/6bc76c46.html" title="CSAPP-【第八章】异常流控制-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CSAPP-【第八章】异常流控制-补充阅读与总结【转载】</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/b1fb9525.html" title="CSAPP-【第十章】系统级IO-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-27</div><div class="title">CSAPP-【第十章】系统级IO-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/882cf7d3.html" title="CSAPP-【第七章】链接-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-09</div><div class="title">CSAPP-【第七章】链接-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/4ef1ce7c.html" title="CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-10</div><div class="title">CSAPP-【第二章】信息的表示和处理-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/618b80aa.html" title="CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-02</div><div class="title">CSAPP-【第六章】存储器层次结构-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/f41e98fa.html" title="CSAPP-【第十一章】网络-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-31</div><div class="title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</div></div></a></div><div><a href="/posts/6bc76c46.html" title="CSAPP-【第八章】异常流控制-补充阅读与总结【转载】"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-17</div><div class="title">CSAPP-【第八章】异常流控制-补充阅读与总结【转载】</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://www.zhihu.com/people/MrMatrix"><i></i><span>知乎</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研👨‍🔬、工作👨‍💻和生活👨‍👩‍👧‍👦的过程中捕获到的有价值的课程📺、书籍📗与事件📰，是面向我自己搭建的查漏补缺的备忘录📝和记事本📓✏️。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E7%89%A9%E7%90%86%E5%86%85%E5%AD%98%E5%88%B0%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98"><span class="toc-number">2.</span> <span class="toc-text">从物理内存到虚拟内存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E4%B8%89%E4%B8%AA%E8%A7%92%E8%89%B2"><span class="toc-number">3.</span> <span class="toc-text">虚拟内存的三个角色</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E7%BC%93%E5%AD%98%E5%B7%A5%E5%85%B7"><span class="toc-number">3.1.</span> <span class="toc-text">作为缓存工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="toc-number">3.2.</span> <span class="toc-text">作为内存管理工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4%E5%B7%A5%E5%85%B7"><span class="toc-number">3.3.</span> <span class="toc-text">作为内存保护工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91"><span class="toc-number">4.</span> <span class="toc-text">地址翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E5%B1%82%E9%A1%B5%E8%A1%A8-Multi-Level-Page-Table"><span class="toc-number">4.1.</span> <span class="toc-text">多层页表 Multi-Level Page Table</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E7%BF%BB%E8%AF%91%E5%AE%9E%E4%BE%8B"><span class="toc-number">4.2.</span> <span class="toc-text">地址翻译实例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">5.1.</span> <span class="toc-text">性能指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="toc-number">5.2.</span> <span class="toc-text">实现细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="toc-number">6.</span> <span class="toc-text">垃圾回收</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E9%99%B7%E9%98%B1"><span class="toc-number">7.</span> <span class="toc-text">内存陷阱</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dereferencing-Bad-Pointers"><span class="toc-number">7.1.</span> <span class="toc-text">Dereferencing Bad Pointers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Reading-Uninitialized-Memory"><span class="toc-number">7.2.</span> <span class="toc-text">Reading Uninitialized Memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Overwriting-Memory"><span class="toc-number">7.3.</span> <span class="toc-text">Overwriting Memory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Referencing-Nonexistent-Variables"><span class="toc-number">7.4.</span> <span class="toc-text">Referencing Nonexistent Variables</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Freeing-Blocks-Multiple-Times"><span class="toc-number">7.5.</span> <span class="toc-text">Freeing Blocks Multiple Times</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Referencing-Freed-Blocks"><span class="toc-number">7.6.</span> <span class="toc-text">Referencing Freed Blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Memory-Leaks"><span class="toc-number">7.7.</span> <span class="toc-text">Memory Leaks</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">9.</span> <span class="toc-text">参考链接</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/6382afc7.html" title="观陶哲轩演讲-AI与数学-后有感">观陶哲轩演讲-AI与数学-后有感</a><time datetime="2024-08-29T16:00:00.000Z" title="发表于 2024-08-30 00:00:00">2024-08-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/4309bd24.html" title="国科大-随机过程-连续时间马尔可夫链">国科大-随机过程-连续时间马尔可夫链</a><time datetime="2024-01-27T16:00:00.000Z" title="发表于 2024-01-28 00:00:00">2024-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b497123d.html" title="国科大-随机过程-马尔可夫链的转移概率与极限行为">国科大-随机过程-马尔可夫链的转移概率与极限行为</a><time datetime="2024-01-20T16:00:00.000Z" title="发表于 2024-01-21 00:00:00">2024-01-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/8d52a7e7.html" title="国科大-随机过程-马尔可夫链中的常反性及其相关概念">国科大-随机过程-马尔可夫链中的常反性及其相关概念</a><time datetime="2024-01-15T16:00:00.000Z" title="发表于 2024-01-16 00:00:00">2024-01-16</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By MrMatrix</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.gov.cn"><span>浙ICP备2024121111号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.gov.cn/"><img class="icp-icon" src="http://www.beian.gov.cn/img/new/gongan.png"/><span>浙公网安备33010802013618号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {

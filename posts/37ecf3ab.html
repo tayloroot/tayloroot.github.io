@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-C 标准库设计与实现 (_start; offsetof; printf; environ; malloc/free) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课程重点探讨了C语言标准库的设计和实现方式，尤其是库函数如何对系统调用进行封装。详细阐述了操作系统如何通过抽象，利用API和对象管理硬件资源。此外，课程涉及到管道机制中生产者与消费者的同步问题，以及在通信中处理&quot;broken pipe&quot;等异常的策略。对C语言的高效性和跨平台特性进行了深入分析，着重探讨了libc的标准化对编程的重大影响。最后，课程探讨了动态内存管理中的重要策">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>南京大学-操作系统-C 标准库设计与实现 (_start; offsetof; printf; environ; malloc/free) | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本节课程重点探讨了C语言标准库的设计和实现方式，尤其是库函数如何对系统调用进行封装。详细阐述了操作系统如何通过抽象，利用API和对象管理硬件资源。此外，课程涉及到管道机制中生产者与消费者的同步问题，以及在通信中处理”broken pipe”等异常的策略。对C语言的高效性和跨平台特性进行了深入分析，着重探讨了libc的标准化对编程的重大影响。最后，课程探讨了动态内存管理中的重要策略，分析了如何在实际">
 <meta property="og:type" content="article">
 <meta property="og:title" content="南京大学-操作系统-C 标准库设计与实现 (_start; offsetof; printf; environ; malloc&#x2F;free)">
 <meta property="og:url" content="http://mmwiki.cn/posts/37ecf3ab.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="本节课程重点探讨了C语言标准库的设计和实现方式，尤其是库函数如何对系统调用进行封装。详细阐述了操作系统如何通过抽象，利用API和对象管理硬件资源。此外，课程涉及到管道机制中生产者与消费者的同步问题，以及在通信中处理&quot;broken pipe&quot;等异常的策略。对C语言的高效性和跨平台特性进行了深入分析，着重探讨了libc的标准化对编程的重大影响。最后，课程探讨了动态内存管理中的重要策">
+<meta property="og:description" content="本节课程重点探讨了C语言标准库的设计和实现方式，尤其是库函数如何对系统调用进行封装。详细阐述了操作系统如何通过抽象，利用API和对象管理硬件资源。此外，课程涉及到管道机制中生产者与消费者的同步问题，以及在通信中处理”broken pipe”等异常的策略。对C语言的高效性和跨平台特性进行了深入分析，着重探讨了libc的标准化对编程的重大影响。最后，课程探讨了动态内存管理中的重要策略，分析了如何在实际">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-05-03T16:00:00.000Z">
@@ -198,80 +198,55 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-C 标准库设计与实现 (_start; offsetof; printf; environ; malloc/free)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-03T16:00:00.000Z" title="发表于 2021-05-04 00:00:00">2021-05-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>本节课程重点探讨了C语言标准库的设计和实现方式，尤其是库函数如何对系统调用进行封装。详细阐述了操作系统如何通过抽象，利用API和对象管理硬件资源。此外，课程涉及到管道机制中生产者与消费者的同步问题，以及在通信中处理&quot;broken pipe&quot;等异常的策略。对C语言的高效性和跨平台特性进行了深入分析，着重探讨了libc的标准化对编程的重大影响。最后，课程探讨了动态内存管理中的重要策略，分析了如何在实际系统中高效进行内存分配。</p>
-<h3 id="系统调用与API">系统调用与API</h3>
-<ul>
-<li>
-<p><strong>系统调用基础</strong>: 系统调用是程序与操作系统之间的桥梁，提供了访问硬件资源的接口。尽管可以直接进行系统调用操作，但通过库函数封装能大幅简化编程流程，提升代码的可读性和开发效率。</p>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-C 标准库设计与实现 (_start; offsetof; printf; environ; malloc/free)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-03T16:00:00.000Z" title="发表于 2021-05-04 00:00:00">2021-05-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>本节课程重点探讨了C语言标准库的设计和实现方式，尤其是库函数如何对系统调用进行封装。详细阐述了操作系统如何通过抽象，利用API和对象管理硬件资源。此外，课程涉及到管道机制中生产者与消费者的同步问题，以及在通信中处理”broken pipe”等异常的策略。对C语言的高效性和跨平台特性进行了深入分析，着重探讨了libc的标准化对编程的重大影响。最后，课程探讨了动态内存管理中的重要策略，分析了如何在实际系统中高效进行内存分配。  </p>
+<h3 id="系统调用与API"><a href="#系统调用与API" class="headerlink" title="系统调用与API"></a>系统调用与API</h3><ul>
+<li><p><strong>系统调用基础</strong>: 系统调用是程序与操作系统之间的桥梁，提供了访问硬件资源的接口。尽管可以直接进行系统调用操作，但通过库函数封装能大幅简化编程流程，提升代码的可读性和开发效率。  </p>
 </li>
-<li>
-<p><strong>库函数的优势</strong>: libc等标准库为开发者提供了一系列预定义的功能，使得他们能将精力集中于业务逻辑的开发，避免底层复杂实现的干扰。</p>
+<li><p><strong>库函数的优势</strong>: libc等标准库为开发者提供了一系列预定义的功能，使得他们能将精力集中于业务逻辑的开发，避免底层复杂实现的干扰。  </p>
 </li>
-<li>
-<p><strong>管道与资源利用</strong>: 在UNIX系统中，管道是实施生产者-消费者模式的有效工具。通过管道，数据传输可以在不直接交互的程序间高效进行，实现API调用的资源优化利用。</p>
+<li><p><strong>管道与资源利用</strong>: 在UNIX系统中，管道是实施生产者-消费者模式的有效工具。通过管道，数据传输可以在不直接交互的程序间高效进行，实现API调用的资源优化利用。  </p>
 </li>
 </ul>
-<h3 id="操作系统抽象与C语言">操作系统抽象与C语言</h3>
-<ul>
-<li>
-<p><strong>操作系统层次</strong>: 操作系统通过将硬件虚拟化，提供了层级化的对象接口，使得程序员能更加直观地与底层进行交互。C语言作为高效的抽象工具，赋予开发者灵活的硬件控制能力。</p>
+<h3 id="操作系统抽象与C语言"><a href="#操作系统抽象与C语言" class="headerlink" title="操作系统抽象与C语言"></a>操作系统抽象与C语言</h3><ul>
+<li><p><strong>操作系统层次</strong>: 操作系统通过将硬件虚拟化，提供了层级化的对象接口，使得程序员能更加直观地与底层进行交互。C语言作为高效的抽象工具，赋予开发者灵活的硬件控制能力。  </p>
 </li>
-<li>
-<p><strong>C语言的标志性特性</strong>: C语言通过其跨平台移植性和直接控制硬件的能力，成为了计算机系统的标准编程语言。随着标准化的不断进步，C保持了高效性和灵活性，即便在新特性添加后也是如此。</p>
+<li><p><strong>C语言的标志性特性</strong>: C语言通过其跨平台移植性和直接控制硬件的能力，成为了计算机系统的标准编程语言。随着标准化的不断进步，C保持了高效性和灵活性，即便在新特性添加后也是如此。  </p>
 </li>
 </ul>
-<h3 id="标准库的作用">标准库的作用</h3>
-<ul>
-<li>
-<p><strong>一致性的编码体验</strong>: C标准库的存在确保了程序员能在不同的编译器间保持一致的运行体验，极大提升了代码的可移植性。这对底层OS开发至关重要，可以在各硬件环境中顺利运行。</p>
+<h3 id="标准库的作用"><a href="#标准库的作用" class="headerlink" title="标准库的作用"></a>标准库的作用</h3><ul>
+<li><p><strong>一致性的编码体验</strong>: C标准库的存在确保了程序员能在不同的编译器间保持一致的运行体验，极大提升了代码的可移植性。这对底层OS开发至关重要，可以在各硬件环境中顺利运行。  </p>
 </li>
-<li>
-<p><strong>深入系统理解</strong>: 通过实现简单的标准库功能，开发者能加深对底层机制的理解，提升编程能力。</p>
+<li><p><strong>深入系统理解</strong>: 通过实现简单的标准库功能，开发者能加深对底层机制的理解，提升编程能力。  </p>
 </li>
-<li>
-<p><strong>程序初始化的关键</strong>: 函数<code>main</code>和<code>start</code>是程序可靠启动的重要保障，理解其运营机制对确保程序稳定运行至关重要。</p>
+<li><p><strong>程序初始化的关键</strong>: 函数<code>main</code>和<code>start</code>是程序可靠启动的重要保障，理解其运营机制对确保程序稳定运行至关重要。  </p>
 </li>
 </ul>
-<h3 id="调试与学习">调试与学习</h3>
-<ul>
-<li>
-<p><strong>GLIBC与musl libc的应用</strong>: 尽管GLIBC的代码因复杂性阻碍初学者，但研究其基础功能有助于更好地理解系统调用与libc的实现。利用musl libc可提供更清晰的代码结构，加快学习进程。</p>
+<h3 id="调试与学习"><a href="#调试与学习" class="headerlink" title="调试与学习"></a>调试与学习</h3><ul>
+<li><p><strong>GLIBC与musl libc的应用</strong>: 尽管GLIBC的代码因复杂性阻碍初学者，但研究其基础功能有助于更好地理解系统调用与libc的实现。利用musl libc可提供更清晰的代码结构，加快学习进程。  </p>
 </li>
-<li>
-<p><strong>指针与参数传递分析</strong>: 视频讲解了程序初始状态和寄存器的重要性，帮助观众理解程序加载与内存状态。</p>
+<li><p><strong>指针与参数传递分析</strong>: 视频讲解了程序初始状态和寄存器的重要性，帮助观众理解程序加载与内存状态。  </p>
 </li>
-<li>
-<p><strong>程序生命周期理解</strong>: 探索程序如何通过libc库的引导，通过系统调用完成生命周期，是了解全面程序执行流程的关键。</p>
+<li><p><strong>程序生命周期理解</strong>: 探索程序如何通过libc库的引导，通过系统调用完成生命周期，是了解全面程序执行流程的关键。  </p>
 </li>
 </ul>
-<h3 id="LIBC的功能与应用">LIBC的功能与应用</h3>
-<ul>
-<li>
-<p><strong>基础功能封装</strong>: LIBC提供了如字符串和内存操作的基础函数，加速开发流程。开发者应善用手册来认识这些功能，提升工作效率和代码质量。</p>
+<h3 id="LIBC的功能与应用"><a href="#LIBC的功能与应用" class="headerlink" title="LIBC的功能与应用"></a>LIBC的功能与应用</h3><ul>
+<li><p><strong>基础功能封装</strong>: LIBC提供了如字符串和内存操作的基础函数，加速开发流程。开发者应善用手册来认识这些功能，提升工作效率和代码质量。  </p>
 </li>
-<li>
-<p><strong>高级特性探索</strong>: LIBC如<code>offsetof</code>宏的功能有助于理解内存管理，深入塑造系统知识。</p>
+<li><p><strong>高级特性探索</strong>: LIBC如<code>offsetof</code>宏的功能有助于理解内存管理，深入塑造系统知识。  </p>
 </li>
 </ul>
-<h3 id="编程最佳实践">编程最佳实践</h3>
-<ul>
-<li>
-<p><strong>避免代码克隆</strong>: 再次使用代码段可能隐藏bug，维护困难，通过标准库函数的有效复用能大幅减少问题风险，提高代码质量。</p>
+<h3 id="编程最佳实践"><a href="#编程最佳实践" class="headerlink" title="编程最佳实践"></a>编程最佳实践</h3><ul>
+<li><p><strong>避免代码克隆</strong>: 再次使用代码段可能隐藏bug，维护困难，通过标准库函数的有效复用能大幅减少问题风险，提高代码质量。  </p>
 </li>
-<li>
-<p><strong>推崇现代编程语言</strong>: 尽管C语言历史悠久，但更现代的语言如Rust提供了更直观且高效的编程方式。</p>
+<li><p><strong>推崇现代编程语言</strong>: 尽管C语言历史悠久，但更现代的语言如Rust提供了更直观且高效的编程方式。  </p>
 </li>
 </ul>
-<h3 id="内存管理策略">内存管理策略</h3>
-<ul>
-<li>
-<p><strong>可选类型机制</strong>: 新语言引入的可选类型帮助以更安全的方式处理返回值，减少错误风险。</p>
+<h3 id="内存管理策略"><a href="#内存管理策略" class="headerlink" title="内存管理策略"></a>内存管理策略</h3><ul>
+<li><p><strong>可选类型机制</strong>: 新语言引入的可选类型帮助以更安全的方式处理返回值，减少错误风险。  </p>
 </li>
-<li>
-<p><strong>理解内存分配与管理</strong>: 掌握内存分配的实际需求与漏洞，确保程序能稳健运营。</p>
+<li><p><strong>理解内存分配与管理</strong>: 掌握内存分配的实际需求与漏洞，确保程序能稳健运营。  </p>
 </li>
-<li>
-<p><strong>小对象与大对象管理策略</strong>: 不同对象的生命周期影响内存策略的选择，需要针对使用场景优化内存管理手段。</p>
+<li><p><strong>小对象与大对象管理策略</strong>: 不同对象的生命周期影响内存策略的选择，需要针对使用场景优化内存管理手段。  </p>
 </li>
 </ul>
 <p>在C语言及操作系统开发的背景下，理解并有效应用这些知识点和实践建议，能够更好地提高编程的能力与代码的健壮性。</p>

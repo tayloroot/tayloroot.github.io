@@ -199,70 +199,59 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">南京大学-操作系统-并发控制：互斥 (1) (Peterson 算法、原子操作、自旋锁)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-04-05T15:11:12.000Z" title="发表于 2021-04-05 23:11:12">2021-04-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%8D%97%E4%BA%AC%E5%A4%A7%E5%AD%A6-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">📺南京大学-操作系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>并发控制是计算机科学中一个复杂且重要的问题，设计和实现正确的并发控制机制需要仔细的思考与精巧的算法。经典的PETERSON算法虽然精妙，但在现代多处理器系统中存在一定的局限性。因此，使用硬件提供的原子指令，如CAS（Compare-and-Swap）和LOCK前缀，成为了一种更为简单高效的实现互斥锁的方法。这些硬件支持的解决方案已成为操作系统内核中常见的实践，能够有效避免复杂的软件层面逻辑问题。</p>
-<h3 id="并发编程的挑战与解决方案">并发编程的挑战与解决方案</h3>
-<p>并发编程自始至终都伴随着各种挑战，但人类总能创造出新的手段来应对这些问题。历史上提出了许多解决方案，其中包括了对互斥的处理。互斥机制是并发控制的基础，通过锁和解锁的操作来阻止多个进程或线程同时访问共享资源。随着多处理器硬件的发展，并发编程的挑战变得更加严峻，互斥成为解决这些问题的重要手段之一。</p>
+<h3 id="并发编程的挑战与解决方案"><a href="#并发编程的挑战与解决方案" class="headerlink" title="并发编程的挑战与解决方案"></a>并发编程的挑战与解决方案</h3><p>并发编程自始至终都伴随着各种挑战，但人类总能创造出新的手段来应对这些问题。历史上提出了许多解决方案，其中包括了对互斥的处理。互斥机制是并发控制的基础，通过锁和解锁的操作来阻止多个进程或线程同时访问共享资源。随着多处理器硬件的发展，并发编程的挑战变得更加严峻，互斥成为解决这些问题的重要手段之一。</p>
 <ul>
 <li>并发编程带来的挑战需要新的解决手段，历史解法和正确解法将被深入讨论。</li>
 <li>互斥作为并发控制的基础，通过锁和解锁来阻止并发，确保程序的正确执行。</li>
 </ul>
-<h3 id="提高效率的并发编程">提高效率的并发编程</h3>
-<p>并发编程的一个关键目标是充分利用计算机的多处理器资源，通过合理的任务分配和并行处理来提高效率。虽然在某些情况下需要阻止并发以确保程序的正确性，但在合适的情境下，合理的任务分派和独立处理仍然可以有效实现并发，提高系统整体的性能。</p>
+<h3 id="提高效率的并发编程"><a href="#提高效率的并发编程" class="headerlink" title="提高效率的并发编程"></a>提高效率的并发编程</h3><p>并发编程的一个关键目标是充分利用计算机的多处理器资源，通过合理的任务分配和并行处理来提高效率。虽然在某些情况下需要阻止并发以确保程序的正确性，但在合适的情境下，合理的任务分派和独立处理仍然可以有效实现并发，提高系统整体的性能。</p>
 <ul>
 <li>并发编程可以利用多处理器的并行性来提升任务执行效率，但部分程序仍需顺序执行，这时合理的任务分配尤为重要。</li>
 <li>局部性原则帮助我们将问题划分为小块，提高并行计算的效率。</li>
 <li>互斥是确保并发程序正确性的重要机制，多处理器系统中实现互斥较为复杂，但对于单处理器系统，中断机制可能带来并发问题。</li>
 </ul>
-<h3 id="中断与系统的原子性">中断与系统的原子性</h3>
-<p>中断在处理器系统中扮演着重要角色，可能导致并发性问题。通过关闭中断，可以确保CPU的原子性操作。然而，一些中断是无法关闭的，比如不可屏蔽中断，这些设计需要在系统构建时被谨慎处理。</p>
+<h3 id="中断与系统的原子性"><a href="#中断与系统的原子性" class="headerlink" title="中断与系统的原子性"></a>中断与系统的原子性</h3><p>中断在处理器系统中扮演着重要角色，可能导致并发性问题。通过关闭中断，可以确保CPU的原子性操作。然而，一些中断是无法关闭的，比如不可屏蔽中断，这些设计需要在系统构建时被谨慎处理。</p>
 <ul>
 <li>中断是处理器系统中的关键概念，关闭中断有助于确保CPU操作的原子性。</li>
 <li>设计关键系统时需特别注意处理不可屏蔽中断，以避免系统崩溃。</li>
 <li>关闭中断类似于停止世界的操作，需谨慎处理，以避免系统崩溃或其他严重问题。</li>
 </ul>
-<h3 id="操作系统与中断管理">操作系统与中断管理</h3>
-<p>操作系统通过接管中断管理取得了控制权，没有合法的中断处理程序可能导致系统的神秘重启。应用程序被限制在一个虚拟的环境中，无法直接修改虚拟机状态。设计者在多处理器系统中需要考虑中断处理的复杂性，合理选择关闭中断的范围以避免性能问题。</p>
+<h3 id="操作系统与中断管理"><a href="#操作系统与中断管理" class="headerlink" title="操作系统与中断管理"></a>操作系统与中断管理</h3><p>操作系统通过接管中断管理取得了控制权，没有合法的中断处理程序可能导致系统的神秘重启。应用程序被限制在一个虚拟的环境中，无法直接修改虚拟机状态。设计者在多处理器系统中需要考虑中断处理的复杂性，合理选择关闭中断的范围以避免性能问题。</p>
 <ul>
 <li>操作系统通过接管中断实现了对系统的控制权，缺乏中断处理程序可能导致系统重启。</li>
 <li>多处理器系统中，设计者需要考虑中断处理的复杂性，避免影响系统性能。</li>
 </ul>
-<h3 id="PETERSON算法的经典地位">PETERSON算法的经典地位</h3>
-<p>PETERSON算法是一种经典的互斥算法，通过使用旗子和名字卡片的方式实现进程间的互斥访问，确保临界区的正确性。这种算法在并发编程中发挥了重要作用，解决了共享资源竞争的问题。然而，随着现代硬件的发展，PETERSON算法在今天的内存模型上可能出现问题，新的算法正在不断发展以解决这些问题。</p>
+<h3 id="PETERSON算法的经典地位"><a href="#PETERSON算法的经典地位" class="headerlink" title="PETERSON算法的经典地位"></a>PETERSON算法的经典地位</h3><p>PETERSON算法是一种经典的互斥算法，通过使用旗子和名字卡片的方式实现进程间的互斥访问，确保临界区的正确性。这种算法在并发编程中发挥了重要作用，解决了共享资源竞争的问题。然而，随着现代硬件的发展，PETERSON算法在今天的内存模型上可能出现问题，新的算法正在不断发展以解决这些问题。</p>
 <ul>
 <li>PETERSON算法通过旗子和名字卡片方式实现进程间的互斥访问，确保临界区的正确性。</li>
 <li>该算法在并发编程中发挥了重要作用，但在现代内存模型中可能会出现问题。</li>
 </ul>
-<h3 id="算法正确性的证明">算法正确性的证明</h3>
-<p>证明算法的正确性是计算机科学中的一个重要课题，通过模型检查器等工具，可以快速验证算法的正确性并进行改进。这种方法提高了思考效率和解决问题的准确性，使得并发控制中的复杂问题得以更快地解决。</p>
+<h3 id="算法正确性的证明"><a href="#算法正确性的证明" class="headerlink" title="算法正确性的证明"></a>算法正确性的证明</h3><p>证明算法的正确性是计算机科学中的一个重要课题，通过模型检查器等工具，可以快速验证算法的正确性并进行改进。这种方法提高了思考效率和解决问题的准确性，使得并发控制中的复杂问题得以更快地解决。</p>
 <ul>
 <li>证明算法的正确性能够帮助快速发现问题并进行改进，提高解决问题的效率和准确性。</li>
 <li>模型检查器提供了快速验证算法正确性的手段，帮助优化并发控制算法。</li>
 </ul>
-<h3 id="图论算法与问题解决">图论算法与问题解决</h3>
-<p>图论算法在计算机科学中扮演着重要角色，尤其是在处理并发问题时，提出好的问题并适当分解问题，有助于提高解决问题的效率和正确性。</p>
+<h3 id="图论算法与问题解决"><a href="#图论算法与问题解决" class="headerlink" title="图论算法与问题解决"></a>图论算法与问题解决</h3><p>图论算法在计算机科学中扮演着重要角色，尤其是在处理并发问题时，提出好的问题并适当分解问题，有助于提高解决问题的效率和正确性。</p>
 <ul>
 <li>图论算法在解决计算机科学问题中起到了重要作用，掌握图论算法是计算机科学学生的基本技能。</li>
 <li>人工智能辅助下的问题解决方式，通过合理提问和分解问题，快速得出结论，提高解决效率。</li>
 </ul>
-<h3 id="互斥问题与硬件支持">互斥问题与硬件支持</h3>
-<p>并发编程中的互斥问题在多处理器系统上变得更加复杂，正确实现互斥协议是解决这一问题的关键。硬件提供的原子指令，如CAS和LOCK前缀，成为了解决互斥问题的重要机制。</p>
+<h3 id="互斥问题与硬件支持"><a href="#互斥问题与硬件支持" class="headerlink" title="互斥问题与硬件支持"></a>互斥问题与硬件支持</h3><p>并发编程中的互斥问题在多处理器系统上变得更加复杂，正确实现互斥协议是解决这一问题的关键。硬件提供的原子指令，如CAS和LOCK前缀，成为了解决互斥问题的重要机制。</p>
 <ul>
 <li>在多处理器系统中，并发编程的复杂性增加，正确实现互斥协议是关键。</li>
 <li>使用硬件的原子指令可以有效解决并发编程中的互斥问题，提供了可靠的解决机制。</li>
 </ul>
-<h3 id="原子指令与线程安全">原子指令与线程安全</h3>
-<p>原子指令在多线程并发处理中发挥着关键作用，确保操作的原子性，避免数据竞争和错误结果。通过这些原子指令，可以实现互斥和自旋锁，保证线程的安全性和程序的正确性。</p>
+<h3 id="原子指令与线程安全"><a href="#原子指令与线程安全" class="headerlink" title="原子指令与线程安全"></a>原子指令与线程安全</h3><p>原子指令在多线程并发处理中发挥着关键作用，确保操作的原子性，避免数据竞争和错误结果。通过这些原子指令，可以实现互斥和自旋锁，保证线程的安全性和程序的正确性。</p>
 <ul>
 <li>原子指令确保操作的原子性，避免数据竞争，提高并发处理的效率。</li>
 <li>自旋锁通过不断循环检查锁的状态，确保临界区的互斥访问，避免多个线程同时访问共享资源。</li>
 </ul>
-<h3 id="操作系统实验中的锁机制">操作系统实验中的锁机制</h3>
-<p>在操作系统实验中，使用锁机制可以有效管理临界资源，控制多线程对资源的访问顺序，确保并发操作的正确性。自旋锁和无锁并发算法都是常用的工具，特别是通过使用比较交换指令来实现无锁并发算法。</p>
+<h3 id="操作系统实验中的锁机制"><a href="#操作系统实验中的锁机制" class="headerlink" title="操作系统实验中的锁机制"></a>操作系统实验中的锁机制</h3><p>在操作系统实验中，使用锁机制可以有效管理临界资源，控制多线程对资源的访问顺序，确保并发操作的正确性。自旋锁和无锁并发算法都是常用的工具，特别是通过使用比较交换指令来实现无锁并发算法。</p>
 <ul>
 <li>锁机制在操作系统实验中用于管理临界资源，控制资源访问顺序，确保并发操作的正确性。</li>
 <li>自旋锁和无锁并发算法通过比较交换指令实现，确保线程安全。</li>
 </ul>
-<h3 id="现代内存模型与并发控制">现代内存模型与并发控制</h3>
-<p>并发编程是一个复杂的领域，在现代多处理器系统上尤其如此。PETERSON算法虽然精巧，但在今天的内存模型上可能会出现问题，替代算法如PC算法可能是更好的选择。操作系统课程中需要理解并发控制的核心概念，并探索新的方法来提高对并发编程的掌握。</p>
+<h3 id="现代内存模型与并发控制"><a href="#现代内存模型与并发控制" class="headerlink" title="现代内存模型与并发控制"></a>现代内存模型与并发控制</h3><p>并发编程是一个复杂的领域，在现代多处理器系统上尤其如此。PETERSON算法虽然精巧，但在今天的内存模型上可能会出现问题，替代算法如PC算法可能是更好的选择。操作系统课程中需要理解并发控制的核心概念，并探索新的方法来提高对并发编程的掌握。</p>
 <ul>
 <li>现代多处理器系统中，并发控制的复杂性增加，需要新的算法和方法来实现正确的并发控制。</li>
 <li>PETERSON算法在现代内存模型上可能出错，PC算法是其中一种更可靠的选择。</li>

@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OSTEP-操作系统导论-内存虚拟化 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="内存虚拟化的目的是为进程创造独享大量虚拟内存的错觉，通过地址映射（Address Mapping）将进程的虚拟地址空间转换为硬件的物理地址。 1.1 虚拟地址空间的抽象 地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OSTEP-操作系统导论-内存虚拟化 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="内存虚拟化的目的是为进程创造独享大量虚拟内存的错觉，通过地址映射（Address Mapping）将进程的虚拟地址空间转换为硬件的物理地址。 1.1 虚拟地址空间的抽象地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，M">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OSTEP-操作系统导论-内存虚拟化">
 <meta property="og:url" content="http://mmwiki.cn/posts/28c3a50.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="内存虚拟化的目的是为进程创造独享大量虚拟内存的错觉，通过地址映射（Address Mapping）将进程的虚拟地址空间转换为硬件的物理地址。 1.1 虚拟地址空间的抽象 地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，">
+<meta property="og:description" content="内存虚拟化的目的是为进程创造独享大量虚拟内存的错觉，通过地址映射（Address Mapping）将进程的虚拟地址空间转换为硬件的物理地址。 1.1 虚拟地址空间的抽象地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，M">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2021-05-19T16:00:00.000Z">
@@ -199,8 +199,7 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">195</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">71</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">OSTEP-操作系统导论-内存虚拟化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-05-19T16:00:00.000Z" title="发表于 2021-05-20 00:00:00">2021-05-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">📗-操作系统导论</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div></div><article class="post-content" id="article-container"><p>内存虚拟化的目的是为进程创造独享大量虚拟内存的错觉，通过<strong>地址映射</strong>（Address Mapping）将进程的虚拟地址空间转换为硬件的物理地址。</p>
-<h2 id="1-1-虚拟地址空间的抽象">1.1 虚拟地址空间的抽象</h2>
-<p>地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，Memory Management Unit, MMU）和操作系统协同实现的地址转换机制，将虚拟地址转换为物理地址（Physical Address, PA）。</p>
+<h2 id="1-1-虚拟地址空间的抽象"><a href="#1-1-虚拟地址空间的抽象" class="headerlink" title="1.1 虚拟地址空间的抽象"></a>1.1 虚拟地址空间的抽象</h2><p>地址空间（Address Space）是程序可视的系统内存，包含其运行所需的代码和数据。每个程序运行在各自的地址空间中，实现了强隔离。用户进程使用的是虚拟地址（Virtual Address, VA），通过硬件（例如内存管理单元，Memory Management Unit, MMU）和操作系统协同实现的地址转换机制，将虚拟地址转换为物理地址（Physical Address, PA）。</p>
 <p>物理地址结构与平台相关，通常不仅包括RAM，还包括I/O设备的内存映射和启动ROM。内核虚拟地址空间由内核设计，包含内核代码、数据、内核栈及可分配给用户程序的内存等；而用户进程的虚拟地址空间由内核提供，涵盖了用户代码、数据、栈和堆等。</p>
 <p>在C语言中，变量直接声明使用栈内存，而堆内存则需要使用内存分配函数手动管理，如：</p>
 <ul>
@@ -218,8 +217,7 @@
 <li><code>mmap()</code>：将文件或设备的部分映射到内存中。</li>
 <li><code>munmap()</code>：解除文件或设备在内存中的映射。</li>
 </ul>
-<h2 id="1-2-地址转换方法">1.2 地址转换方法</h2>
-<h3 id="1-2-1-地址转换策略演变">1.2.1 地址转换策略演变</h3>
+<h2 id="1-2-地址转换方法"><a href="#1-2-地址转换方法" class="headerlink" title="1.2 地址转换方法"></a>1.2 地址转换方法</h2><h3 id="1-2-1-地址转换策略演变"><a href="#1-2-1-地址转换策略演变" class="headerlink" title="1.2.1 地址转换策略演变"></a>1.2.1 地址转换策略演变</h3><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -268,11 +266,10 @@
 </tr>
 </tbody>
 </table>
-<h3 id="1-2-2-RISC-V系统（XV6）三级页表">1.2.2 RISC-V系统（XV6）三级页表</h3>
-<p>XV6基于RISC-V平台，定义物理地址（Physical Address, PA）为56位，虚拟地址（Virtual Address, VA）为39位，使用三级页表索引。L2页目录存有L1页表信息，而L1页表包含L0页表信息。结构类似于Unix V6，页表项包括物理页号（Physical Page Number, PPN）和权限标志位。</p>
+</div>
+<h3 id="1-2-2-RISC-V系统（XV6）三级页表"><a href="#1-2-2-RISC-V系统（XV6）三级页表" class="headerlink" title="1.2.2 RISC-V系统（XV6）三级页表"></a>1.2.2 RISC-V系统（XV6）三级页表</h3><p>XV6基于RISC-V平台，定义物理地址（Physical Address, PA）为56位，虚拟地址（Virtual Address, VA）为39位，使用三级页表索引。L2页目录存有L1页表信息，而L1页表包含L0页表信息。结构类似于Unix V6，页表项包括物理页号（Physical Page Number, PPN）和权限标志位。</p>
 <p><img src="https://i-blog.csdnimg.cn/blog_migrate/c6d93ae748c05ee0bdd8b7668adc64f9.png#pic_center" alt="地址转换示意图"></p>
-<h3 id="1-2-3-X64硬件（Linux）四级页表">1.2.3 X64硬件（Linux）四级页表</h3>
-<p>在x86-64架构的Linux系统中，采用四级页表结构，包括：</p>
+<h3 id="1-2-3-X64硬件（Linux）四级页表"><a href="#1-2-3-X64硬件（Linux）四级页表" class="headerlink" title="1.2.3 X64硬件（Linux）四级页表"></a>1.2.3 X64硬件（Linux）四级页表</h3><p>在x86-64架构的Linux系统中，采用四级页表结构，包括：</p>
 <ul>
 <li><strong>PGD（Page Global Directory）</strong>：页全局目录</li>
 <li><strong>PUD（Page Upper Directory）</strong>：页上层目录</li>
@@ -280,22 +277,19 @@
 <li><strong>PTE（Page Table Entry）</strong>：页表项</li>
 </ul>
 <p>地址转换过程与RISC-V平台类似，但由于x86-64架构的复杂性，页表层级更多，以提供更细粒度的内存管理。每级页表通过指针链接，逐级索引，最终获取物理地址。</p>
-<h2 id="1-3-缓存和页面交换">1.3 缓存和页面交换</h2>
-<p>即便使用多级页表，仍然存在以下问题：</p>
+<h2 id="1-3-缓存和页面交换"><a href="#1-3-缓存和页面交换" class="headerlink" title="1.3 缓存和页面交换"></a>1.3 缓存和页面交换</h2><p>即便使用多级页表，仍然存在以下问题：</p>
 <ol>
 <li>多次访存查找页表导致的耗时开销。</li>
 <li>页表和进程占用过多内存，可能导致RAM耗尽。</li>
 </ol>
 <p>通过以下存储层级方案解决：</p>
 <ol>
-<li>采用**TLB（Translation Lookaside Buffer）**缓存未来访问的映射关系。</li>
+<li>采用<strong>TLB（Translation Lookaside Buffer）</strong>缓存未来访问的映射关系。</li>
 <li>使用外部存储进行<strong>页面交换（Page Swapping）</strong>，记录过多的内存页面。</li>
 </ol>
-<h3 id="1-3-1-TLB机制">1.3.1 TLB机制</h3>
-<p>TLB是一种高效缓存最近使用的页表信息的硬件装置。访存时，系统首先查找TLB，若命中（Hit），则直接使用缓存的物理地址；若未命中（Miss），则触发异常，按页表流程查找，并将新的映射关系记录到TLB中。TLB满时，替换策略决定更新内容。</p>
-<h3 id="1-3-2-页面交换">1.3.2 页面交换</h3>
-<p>页面交换（Page Swapping）是将不常用的页面从内存移至磁盘的过程。当访问某页时，若该页不在内存中，则引发<strong>页错误（Page Fault）</strong>，系统将该页从磁盘换入内存。在内存空间不足时，操作系统根据替换策略选择换出页面，腾出内存空间。</p>
-<h3 id="1-3-3-替换策略发展">1.3.3 替换策略发展</h3>
+<h3 id="1-3-1-TLB机制"><a href="#1-3-1-TLB机制" class="headerlink" title="1.3.1 TLB机制"></a>1.3.1 TLB机制</h3><p>TLB是一种高效缓存最近使用的页表信息的硬件装置。访存时，系统首先查找TLB，若命中（Hit），则直接使用缓存的物理地址；若未命中（Miss），则触发异常，按页表流程查找，并将新的映射关系记录到TLB中。TLB满时，替换策略决定更新内容。</p>
+<h3 id="1-3-2-页面交换"><a href="#1-3-2-页面交换" class="headerlink" title="1.3.2 页面交换"></a>1.3.2 页面交换</h3><p>页面交换（Page Swapping）是将不常用的页面从内存移至磁盘的过程。当访问某页时，若该页不在内存中，则引发<strong>页错误（Page Fault）</strong>，系统将该页从磁盘换入内存。在内存空间不足时，操作系统根据替换策略选择换出页面，腾出内存空间。</p>
+<h3 id="1-3-3-替换策略发展"><a href="#1-3-3-替换策略发展" class="headerlink" title="1.3.3 替换策略发展"></a>1.3.3 替换策略发展</h3><div class="table-container">
 <table>
 <thead>
 <tr>
@@ -332,15 +326,14 @@
 </tr>
 </tbody>
 </table>
-<h3 id="1-3-4-页错误">1.3.4 页错误</h3>
-<p>页错误分为以下几种情况：</p>
+</div>
+<h3 id="1-3-4-页错误"><a href="#1-3-4-页错误" class="headerlink" title="1.3.4 页错误"></a>1.3.4 页错误</h3><p>页错误分为以下几种情况：</p>
 <ul>
 <li><strong>硬错误（Hard Fault）</strong>：页面在磁盘中，需要换入内存。</li>
 <li><strong>软错误（Soft Fault）</strong>：页面在内存中，但未建立映射关系。</li>
 <li><strong>段错误（Segmentation Fault）</strong>：访问了不在虚拟地址空间中的地址。</li>
 </ul>
-<h2 id="1-4-其他内存虚拟化机制">1.4 其他内存虚拟化机制</h2>
-<ul>
+<h2 id="1-4-其他内存虚拟化机制"><a href="#1-4-其他内存虚拟化机制" class="headerlink" title="1.4 其他内存虚拟化机制"></a>1.4 其他内存虚拟化机制</h2><ul>
 <li><strong>惰性分配（Lazy Allocation）</strong>：延迟内存分配，直到确实需要时才进行实际分配。</li>
 <li><strong>按需清零（Zero-on-Demand）</strong>：仅在写入前分配的内存区域返回已清零的内存。</li>
 <li><strong>写时复制（Copy-on-Write, CoW）</strong>：<code>fork()</code>时子进程和父进程共享内存，只有在写操作发生时才复制内存页。</li>

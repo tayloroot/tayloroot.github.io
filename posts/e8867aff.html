@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-多视图几何中的重建问题1 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本次探讨了多视图几何中的重建问题，重点在于如何从两幅图像中恢复相机运动和三维场景。通过讨论基本假设、相机运动的估计方法、极几何约束、以及八点算法等内容，系统地介绍了重建过程中的核心概念和挑战。 1. 重建问题的基本假设 在多视图几何中，重建问题涉及从两个视图中恢复相机的运动和三维场景。为了解决这一复杂问题，通常需要做出以下基本假设：  对应点假设：假设在两幅图像中存在一组已知的对应点，这些点来自同">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-多视图几何中的重建问题1 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="本次探讨了多视图几何中的重建问题，重点在于如何从两幅图像中恢复相机运动和三维场景。通过讨论基本假设、相机运动的估计方法、极几何约束、以及八点算法等内容，系统地介绍了重建过程中的核心概念和挑战。 1. 重建问题的基本假设在多视图几何中，重建问题涉及从两个视图中恢复相机的运动和三维场景。为了解决这一复杂问题，通常需要做出以下基本假设：  对应点假设：假设在两幅图像中存在一组已知的对应点，这些点来自同一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TUM-多视图几何-多视图几何中的重建问题1">
 <meta property="og:url" content="http://mmwiki.cn/posts/e8867aff.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="本次探讨了多视图几何中的重建问题，重点在于如何从两幅图像中恢复相机运动和三维场景。通过讨论基本假设、相机运动的估计方法、极几何约束、以及八点算法等内容，系统地介绍了重建过程中的核心概念和挑战。 1. 重建问题的基本假设 在多视图几何中，重建问题涉及从两个视图中恢复相机的运动和三维场景。为了解决这一复杂问题，通常需要做出以下基本假设：  对应点假设：假设在两幅图像中存在一组已知的对应点，这些点来自同">
+<meta property="og:description" content="本次探讨了多视图几何中的重建问题，重点在于如何从两幅图像中恢复相机运动和三维场景。通过讨论基本假设、相机运动的估计方法、极几何约束、以及八点算法等内容，系统地介绍了重建过程中的核心概念和挑战。 1. 重建问题的基本假设在多视图几何中，重建问题涉及从两个视图中恢复相机的运动和三维场景。为了解决这一复杂问题，通常需要做出以下基本假设：  对应点假设：假设在两幅图像中存在一组已知的对应点，这些点来自同一">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
@@ -198,53 +198,45 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">199</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">TUM-多视图几何-多视图几何中的重建问题1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-02-03T16:00:00.000Z" title="发表于 2022-02-04 00:00:00">2022-02-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BATUM-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">📺TUM-多视图几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">多视图几何</a></div></div><article class="post-content" id="article-container"><p>本次探讨了多视图几何中的重建问题，重点在于如何从两幅图像中恢复相机运动和三维场景。通过讨论基本假设、相机运动的估计方法、极几何约束、以及八点算法等内容，系统地介绍了重建过程中的核心概念和挑战。</p>
-<h2 id="1-重建问题的基本假设">1. 重建问题的基本假设</h2>
-<p>在多视图几何中，重建问题涉及从两个视图中恢复相机的运动和三维场景。为了解决这一复杂问题，通常需要做出以下基本假设：</p>
+<h2 id="1-重建问题的基本假设"><a href="#1-重建问题的基本假设" class="headerlink" title="1. 重建问题的基本假设"></a>1. 重建问题的基本假设</h2><p>在多视图几何中，重建问题涉及从两个视图中恢复相机的运动和三维场景。为了解决这一复杂问题，通常需要做出以下基本假设：</p>
 <ul>
 <li><strong>对应点假设</strong>：假设在两幅图像中存在一组已知的对应点，这些点来自同一场景的不同视角。尽管在实际应用中，匹配可能不完美，但初步分析时假设匹配是正确的。</li>
 <li><strong>静态场景假设</strong>：假设场景是静态的，即场景中的三维点在从一幅图像到另一幅图像的过程中没有移动。尽管这个假设在动态场景中可能不成立，但在初步分析中保持静态假设有助于简化问题。</li>
 <li><strong>固定相机参数假设</strong>：假设相机的内在参数已知且固定。这意味着在拍摄过程中，相机的焦距、光圈等参数不发生变化，这一假设简化了模型的复杂性。</li>
 </ul>
-<h2 id="2-相机运动和三维位置的估计">2. 相机运动和三维位置的估计</h2>
-<p>在计算机视觉中，估计相机运动和三维点的位置是重建问题的核心挑战。这是一个典型的“鸡与蛋”问题，通过估计相机运动或三维点的位置，可以实现有效的场景重建。</p>
+<h2 id="2-相机运动和三维位置的估计"><a href="#2-相机运动和三维位置的估计" class="headerlink" title="2. 相机运动和三维位置的估计"></a>2. 相机运动和三维位置的估计</h2><p>在计算机视觉中，估计相机运动和三维点的位置是重建问题的核心挑战。这是一个典型的“鸡与蛋”问题，通过估计相机运动或三维点的位置，可以实现有效的场景重建。</p>
 <ul>
 <li><strong>相机运动与三维位置的相互依赖</strong>：如果能够准确估计相机的运动，那么就可以通过三角测量法恢复三维点的位置，反之亦然。这种相互依赖为重建提供了关键依据。</li>
 <li><strong>多视角信息的利用</strong>：在处理多视图场景时，重建算法可以扩展到多个图像。通过结合多个视角的信息，可以显著提高重建的精度和鲁棒性，从而更全面地理解场景的三维结构。</li>
 </ul>
-<h2 id="3-重建问题中的优化与成本函数">3. 重建问题中的优化与成本函数</h2>
-<p>重建问题通常涉及大量未知参数的估计，包括三维坐标和相机运动参数。为了得到准确的重建结果，需要定义适当的成本函数，并通过最小化投影误差来优化这些参数。</p>
+<h2 id="3-重建问题中的优化与成本函数"><a href="#3-重建问题中的优化与成本函数" class="headerlink" title="3. 重建问题中的优化与成本函数"></a>3. 重建问题中的优化与成本函数</h2><p>重建问题通常涉及大量未知参数的估计，包括三维坐标和相机运动参数。为了得到准确的重建结果，需要定义适当的成本函数，并通过最小化投影误差来优化这些参数。</p>
 <ul>
 <li><strong>高维优化问题</strong>：在典型的重建问题中，涉及的未知参数可能多达数百个。例如，需要估计100个三维点的坐标和6个相机运动参数，总共306个参数。在这种高维空间中，选择合适的优化算法至关重要。</li>
 <li><strong>成本函数的选择</strong>：通过最小化投影误差，可以获得与观察数据最接近的三维点。然而，如何定义成本函数、是否对误差进行平方处理等因素都会对最终结果产生显著影响。</li>
 <li><strong>束调整（Bundle Adjustment）</strong>：这是一种常用的优化策略，能够在多个图像中找到一致的解决方案。尽管该方法可能受到非凸性问题的影响，但它在实际应用中依然是解决重建问题的重要手段。</li>
 </ul>
-<h2 id="4-极几何约束与八点算法">4. 极几何约束与八点算法</h2>
-<p>在没有三维参数的情况下，可以通过极线约束来估计相机运动和三维位置。极线约束是将观察到的二维参数与相机参数结合的一种方法，能够在不考虑三维位置的情况下进行相机运动的估计。</p>
+<h2 id="4-极几何约束与八点算法"><a href="#4-极几何约束与八点算法" class="headerlink" title="4. 极几何约束与八点算法"></a>4. 极几何约束与八点算法</h2><p>在没有三维参数的情况下，可以通过极线约束来估计相机运动和三维位置。极线约束是将观察到的二维参数与相机参数结合的一种方法，能够在不考虑三维位置的情况下进行相机运动的估计。</p>
 <ul>
 <li><strong>极线约束</strong>：极线约束通过将二维图像中的对应点与相机的旋转和平移参数结合起来，形成一组方程，从而实现相机运动的估计。这种方法特别适用于具有足够数量对应点对的情况。</li>
 <li><strong>八点算法</strong>：八点算法要求至少有八个独立的对应点对，以确保解的唯一性。该算法利用这八个点对，构建出本质矩阵，从而求解相机的旋转和平移。</li>
 <li><strong>本质矩阵与奇异值分解</strong>：本质矩阵将相机的旋转和平移结合在一起，通过奇异值分解可以提取出旋转矩阵和位移向量，进而推导出相机运动信息。</li>
 </ul>
-<h2 id="5-三维几何关系与三重积">5. 三维几何关系与三重积</h2>
-<p>三维几何关系中的三重积计算可以帮助理解向量在空间中的关系。通过三重积的定义，可以判断这些向量是否共面，这对于理解相机运动的几何意义非常重要。</p>
+<h2 id="5-三维几何关系与三重积"><a href="#5-三维几何关系与三重积" class="headerlink" title="5. 三维几何关系与三重积"></a>5. 三维几何关系与三重积</h2><p>三维几何关系中的三重积计算可以帮助理解向量在空间中的关系。通过三重积的定义，可以判断这些向量是否共面，这对于理解相机运动的几何意义非常重要。</p>
 <ul>
 <li><strong>三重积的几何解释</strong>：通过三重积公式 \( T \times (R \cdot X_1) \cdot X_2 = 0 \) 可以确定向量是否共面。共面的向量意味着它们形成的几何结构在同一平面上。</li>
 <li><strong>本质矩阵的性质</strong>：本质矩阵具有特定的奇异值分解形式，通过了解这些性质，可以在实际应用中更准确地估计出相机的旋转和位移。</li>
 </ul>
-<h2 id="6-从极几何约束推导相机位姿">6. 从极几何约束推导相机位姿</h2>
-<p>通过极几何约束和本质矩阵，可以推导出相机的位姿（包括旋转和位移）。这一过程可以分离相机运动和三维位置的估计，从而简化三维重建问题。</p>
+<h2 id="6-从极几何约束推导相机位姿"><a href="#6-从极几何约束推导相机位姿" class="headerlink" title="6. 从极几何约束推导相机位姿"></a>6. 从极几何约束推导相机位姿</h2><p>通过极几何约束和本质矩阵，可以推导出相机的位姿（包括旋转和位移）。这一过程可以分离相机运动和三维位置的估计，从而简化三维重建问题。</p>
 <ul>
 <li><strong>旋转矩阵与位移矩阵</strong>：旋转矩阵表示从一个坐标系到另一个坐标系的转动，而位移矩阵表示物体在空间中的移动。通过本质矩阵可以同时获取这两者的信息。</li>
 <li><strong>多解问题</strong>：在估计本质矩阵时，通常存在两个可能的解。通过足够的点对和极几何约束，可以选择最合适的解，从而准确恢复相机运动。</li>
 </ul>
-<h2 id="7-方程的线性化与尺度问题">7. 方程的线性化与尺度问题</h2>
-<p>在处理重建问题时，通过线性化方程可以简化求解过程，同时需要注意“尺度自由”问题，即在仅有两幅图像的情况下无法确定基线的大小。</p>
+<h2 id="7-方程的线性化与尺度问题"><a href="#7-方程的线性化与尺度问题" class="headerlink" title="7. 方程的线性化与尺度问题"></a>7. 方程的线性化与尺度问题</h2><p>在处理重建问题时，通过线性化方程可以简化求解过程，同时需要注意“尺度自由”问题，即在仅有两幅图像的情况下无法确定基线的大小。</p>
 <ul>
 <li><strong>方程的线性化</strong>：通过将已知参数与未知参数分离，可以将方程转化为线性形式，这有助于理解和求解问题。尤其是在优化问题中，线性化可以显著提高求解效率。</li>
 <li><strong>尺度问题</strong>：由于缺乏三维信息，仅通过两幅图像无法确定基线的大小。这种“尺度自由”现象在实践中需要通过其他传感器或额外信息来解决。</li>
 </ul>
-<h2 id="8-八点算法的应用与改进">8. 八点算法的应用与改进</h2>
-<p>八点算法是解决重建问题的经典方法之一，然而它在某些情况下可能失效，因此需要结合其他信息或算法进行改进。</p>
+<h2 id="8-八点算法的应用与改进"><a href="#8-八点算法的应用与改进" class="headerlink" title="8. 八点算法的应用与改进"></a>8. 八点算法的应用与改进</h2><p>八点算法是解决重建问题的经典方法之一，然而它在某些情况下可能失效，因此需要结合其他信息或算法进行改进。</p>
 <ul>
 <li><strong>使用惯性传感器</strong>：在现代智能手机中，可以使用惯性传感器估算相机的旋转，从而减少需要的关键点数。这种方法能够有效提高重建的准确性。</li>
 <li><strong>旋转和平移的选择</strong>：八点算法存在多个可能的解，通过检查三维重建的深度值，可以选择最合适的解，从而排除不合适的解。</li>

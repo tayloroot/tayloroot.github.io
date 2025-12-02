@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>清华大学-计算几何-凸包 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1、凸性(Convexity)  以颜色为例 假设x,y,z是三种颜色，如果仅以x,y就能调出来的颜色，那么如u所示它一定会落在x,y中；若需要x,y,z三种 一起，那么如v所示会落在以x,y,z三点连成的三角形内部。   2、极点(Extreme Point) 在一组点中，沿着这个点作直线，必然能找到一条直线，使得其他所有点都在该直线的一侧。   判断一个点是否为极点：看该点是否存在于其中的三个">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>清华大学-计算几何-凸包 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1、凸性(Convexity)  以颜色为例假设x,y,z是三种颜色，如果仅以x,y就能调出来的颜色，那么如u所示它一定会落在x,y中；若需要x,y,z三种 一起，那么如v所示会落在以x,y,z三点连成的三角形内部。   2、极点(Extreme Point) 在一组点中，沿着这个点作直线，必然能找到一条直线，使得其他所有点都在该直线的一侧。   判断一个点是否为极点：看该点是否存在于其中的三个点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="清华大学-计算几何-凸包">
 <meta property="og:url" content="http://mmwiki.cn/posts/3f3fb974.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="1、凸性(Convexity)  以颜色为例 假设x,y,z是三种颜色，如果仅以x,y就能调出来的颜色，那么如u所示它一定会落在x,y中；若需要x,y,z三种 一起，那么如v所示会落在以x,y,z三点连成的三角形内部。   2、极点(Extreme Point) 在一组点中，沿着这个点作直线，必然能找到一条直线，使得其他所有点都在该直线的一侧。   判断一个点是否为极点：看该点是否存在于其中的三个">
+<meta property="og:description" content="1、凸性(Convexity)  以颜色为例假设x,y,z是三种颜色，如果仅以x,y就能调出来的颜色，那么如u所示它一定会落在x,y中；若需要x,y,z三种 一起，那么如v所示会落在以x,y,z三点连成的三角形内部。   2、极点(Extreme Point) 在一组点中，沿着这个点作直线，必然能找到一条直线，使得其他所有点都在该直线的一侧。   判断一个点是否为极点：看该点是否存在于其中的三个点">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2020-02-07T16:00:00.000Z">
@@ -200,8 +200,7 @@
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">199</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">清华大学-计算几何-凸包</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2020-02-07T16:00:00.000Z" title="发表于 2020-02-08 00:00:00">2020-02-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E6%B8%85%E5%8D%8E%E5%A4%A7%E5%AD%A6-%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/">📺清华大学-计算几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E5%87%A0%E4%BD%95/">计算几何</a></div></div><article class="post-content" id="article-container"><p><strong>1、凸性(Convexity)</strong></p>
 <ul>
-<li>以颜色为例<br>
-假设x,y,z是三种颜色，如果仅以x,y就能调出来的颜色，那么如u所示它一定会落在x,y中；若需要x,y,z三种 一起，那么如v所示会落在以x,y,z三点连成的三角形内部。</li>
+<li>以颜色为例<br>假设x,y,z是三种颜色，如果仅以x,y就能调出来的颜色，那么如u所示它一定会落在x,y中；若需要x,y,z三种 一起，那么如v所示会落在以x,y,z三点连成的三角形内部。</li>
 </ul>
 <p><img src="https://pic3.zhimg.com/v2-386fd3aaf073885dd32ab6241e9a0452_b.jpg" alt=""></p>
 <p><strong>2、极点(Extreme Point)</strong></p>
@@ -259,13 +258,12 @@
 <p><strong>6、下界(Lower Bound)</strong></p>
 <p><img src="https://pic3.zhimg.com/v2-6fc907264d661300c89e3da6b6ba4c62_b.jpg" alt=""></p>
 <p>如果A问题 is reducssible to B，那么A的问题下界一定也是B的问题下界，但不一定是紧的。</p>
-<p>则我们的凸包问题规约成一个排序问题。</p>
+<p>则我们的凸包问题规约成一个排序问题。  </p>
 <p><img src="https://pic2.zhimg.com/v2-ef2469e9cdabcf2060b2d9bbfb1b45a5_b.jpg" alt=""></p>
 <p>对于二维凸包，点可以落在一条抛物线上。在形成凸包后的那个图像，每个点投影在x轴上必然有序的。最左边的极点x值最小，最右的最大。所以相当于是一个排序问题。因此凸包问题的下界与排序问题相同，都是O(nlogn)</p>
 <p><strong>7、Graham Scan</strong></p>
 <p><img src="https://pic2.zhimg.com/v2-412863051f09758dbd500989c264aebd_b.jpg" alt=""></p>
-<p>首先先有一条极边（LTL），然后在根据极角将剩下的点由小到大排序。有S栈和T栈，初始时点1和点2在S栈中，其他的点依次在T栈栈顶到栈底。<br>
-核心代码：如果T栈顶的点在S栈顶次栈顶的两个点的左边，那么就把T栈顶的点push进S栈，否则就把S栈顶的点pop出来。</p>
+<p>首先先有一条极边（LTL），然后在根据极角将剩下的点由小到大排序。有S栈和T栈，初始时点1和点2在S栈中，其他的点依次在T栈栈顶到栈底。<br>核心代码：如果T栈顶的点在S栈顶次栈顶的两个点的左边，那么就把T栈顶的点push进S栈，否则就把S栈顶的点pop出来。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!T.<span class="built_in">empty</span>())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">toLeft</span>(S[<span class="number">1</span>],S[<span class="number">0</span>],T[<span class="number">0</span>]) ? S.<span class="built_in">push</span>(T.<span class="built_in">pop</span>()) : S.<span class="built_in">pop</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个算法的正确性可以由数学归纳法证明。</p>
 <p>对于这个算法而言，预处理（即对点的排序是很重要的不可跳过）</p>
@@ -282,7 +280,7 @@
 <p>如图所示，我们过程中的那些边互不相交，整体构成一个平面图，因此至多就是o(3n)条边</p>
 <p>更精确的来看，假设A=S.size() +2 * T.size()；那么算法过程每经过一个循环，A的值就减小一个单位。因此算法的规模不会超过2n-5。</p>
 <ul>
-<li>关于排序部分的问题：</li>
+<li>关于排序部分的问题：  </li>
 </ul>
 <p><img src="https://pic2.zhimg.com/v2-96e199d8450a1e6d793767ad6c43531d_b.jpg" alt=""></p>
 <p>当我们得到一系列点以x坐标排序时，如图所示，可以相当于是在y轴负方向无穷处有一个极点，然后就相当于是以那个为一个起点，从右到左来搜寻极点，这样我们可以构造出上凸包upper hull；反之构造下凸包。</p>
@@ -305,10 +303,10 @@
 <p><img src="https://pic2.zhimg.com/v2-85253d762d3aeeb8a696ae55c92b4bdd_b.jpg" alt=""></p>
 <p><img src="https://pic2.zhimg.com/v2-cf19b880297a25d6838b565507309b2d_b.jpg" alt=""></p>
 <p><img src="https://pic4.zhimg.com/v2-90ffea26ce1fa5b9a0a75ba8a6491e13_b.jpg" alt=""></p>
-<p>我们算法的第一步是找到核。对于其中一个子凸包，可以任意取三个点，计算这个三角形的中心，然后判断这个点是否在另一个子凸包中（n次 ToLeft测试来判断）。</p>
+<p>我们算法的第一步是找到核。对于其中一个子凸包，可以任意取三个点，计算这个三角形的中心，然后判断这个点是否在另一个子凸包中（n次 ToLeft测试来判断）。  </p>
 <p><img src="https://pic2.zhimg.com/v2-5e4bd870acdb8ad5d84d9a09c87d0e91_b.jpg" alt=""></p>
 <p>对于上图是属于比较好的情况，因为两个子凸包的极点都分别于核有序，那么只需要二路归并将这些点变成整体有序，然后在进行Graham Scan。</p>
-<p>但如果在一个子凸包里找到的核是在另一个子凸包的外面的话：</p>
+<p>但如果在一个子凸包里找到的核是在另一个子凸包的外面的话：  </p>
 <p><img src="https://pic1.zhimg.com/v2-8a8ff31ef75e388eaaca0c61e3847198_b.jpg" alt=""></p>
 <p>我们就找出两个切点，那么ts段是无用的。然后舍弃完ts后就对st段的点和另外一个子凸包进行2-way merge，然后再进行Graham Scan。</p>
 <ul>
@@ -319,7 +317,7 @@
 <p>在这里要注意我们并不是把子凸包的最上面的点和最下面的点连接起来就行，有很多不是的情况。如下：</p>
 <p><img src="https://pic1.zhimg.com/v2-75abcc3ab7cdd797dad49e0193b229a8_b.jpg" alt=""></p>
 <p><img src="https://pic2.zhimg.com/v2-16bfb01ede0b0479ad5be2f267c03d11_b.jpg" alt=""></p>
-<p>我们的实际操作是首先找到左边的子凸包的最右边的点，然后找到右边子凸包最左边的点。在这里的寻找方法只要之前在一步步构造子凸包的时候对他们的最左最右点进行记录，那么在需要的时候只需花费O(1)的时间就能找到，不然的话就需要用O(n)的时间来寻找这两个点。</p>
+<p>我们的实际操作是首先找到左边的子凸包的最右边的点，然后找到右边子凸包最左边的点。在这里的寻找方法只要之前在一步步构造子凸包的时候对他们的最左最右点进行记录，那么在需要的时候只需花费O(1)的时间就能找到，不然的话就需要用O(n)的时间来寻找这两个点。  </p>
 <p><img src="https://pic3.zhimg.com/v2-a2766d72b1a9435bf14302251a59ee62_b.jpg" alt=""></p>
 <p>把两个点连线后，然后选其中一个点作为是类似另一个子凸包的外部点，然后寻找相应的切线，直到找到后再以另外那个点作为之前的凸包的外部点找这一半的切线，找到后再反过来看是否还是另外一个凸包的切线，循环往复，直到这条切线同时是两个子凸包的切线为止。</p>
 <blockquote>

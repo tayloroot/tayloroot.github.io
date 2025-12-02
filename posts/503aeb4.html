@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-稀疏与密集重建技术 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="讨论了多视图几何中的稀疏与密集重建技术。传统方法主要依赖点对应关系来重建三维结构，但仅依赖少量点并不足够。在稀疏特征点方法下，已实现了实时重建，这些技术广泛应用于增强现实、医疗手术等领域。随着处理技术的进步，密集重建也逐渐成为现实。变分方法作为一种强大的计算范式，不仅用于图像去噪、分割和运动估计等任务，还可以通过欧拉-拉格朗日方程进一步优化图像处理结果。 稀疏特征点与密集重建 1. 稀疏特征点方法">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-稀疏与密集重建技术 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="讨论了多视图几何中的稀疏与密集重建技术。传统方法主要依赖点对应关系来重建三维结构，但仅依赖少量点并不足够。在稀疏特征点方法下，已实现了实时重建，这些技术广泛应用于增强现实、医疗手术等领域。随着处理技术的进步，密集重建也逐渐成为现实。变分方法作为一种强大的计算范式，不仅用于图像去噪、分割和运动估计等任务，还可以通过欧拉-拉格朗日方程进一步优化图像处理结果。 稀疏特征点与密集重建1. 稀疏特征点方法在">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TUM-多视图几何-稀疏与密集重建技术">
 <meta property="og:url" content="http://mmwiki.cn/posts/503aeb4.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="讨论了多视图几何中的稀疏与密集重建技术。传统方法主要依赖点对应关系来重建三维结构，但仅依赖少量点并不足够。在稀疏特征点方法下，已实现了实时重建，这些技术广泛应用于增强现实、医疗手术等领域。随着处理技术的进步，密集重建也逐渐成为现实。变分方法作为一种强大的计算范式，不仅用于图像去噪、分割和运动估计等任务，还可以通过欧拉-拉格朗日方程进一步优化图像处理结果。 稀疏特征点与密集重建 1. 稀疏特征点方法">
+<meta property="og:description" content="讨论了多视图几何中的稀疏与密集重建技术。传统方法主要依赖点对应关系来重建三维结构，但仅依赖少量点并不足够。在稀疏特征点方法下，已实现了实时重建，这些技术广泛应用于增强现实、医疗手术等领域。随着处理技术的进步，密集重建也逐渐成为现实。变分方法作为一种强大的计算范式，不仅用于图像去噪、分割和运动估计等任务，还可以通过欧拉-拉格朗日方程进一步优化图像处理结果。 稀疏特征点与密集重建1. 稀疏特征点方法在">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2022-02-18T16:00:00.000Z">
@@ -198,103 +198,71 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">199</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">TUM-多视图几何-稀疏与密集重建技术</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-02-18T16:00:00.000Z" title="发表于 2022-02-19 00:00:00">2022-02-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BATUM-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">📺TUM-多视图几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">多视图几何</a></div></div><article class="post-content" id="article-container"><p>讨论了多视图几何中的稀疏与密集重建技术。传统方法主要依赖点对应关系来重建三维结构，但仅依赖少量点并不足够。在稀疏特征点方法下，已实现了实时重建，这些技术广泛应用于增强现实、医疗手术等领域。随着处理技术的进步，密集重建也逐渐成为现实。变分方法作为一种强大的计算范式，不仅用于图像去噪、分割和运动估计等任务，还可以通过欧拉-拉格朗日方程进一步优化图像处理结果。</p>
-<h2 id="稀疏特征点与密集重建">稀疏特征点与密集重建</h2>
-<h3 id="1-稀疏特征点方法">1. 稀疏特征点方法</h3>
-<p>在多视图几何学中，重建问题主要涉及从稀疏特征点中估计三维结构及相机运动。尽管传统方法依赖于通过三维点插值构建三维模型，但这种方法在点间缺乏足够信息时可能导致模型不准确。</p>
+<h2 id="稀疏特征点与密集重建"><a href="#稀疏特征点与密集重建" class="headerlink" title="稀疏特征点与密集重建"></a>稀疏特征点与密集重建</h2><h3 id="1-稀疏特征点方法"><a href="#1-稀疏特征点方法" class="headerlink" title="1. 稀疏特征点方法"></a>1. 稀疏特征点方法</h3><p>在多视图几何学中，重建问题主要涉及从稀疏特征点中估计三维结构及相机运动。尽管传统方法依赖于通过三维点插值构建三维模型，但这种方法在点间缺乏足够信息时可能导致模型不准确。</p>
 <ul>
 <li><strong>挑战</strong>：从稀疏点推断连续世界的几何形状。通常，这通过将三维点连接成三角网格来实现，但信息不足时可能不够精确。</li>
 <li><strong>应用</strong>：实时计算在许多应用中至关重要，如计算机辅助外科手术中，医生需要实时叠加三维模型，以获取关键解剖结构的位置。</li>
 </ul>
-<h3 id="2-密集重建技术">2. 密集重建技术</h3>
-<p>随着图形处理技术的发展，密集重建已成为可能。相比稀疏重建，密集重建能够在整个图像平面上进行几何重建，从而大幅提高了计算机视觉的应用潜力。</p>
+<h3 id="2-密集重建技术"><a href="#2-密集重建技术" class="headerlink" title="2. 密集重建技术"></a>2. 密集重建技术</h3><p>随着图形处理技术的发展，密集重建已成为可能。相比稀疏重建，密集重建能够在整个图像平面上进行几何重建，从而大幅提高了计算机视觉的应用潜力。</p>
 <ul>
 <li><strong>优势</strong>：密集重建不仅能处理稀疏特征点，还能重建整个图像平面的几何信息，这对于提高视觉应用的精度和可靠性至关重要。</li>
 </ul>
-<h2 id="变分方法在图像分析中的应用">变分方法在图像分析中的应用</h2>
-<h3 id="1-图像平滑与去噪">1. 图像平滑与去噪</h3>
-<p>图像平滑和去噪是图像分析中的重要任务。变分方法和欧拉-拉格朗日方程提供了有效的工具，以在去除噪声的同时保留信号，从而解决这一挑战。</p>
+<h2 id="变分方法在图像分析中的应用"><a href="#变分方法在图像分析中的应用" class="headerlink" title="变分方法在图像分析中的应用"></a>变分方法在图像分析中的应用</h2><h3 id="1-图像平滑与去噪"><a href="#1-图像平滑与去噪" class="headerlink" title="1. 图像平滑与去噪"></a>1. 图像平滑与去噪</h3><p>图像平滑和去噪是图像分析中的重要任务。变分方法和欧拉-拉格朗日方程提供了有效的工具，以在去除噪声的同时保留信号，从而解决这一挑战。</p>
 <ul>
-<li>
-<p><strong>变分方法</strong>：通过设定能量函数，变分方法可以在去噪过程中有效地保留图像的语义信息。该方法能够在噪声和信号之间找到平衡，优化图像的质量。</p>
+<li><p><strong>变分方法</strong>：通过设定能量函数，变分方法可以在去噪过程中有效地保留图像的语义信息。该方法能够在噪声和信号之间找到平衡，优化图像的质量。</p>
 </li>
-<li>
-<p><strong>欧拉-拉格朗日方程</strong>：欧拉和拉格朗日的数学理论为现代图像处理提供了基础。欧拉-拉格朗日方程可以理解为一种优化条件，确保变分问题的解满足特定的物理或几何约束。</p>
+<li><p><strong>欧拉-拉格朗日方程</strong>：欧拉和拉格朗日的数学理论为现代图像处理提供了基础。欧拉-拉格朗日方程可以理解为一种优化条件，确保变分问题的解满足特定的物理或几何约束。</p>
 </li>
-<li>
-<p><strong>应用实例</strong>：图像分割是变分方法的另一重要应用。通过将图像分解为有意义的区域，能够更好地解析和理解图像内容，特别是在处理复杂背景时。</p>
+<li><p><strong>应用实例</strong>：图像分割是变分方法的另一重要应用。通过将图像分解为有意义的区域，能够更好地解析和理解图像内容，特别是在处理复杂背景时。</p>
 </li>
 </ul>
-<h3 id="2-变分方法与优化问题">2. 变分方法与优化问题</h3>
-<p>变分方法在解决优化问题时表现出色，尤其是在图像分析领域。它能够通过透明且明确的方式定义解决方案空间和成本函数，使得研究人员能够更好地理解和分析问题。</p>
+<h3 id="2-变分方法与优化问题"><a href="#2-变分方法与优化问题" class="headerlink" title="2. 变分方法与优化问题"></a>2. 变分方法与优化问题</h3><p>变分方法在解决优化问题时表现出色，尤其是在图像分析领域。它能够通过透明且明确的方式定义解决方案空间和成本函数，使得研究人员能够更好地理解和分析问题。</p>
 <ul>
-<li>
-<p><strong>优势</strong>：与传统的多步骤处理方法相比，变分方法通常需要更少的调参，这对于解决实际问题非常有用。变分方法还允许将多个能量函数融合在一起，使其在处理复杂问题时更具灵活性。</p>
+<li><p><strong>优势</strong>：与传统的多步骤处理方法相比，变分方法通常需要更少的调参，这对于解决实际问题非常有用。变分方法还允许将多个能量函数融合在一起，使其在处理复杂问题时更具灵活性。</p>
 </li>
-<li>
-<p><strong>优化策略</strong>：通过最小化能量函数，可以同时达到低能量 \( e_1 \) 和 \( e_2 \) 的目标，从而找到两者之间的最佳折衷点。</p>
+<li><p><strong>优化策略</strong>：通过最小化能量函数，可以同时达到低能量 \( e_1 \) 和 \( e_2 \) 的目标，从而找到两者之间的最佳折衷点。</p>
 </li>
 </ul>
-<h3 id="3-平滑性与能量最小化">3. 平滑性与能量最小化</h3>
-<p>在信号重建中，平滑性和能量最小化是优化信号质量的关键。</p>
+<h3 id="3-平滑性与能量最小化"><a href="#3-平滑性与能量最小化" class="headerlink" title="3. 平滑性与能量最小化"></a>3. 平滑性与能量最小化</h3><p>在信号重建中，平滑性和能量最小化是优化信号质量的关键。</p>
 <ul>
-<li>
-<p><strong>平滑性项</strong>：用于确保重建信号在空间上保持平滑。通过计算图像中每个像素的梯度，可以控制信号变化，避免从一个像素到下一个像素的剧烈变化。</p>
+<li><p><strong>平滑性项</strong>：用于确保重建信号在空间上保持平滑。通过计算图像中每个像素的梯度，可以控制信号变化，避免从一个像素到下一个像素的剧烈变化。</p>
 </li>
-<li>
-<p><strong>能量最小化</strong>：过程包括数据项和光滑性项的加权和，其中参数 \( \lambda \) 的选择直接影响重建质量。 \( \lambda \) 越大，平滑性影响越强，但可能导致边界处过度平滑的问题。</p>
+<li><p><strong>能量最小化</strong>：过程包括数据项和光滑性项的加权和，其中参数 \( \lambda \) 的选择直接影响重建质量。 \( \lambda \) 越大，平滑性影响越强，但可能导致边界处过度平滑的问题。</p>
 </li>
 </ul>
-<h2 id="欧拉-拉格朗日方程与梯度下降法">欧拉-拉格朗日方程与梯度下降法</h2>
-<h3 id="1-欧拉-拉格朗日方程">1. 欧拉-拉格朗日方程</h3>
-<p>变分方法的核心在于通过最小化能量函数来寻找函数的极值，而欧拉-拉格朗日方程是这种方法的必要条件。</p>
+<h2 id="欧拉-拉格朗日方程与梯度下降法"><a href="#欧拉-拉格朗日方程与梯度下降法" class="headerlink" title="欧拉-拉格朗日方程与梯度下降法"></a>欧拉-拉格朗日方程与梯度下降法</h2><h3 id="1-欧拉-拉格朗日方程"><a href="#1-欧拉-拉格朗日方程" class="headerlink" title="1. 欧拉-拉格朗日方程"></a>1. 欧拉-拉格朗日方程</h3><p>变分方法的核心在于通过最小化能量函数来寻找函数的极值，而欧拉-拉格朗日方程是这种方法的必要条件。</p>
 <ul>
-<li>
-<p><strong>基本概念</strong>：能量在极小值点的局部导数为零，这与求极值的数学原理相似。</p>
+<li><p><strong>基本概念</strong>：能量在极小值点的局部导数为零，这与求极值的数学原理相似。</p>
 </li>
-<li>
-<p><strong>应用</strong>：变分方法通常应用于无约束优化问题，直接计算能量的导数。然而，有约束的情况下，我们需要考虑边界条件的影响。</p>
+<li><p><strong>应用</strong>：变分方法通常应用于无约束优化问题，直接计算能量的导数。然而，有约束的情况下，我们需要考虑边界条件的影响。</p>
 </li>
-<li>
-<p><strong>求解方法</strong>：常用的求解方法如高斯-赛德尔法和雅可比法，特别适合处理二次能量函数，因为其线性方程组易于求解。</p>
+<li><p><strong>求解方法</strong>：常用的求解方法如高斯-赛德尔法和雅可比法，特别适合处理二次能量函数，因为其线性方程组易于求解。</p>
 </li>
 </ul>
-<h3 id="2-梯度下降法">2. 梯度下降法</h3>
-<p>梯度下降是一种通过逐步减少能量来接近最优解的策略，尤其在无法直接解决方程系统时非常有效。</p>
+<h3 id="2-梯度下降法"><a href="#2-梯度下降法" class="headerlink" title="2. 梯度下降法"></a>2. 梯度下降法</h3><p>梯度下降是一种通过逐步减少能量来接近最优解的策略，尤其在无法直接解决方程系统时非常有效。</p>
 <ul>
-<li>
-<p><strong>下降方法</strong>：通过调整初始解决方案的局部变化，逐步降低能量，实现优化目标。这一方法在高维空间中尤为重要，帮助找到局部最优解。</p>
+<li><p><strong>下降方法</strong>：通过调整初始解决方案的局部变化，逐步降低能量，实现优化目标。这一方法在高维空间中尤为重要，帮助找到局部最优解。</p>
 </li>
-<li>
-<p><strong>初始配置</strong>：选择合适的初始配置是优化过程中的关键，它直接影响是否能找到最低成本的解决方案。</p>
+<li><p><strong>初始配置</strong>：选择合适的初始配置是优化过程中的关键，它直接影响是否能找到最低成本的解决方案。</p>
 </li>
 </ul>
-<h2 id="变分方法与偏微分方程">变分方法与偏微分方程</h2>
-<h3 id="1-偏微分方程在图像分析中的应用">1. 偏微分方程在图像分析中的应用</h3>
-<p>变分方法与偏微分方程通常紧密相关。通过求解变分问题，可以导出相应的偏微分方程，从而实现有效的图像处理和分析。</p>
+<h2 id="变分方法与偏微分方程"><a href="#变分方法与偏微分方程" class="headerlink" title="变分方法与偏微分方程"></a>变分方法与偏微分方程</h2><h3 id="1-偏微分方程在图像分析中的应用"><a href="#1-偏微分方程在图像分析中的应用" class="headerlink" title="1. 偏微分方程在图像分析中的应用"></a>1. 偏微分方程在图像分析中的应用</h3><p>变分方法与偏微分方程通常紧密相关。通过求解变分问题，可以导出相应的偏微分方程，从而实现有效的图像处理和分析。</p>
 <ul>
-<li>
-<p><strong>离散化导数</strong>：通过离散化导数的方法，可以在实践中处理时间变化的函数，允许通过简单的迭代步骤来预测函数在下一个时间点的值。</p>
+<li><p><strong>离散化导数</strong>：通过离散化导数的方法，可以在实践中处理时间变化的函数，允许通过简单的迭代步骤来预测函数在下一个时间点的值。</p>
 </li>
-<li>
-<p><strong>显式欧拉法</strong>：该方法简化了偏微分方程的离散化过程，使计算机能够在多个时间步骤中迭代，逐步接近最优解。</p>
+<li><p><strong>显式欧拉法</strong>：该方法简化了偏微分方程的离散化过程，使计算机能够在多个时间步骤中迭代，逐步接近最优解。</p>
 </li>
-<li>
-<p><strong>代价函数选择</strong>：选择合适的代价函数至关重要。尤其是二次代价函数，由于其凸性，确保了唯一的最优解，使得图像处理中的平滑化效果更加稳定。</p>
+<li><p><strong>代价函数选择</strong>：选择合适的代价函数至关重要。尤其是二次代价函数，由于其凸性，确保了唯一的最优解，使得图像处理中的平滑化效果更加稳定。</p>
 </li>
 </ul>
-<h2 id="总结与未来展望">总结与未来展望</h2>
-<h3 id="1-变分方法的应用与扩展">1. 变分方法的应用与扩展</h3>
-<p>变分方法在图像处理中的应用展示了其强大的能力。通过调整成本函数，可以实现平滑化处理，同时保留重要的结构特征，从而优化图像质量。</p>
+<h2 id="总结与未来展望"><a href="#总结与未来展望" class="headerlink" title="总结与未来展望"></a>总结与未来展望</h2><h3 id="1-变分方法的应用与扩展"><a href="#1-变分方法的应用与扩展" class="headerlink" title="1. 变分方法的应用与扩展"></a>1. 变分方法的应用与扩展</h3><p>变分方法在图像处理中的应用展示了其强大的能力。通过调整成本函数，可以实现平滑化处理，同时保留重要的结构特征，从而优化图像质量。</p>
 <ul>
-<li>
-<p><strong>Perona-Malik模型</strong>：Perona和Malik在1992年提出的算法是变分方法在图像去噪中的一个重要应用，它能够在去噪的同时保持图像的语义细节。</p>
+<li><p><strong>Perona-Malik模型</strong>：Perona和Malik在1992年提出的算法是变分方法在图像去噪中的一个重要应用，它能够在去噪的同时保持图像的语义细节。</p>
 </li>
-<li>
-<p><strong>总变分法</strong>：总变分法是研究中广泛应用的一种变分方法，特别是在物理学中，它通过最小化能量或成本来求解特定形状或配置的问题。</p>
+<li><p><strong>总变分法</strong>：总变分法是研究中广泛应用的一种变分方法，特别是在物理学中，它通过最小化能量或成本来求解特定形状或配置的问题。</p>
 </li>
 </ul>
-<h3 id="2-历史背景与影响">2. 历史背景与影响</h3>
-<p>变分方法源于物理学中的极值原理，这一理论帮助研究者解决了许多实际问题，如通过设定能量或成本函数来推导绳子的形状等。</p>
+<h3 id="2-历史背景与影响"><a href="#2-历史背景与影响" class="headerlink" title="2. 历史背景与影响"></a>2. 历史背景与影响</h3><p>变分方法源于物理学中的极值原理，这一理论帮助研究者解决了许多实际问题，如通过设定能量或成本函数来推导绳子的形状等。</p>
 <ul>
 <li><strong>欧拉与拉格朗日</strong>：欧拉和拉格朗日是变分法的重要奠基人。他们的研究不仅对数学领域产生了深远影响，也推动了现代物理学的发展。</li>
 </ul>

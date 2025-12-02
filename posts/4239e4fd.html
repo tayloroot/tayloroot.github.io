@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-多视角重建 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="讨论了多视图几何中的重构问题，特别是如何将从两个视图学到的知识推广到多个视图。介绍了极线约束和八点算法的变体，以及在多视图情况下的推广。重点在于如何将运动估计与结构估计分离，利用投影矩阵和深度参数进行优化。讲座还探讨了如何通过矩阵的秩约束来确保存在一致的三维重构，并引入了三线性约束，强调了在多图像情况下的重构信息比单对图像更丰富。 从多视角进行重建的概念 多视图几何重建涉及将两视图技术推广至多视图">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>TUM-多视图几何-多视角重建 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="讨论了多视图几何中的重构问题，特别是如何将从两个视图学到的知识推广到多个视图。介绍了极线约束和八点算法的变体，以及在多视图情况下的推广。重点在于如何将运动估计与结构估计分离，利用投影矩阵和深度参数进行优化。讲座还探讨了如何通过矩阵的秩约束来确保存在一致的三维重构，并引入了三线性约束，强调了在多图像情况下的重构信息比单对图像更丰富。 从多视角进行重建的概念多视图几何重建涉及将两视图技术推广至多视图设">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TUM-多视图几何-多视角重建">
 <meta property="og:url" content="http://mmwiki.cn/posts/4239e4fd.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="讨论了多视图几何中的重构问题，特别是如何将从两个视图学到的知识推广到多个视图。介绍了极线约束和八点算法的变体，以及在多视图情况下的推广。重点在于如何将运动估计与结构估计分离，利用投影矩阵和深度参数进行优化。讲座还探讨了如何通过矩阵的秩约束来确保存在一致的三维重构，并引入了三线性约束，强调了在多图像情况下的重构信息比单对图像更丰富。 从多视角进行重建的概念 多视图几何重建涉及将两视图技术推广至多视图">
+<meta property="og:description" content="讨论了多视图几何中的重构问题，特别是如何将从两个视图学到的知识推广到多个视图。介绍了极线约束和八点算法的变体，以及在多视图情况下的推广。重点在于如何将运动估计与结构估计分离，利用投影矩阵和深度参数进行优化。讲座还探讨了如何通过矩阵的秩约束来确保存在一致的三维重构，并引入了三线性约束，强调了在多图像情况下的重构信息比单对图像更丰富。 从多视角进行重建的概念多视图几何重建涉及将两视图技术推广至多视图设">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2022-02-06T16:00:00.000Z">
@@ -198,60 +198,44 @@
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
 })()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">199</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">TUM-多视图几何-多视角重建</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-02-06T16:00:00.000Z" title="发表于 2022-02-07 00:00:00">2022-02-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BATUM-%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">📺TUM-多视图几何</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E8%A7%86%E5%9B%BE%E5%87%A0%E4%BD%95/">多视图几何</a></div></div><article class="post-content" id="article-container"><p>讨论了多视图几何中的重构问题，特别是如何将从两个视图学到的知识推广到多个视图。介绍了极线约束和八点算法的变体，以及在多视图情况下的推广。重点在于如何将运动估计与结构估计分离，利用投影矩阵和深度参数进行优化。讲座还探讨了如何通过矩阵的秩约束来确保存在一致的三维重构，并引入了三线性约束，强调了在多图像情况下的重构信息比单对图像更丰富。</p>
-<h3 id="从多视角进行重建的概念">从多视角进行重建的概念</h3>
-<p>多视图几何重建涉及将两视图技术推广至多视图设置。这包括扩展基础约束和算法，以同步估计摄像机运动与三维结构。</p>
-<h4 id="运动估计与结构估计">运动估计与结构估计</h4>
-<ul>
+<h3 id="从多视角进行重建的概念"><a href="#从多视角进行重建的概念" class="headerlink" title="从多视角进行重建的概念"></a>从多视角进行重建的概念</h3><p>多视图几何重建涉及将两视图技术推广至多视图设置。这包括扩展基础约束和算法，以同步估计摄像机运动与三维结构。</p>
+<h4 id="运动估计与结构估计"><a href="#运动估计与结构估计" class="headerlink" title="运动估计与结构估计"></a>运动估计与结构估计</h4><ul>
 <li>运动估计与结构估计问题在计算机视觉中被称为<strong>结构与运动</strong>（Structure from Motion, SfM）。</li>
 <li>尤其是在机器人领域，通常被称为<strong>视觉SLAM</strong>（Simultaneous Localization and Mapping）。这种方法帮助在动态环境中实现同时定位和建图。</li>
 <li>投影方程整合为一个紧凑的矩阵形式简化了信息处理，有助于理解和计算。</li>
 </ul>
-<h3 id="3D点的投影模型">3D点的投影模型</h3>
-<p>多视角设置中，3D点的投影模型涉及多个相机的投影矩阵和深度参数，这些通常是未知的，但必须满足线性方程系统，以便有效地进行结构与运动估计。</p>
-<h4 id="相机投影矩阵与3D点映射">相机投影矩阵与3D点映射</h4>
-<ul>
+<h3 id="3D点的投影模型"><a href="#3D点的投影模型" class="headerlink" title="3D点的投影模型"></a>3D点的投影模型</h3><p>多视角设置中，3D点的投影模型涉及多个相机的投影矩阵和深度参数，这些通常是未知的，但必须满足线性方程系统，以便有效地进行结构与运动估计。</p>
+<h4 id="相机投影矩阵与3D点映射"><a href="#相机投影矩阵与3D点映射" class="headerlink" title="相机投影矩阵与3D点映射"></a>相机投影矩阵与3D点映射</h4><ul>
 <li>相机的投影矩阵用于将3D点映射到2D图像中，形成多视角分析的基础。</li>
 <li>通过结合多个投影矩阵，可以更有效地估计相机运动和场景结构。</li>
 </ul>
-<h3 id="矩阵的秩与零空间">矩阵的秩与零空间</h3>
-<p>矩阵的秩必须小于其完整秩，否则无法得到有效的重构。矩阵的秩与线性依赖性密切相关，在重构中，零空间的一维性确保唯一性，避免多个不同解。</p>
-<h4 id="秩的作用">秩的作用</h4>
-<ul>
+<h3 id="矩阵的秩与零空间"><a href="#矩阵的秩与零空间" class="headerlink" title="矩阵的秩与零空间"></a>矩阵的秩与零空间</h3><p>矩阵的秩必须小于其完整秩，否则无法得到有效的重构。矩阵的秩与线性依赖性密切相关，在重构中，零空间的一维性确保唯一性，避免多个不同解。</p>
+<h4 id="秩的作用"><a href="#秩的作用" class="headerlink" title="秩的作用"></a>秩的作用</h4><ul>
 <li>矩阵的秩对重建唯一性至关重要。秩为3时存在唯一重建，小于3时可能存在非唯一解。</li>
 <li>通过构造矩阵和研究其秩，可以分析重建问题。</li>
 </ul>
-<h3 id="多视图重建中的线特征">多视图重建中的线特征</h3>
-<p>在多视图重建中，通过线的参数化与图像的投影矩阵相结合，找到特定的约束条件，从而确保一致的重建。</p>
-<h4 id="线的参数化">线的参数化</h4>
-<ul>
+<h3 id="多视图重建中的线特征"><a href="#多视图重建中的线特征" class="headerlink" title="多视图重建中的线特征"></a>多视图重建中的线特征</h3><p>在多视图重建中，通过线的参数化与图像的投影矩阵相结合，找到特定的约束条件，从而确保一致的重建。</p>
+<h4 id="线的参数化"><a href="#线的参数化" class="headerlink" title="线的参数化"></a>线的参数化</h4><ul>
 <li>定义线的参数化，包括基点和方向向量。使用齐次坐标确保点的一致性。</li>
 <li>图像中的线有两个约束条件，一个针对基点，一个针对方向向量。</li>
 </ul>
-<h3 id="3D点与平面交集">3D点与平面交集</h3>
-<p>理解矩阵的秩如何影响3D点与平面交集的唯一性。若秩为3，交集唯一；若小于3，交集不唯一。</p>
-<h4 id="多视图矩阵">多视图矩阵</h4>
-<ul>
+<h3 id="3D点与平面交集"><a href="#3D点与平面交集" class="headerlink" title="3D点与平面交集"></a>3D点与平面交集</h3><p>理解矩阵的秩如何影响3D点与平面交集的唯一性。若秩为3，交集唯一；若小于3，交集不唯一。</p>
+<h4 id="多视图矩阵"><a href="#多视图矩阵" class="headerlink" title="多视图矩阵"></a>多视图矩阵</h4><ul>
 <li>通过多视图矩阵简化多视角约束的表达，提高理解清晰度。</li>
 <li>矩阵的秩约束确保重建的唯一性和可行性。</li>
 </ul>
-<h3 id="多视图约束与三线性约束">多视图约束与三线性约束</h3>
-<p>多视图约束不仅包含极线约束，还包含更丰富的几何信息，特别是三线性约束，这些约束有助于捕捉图像间的关系，提高重建的准确性和可靠性。</p>
-<h4 id="三线性约束的应用">三线性约束的应用</h4>
-<ul>
+<h3 id="多视图约束与三线性约束"><a href="#多视图约束与三线性约束" class="headerlink" title="多视图约束与三线性约束"></a>多视图约束与三线性约束</h3><p>多视图约束不仅包含极线约束，还包含更丰富的几何信息，特别是三线性约束，这些约束有助于捕捉图像间的关系，提高重建的准确性和可靠性。</p>
+<h4 id="三线性约束的应用"><a href="#三线性约束的应用" class="headerlink" title="三线性约束的应用"></a>三线性约束的应用</h4><ul>
 <li>三线性约束能够从三幅图像中获取线性独立的方程，这为图像间关系提供了数学基础。</li>
 <li>在非退化情况下，三线性约束确保从多个视角观察的点具有唯一性。</li>
 </ul>
-<h3 id="图像间的交点一致性">图像间的交点一致性</h3>
-<p>在多视角重建中，通过考虑多个图像的约束，可以获得更准确的三维重建信息，解决单一视图不足的问题。</p>
-<h4 id="重建的可行性与唯一性">重建的可行性与唯一性</h4>
-<ul>
+<h3 id="图像间的交点一致性"><a href="#图像间的交点一致性" class="headerlink" title="图像间的交点一致性"></a>图像间的交点一致性</h3><p>在多视角重建中，通过考虑多个图像的约束，可以获得更准确的三维重建信息，解决单一视图不足的问题。</p>
+<h4 id="重建的可行性与唯一性"><a href="#重建的可行性与唯一性" class="headerlink" title="重建的可行性与唯一性"></a>重建的可行性与唯一性</h4><ul>
 <li>多视图矩阵的秩决定了重建的一致性和唯一性。矩阵秩为零表示没有一致重建，秩为一则存在唯一点对应关系。</li>
 <li>优先考虑相机运动的估计与结构的分解可以提高重建的准确性。</li>
 </ul>
-<h3 id="保护方程与线性组合">保护方程与线性组合</h3>
-<p>在图像重建中，通过保护方程推导个别行取得一致的深度信息。线性组合在图像处理中的重要性不可忽视，它们帮助理解深度信息在图像中的表现。</p>
-<h4 id="线性关系分析">线性关系分析</h4>
-<ul>
+<h3 id="保护方程与线性组合"><a href="#保护方程与线性组合" class="headerlink" title="保护方程与线性组合"></a>保护方程与线性组合</h3><p>在图像重建中，通过保护方程推导个别行取得一致的深度信息。线性组合在图像处理中的重要性不可忽视，它们帮助理解深度信息在图像中的表现。</p>
+<h4 id="线性关系分析"><a href="#线性关系分析" class="headerlink" title="线性关系分析"></a>线性关系分析</h4><ul>
 <li>分析不同图像间的线性关系，理解深度信息的表现，进而提高重建精度。</li>
 <li>多种矩阵和秩约束技术对于理解图像重建算法至关重要。</li>
 </ul>

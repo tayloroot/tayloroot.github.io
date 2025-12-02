@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-模式识别-特征提取与特征选择2 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据向量化与特征提取 模式识别的核心在于将数据转化为向量表示，以便进行有效的描述和处理。无论是图像、文本还是语音数据，都可以通过向量化来统一处理，从而实现高效的分析与分类。  特征提取：是模式识别的基础，将数据转换为等长度的向量形式是必不可少的。以人脸图像为例，通过选取特定的关键点，可以对面部特征进行描述，进而实现精确的模式识别。 文本分类：将文章中的词汇转化为向量。通过构建词库，能够对不同主题（">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>国科大-模式识别-特征提取与特征选择2 | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数据向量化与特征提取模式识别的核心在于将数据转化为向量表示，以便进行有效的描述和处理。无论是图像、文本还是语音数据，都可以通过向量化来统一处理，从而实现高效的分析与分类。  特征提取：是模式识别的基础，将数据转换为等长度的向量形式是必不可少的。以人脸图像为例，通过选取特定的关键点，可以对面部特征进行描述，进而实现精确的模式识别。 文本分类：将文章中的词汇转化为向量。通过构建词库，能够对不同主题（如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="国科大-模式识别-特征提取与特征选择2">
 <meta property="og:url" content="http://mmwiki.cn/posts/130d291.html">
 <meta property="og:site_name" content="MM&#39;s Journal of Technology">
-<meta property="og:description" content="数据向量化与特征提取 模式识别的核心在于将数据转化为向量表示，以便进行有效的描述和处理。无论是图像、文本还是语音数据，都可以通过向量化来统一处理，从而实现高效的分析与分类。  特征提取：是模式识别的基础，将数据转换为等长度的向量形式是必不可少的。以人脸图像为例，通过选取特定的关键点，可以对面部特征进行描述，进而实现精确的模式识别。 文本分类：将文章中的词汇转化为向量。通过构建词库，能够对不同主题（">
+<meta property="og:description" content="数据向量化与特征提取模式识别的核心在于将数据转化为向量表示，以便进行有效的描述和处理。无论是图像、文本还是语音数据，都可以通过向量化来统一处理，从而实现高效的分析与分类。  特征提取：是模式识别的基础，将数据转换为等长度的向量形式是必不可少的。以人脸图像为例，通过选取特定的关键点，可以对面部特征进行描述，进而实现精确的模式识别。 文本分类：将文章中的词汇转化为向量。通过构建词库，能够对不同主题（如">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2023-07-15T16:00:00.000Z">
@@ -197,70 +197,54 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">199</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-特征提取与特征选择2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-07-15T16:00:00.000Z" title="发表于 2023-07-16 00:00:00">2023-07-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">📺国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><h3 id="数据向量化与特征提取">数据向量化与特征提取</h3>
-<p>模式识别的核心在于将数据转化为向量表示，以便进行有效的描述和处理。无论是图像、文本还是语音数据，都可以通过向量化来统一处理，从而实现高效的分析与分类。</p>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">199</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">国科大-模式识别-特征提取与特征选择2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2023-07-15T16:00:00.000Z" title="发表于 2023-07-16 00:00:00">2023-07-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/">高校课程</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E9%AB%98%E6%A0%A1%E8%AF%BE%E7%A8%8B/%F0%9F%93%BA%E5%9B%BD%E7%A7%91%E5%A4%A7-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">📺国科大-模式识别</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><article class="post-content" id="article-container"><h3 id="数据向量化与特征提取"><a href="#数据向量化与特征提取" class="headerlink" title="数据向量化与特征提取"></a>数据向量化与特征提取</h3><p>模式识别的核心在于将数据转化为向量表示，以便进行有效的描述和处理。无论是图像、文本还是语音数据，都可以通过向量化来统一处理，从而实现高效的分析与分类。</p>
 <ul>
 <li><strong>特征提取</strong>：是模式识别的基础，将数据转换为等长度的向量形式是必不可少的。以人脸图像为例，通过选取特定的关键点，可以对面部特征进行描述，进而实现精确的模式识别。</li>
 <li><strong>文本分类</strong>：将文章中的词汇转化为向量。通过构建词库，能够对不同主题（如体育、政治等）进行分类，实现文本的高效处理。</li>
 <li><strong>线性维数缩减</strong>：有助于将高维数据映射到低维空间，通过最大化保留数据的整体特性和方差，优化模式识别的效果。</li>
 </ul>
-<h3 id="特征选择方法">特征选择方法</h3>
-<p>特征选择是模式识别中的关键步骤，主要包括三种方法：过滤式、包裹式和嵌入式特征选择。</p>
+<h3 id="特征选择方法"><a href="#特征选择方法" class="headerlink" title="特征选择方法"></a>特征选择方法</h3><p>特征选择是模式识别中的关键步骤，主要包括三种方法：过滤式、包裹式和嵌入式特征选择。</p>
 <ul>
 <li><strong>过滤式特征选择</strong>：通过单独评估每个特征的贡献来选择最优特征，通常独立于分类算法。</li>
 <li><strong>包裹式特征选择</strong>：结合特征选择与分类算法，通过迭代优化来选择最优特征子集。</li>
 <li><strong>嵌入式特征选择</strong>：在模型训练过程中，通过优化稀疏性来进行特征选择，以提升模型的泛化能力。</li>
 </ul>
-<h3 id="特征选择的重要性">特征选择的重要性</h3>
-<p>特征选择在模式识别中至关重要。通过去除冗余或噪声特征，可以提高模型的准确性，减少计算复杂度，并有效避免维度灾难。</p>
-<h2 id="维数缩减与数据投影">维数缩减与数据投影</h2>
-<h3 id="主成分分析-PCA">主成分分析 (PCA)</h3>
-<ul>
+<h3 id="特征选择的重要性"><a href="#特征选择的重要性" class="headerlink" title="特征选择的重要性"></a>特征选择的重要性</h3><p>特征选择在模式识别中至关重要。通过去除冗余或噪声特征，可以提高模型的准确性，减少计算复杂度，并有效避免维度灾难。</p>
+<h2 id="维数缩减与数据投影"><a href="#维数缩减与数据投影" class="headerlink" title="维数缩减与数据投影"></a>维数缩减与数据投影</h2><h3 id="主成分分析-PCA"><a href="#主成分分析-PCA" class="headerlink" title="主成分分析 (PCA)"></a>主成分分析 (PCA)</h3><ul>
 <li><strong>PCA</strong>：通过寻找数据的特征向量，实现有效的维度缩减。最大特征值对应的特征向量定义了数据的主要投影方向，保留了最大的数据变异性。</li>
 <li><strong>维度选择</strong>：通常选择保留95%能量的特征向量作为新的维度，确保数据的主要信息得以保留。</li>
 </ul>
-<h3 id="线性判别分析-LDA">线性判别分析 (LDA)</h3>
-<ul>
+<h3 id="线性判别分析-LDA"><a href="#线性判别分析-LDA" class="headerlink" title="线性判别分析 (LDA)"></a>线性判别分析 (LDA)</h3><ul>
 <li><strong>LDA</strong>：通过监督学习寻找最佳投影方向，使同类样本点尽可能聚集，不同类样本点尽量远离，从而提升分类效果。</li>
 <li><strong>非线性维数缩减</strong>：逐渐受到重视，其保留了原始数据的非线性结构，更适应复杂的实际应用场景。</li>
 </ul>
-<h3 id="高维数据投影与矩阵运算">高维数据投影与矩阵运算</h3>
-<p>通过将二维数据映射到更高的维度，确保每个数据点都有唯一的表示，进一步强调了不同维度之间的关系以及数据的本质特征。</p>
+<h3 id="高维数据投影与矩阵运算"><a href="#高维数据投影与矩阵运算" class="headerlink" title="高维数据投影与矩阵运算"></a>高维数据投影与矩阵运算</h3><p>通过将二维数据映射到更高的维度，确保每个数据点都有唯一的表示，进一步强调了不同维度之间的关系以及数据的本质特征。</p>
 <ul>
 <li><strong>瑞士蛋卷模型</strong>：以瑞士蛋卷为比喻，展示了数据的二维和三维特性，帮助理解复杂的数学概念。</li>
 <li><strong>零均值化</strong>：通过矩阵变换，在数据处理过程中达到目标。这一技巧在统计学和机器学习中都非常重要。</li>
 </ul>
-<h2 id="距离矩阵与格雷姆矩阵">距离矩阵与格雷姆矩阵</h2>
-<h3 id="距离矩阵与投影矩阵">距离矩阵与投影矩阵</h3>
-<ul>
+<h2 id="距离矩阵与格雷姆矩阵"><a href="#距离矩阵与格雷姆矩阵" class="headerlink" title="距离矩阵与格雷姆矩阵"></a>距离矩阵与格雷姆矩阵</h2><h3 id="距离矩阵与投影矩阵"><a href="#距离矩阵与投影矩阵" class="headerlink" title="距离矩阵与投影矩阵"></a>距离矩阵与投影矩阵</h3><ul>
 <li><strong>距离矩阵</strong>：通过特征值分解，找到保持距离最小的投影矩阵，从而实现数据降维的目的。</li>
 <li><strong>对称性与特征值分解</strong>：确保构造的矩阵是对称的，对于后续的特征值分解过程具有重要意义。</li>
 </ul>
-<h3 id="保持局部结构的重要性">保持局部结构的重要性</h3>
-<p>在数据降维中，保持样本点的局部结构至关重要。通过选择每个样本点的k个邻居，可以更准确地进行线性表征和数据重构。</p>
+<h3 id="保持局部结构的重要性"><a href="#保持局部结构的重要性" class="headerlink" title="保持局部结构的重要性"></a>保持局部结构的重要性</h3><p>在数据降维中，保持样本点的局部结构至关重要。通过选择每个样本点的k个邻居，可以更准确地进行线性表征和数据重构。</p>
 <ul>
 <li><strong>线性与非线性结构</strong>：理解两者关系是降维的关键。保持局部邻居的思路有助于更好地重构数据，代数表征在其中起着至关重要的作用。</li>
 </ul>
-<h2 id="特征选择与分类任务">特征选择与分类任务</h2>
-<h3 id="特征选择过程">特征选择过程</h3>
-<p>特征选择的目的是找到最优的特征子集，从而提高分类器的性能。</p>
+<h2 id="特征选择与分类任务"><a href="#特征选择与分类任务" class="headerlink" title="特征选择与分类任务"></a>特征选择与分类任务</h2><h3 id="特征选择过程"><a href="#特征选择过程" class="headerlink" title="特征选择过程"></a>特征选择过程</h3><p>特征选择的目的是找到最优的特征子集，从而提高分类器的性能。</p>
 <ul>
 <li><strong>特征分数与可分性</strong>：通过分数排序，识别最优特征。单调性原则确保了特征分数的变化趋势，有助于提高模型的效率。</li>
 <li><strong>Relief算法</strong>：作为有监督的特征选择方法，通过比较同类与不同类样本之间的距离来评估特征的重要性，优化分类效果。</li>
 </ul>
-<h3 id="知识向量机与特征选择">知识向量机与特征选择</h3>
-<ul>
+<h3 id="知识向量机与特征选择"><a href="#知识向量机与特征选择" class="headerlink" title="知识向量机与特征选择"></a>知识向量机与特征选择</h3><ul>
 <li><strong>知识向量机 (SVM)</strong>：支持向量的分类在SVM中至关重要，通过分析αi值判断哪些向量是支持向量。</li>
 <li><strong>嵌入式特征选择</strong>：结合分类过程与特征选择，通过优化目标函数来保持重要特征，提升模型效率。</li>
 </ul>
-<h2 id="特征选择中的数学优化">特征选择中的数学优化</h2>
-<h3 id="一范数与二范数">一范数与二范数</h3>
-<ul>
+<h2 id="特征选择中的数学优化"><a href="#特征选择中的数学优化" class="headerlink" title="特征选择中的数学优化"></a>特征选择中的数学优化</h2><h3 id="一范数与二范数"><a href="#一范数与二范数" class="headerlink" title="一范数与二范数"></a>一范数与二范数</h3><ul>
 <li><strong>一范数</strong>：具有吸附性，促使模型保留少量非零特征，实现稀疏解。</li>
 <li><strong>二范数</strong>：不具备吸附性，可能保留过多特征，影响模型性能。</li>
 </ul>
-<h3 id="特征矩阵的优化">特征矩阵的优化</h3>
-<p>通过将一个NP难的问题转化为可优化的问题，引入新的度量方法，简化特征选择并提高模型的效率。</p>
+<h3 id="特征矩阵的优化"><a href="#特征矩阵的优化" class="headerlink" title="特征矩阵的优化"></a>特征矩阵的优化</h3><p>通过将一个NP难的问题转化为可优化的问题，引入新的度量方法，简化特征选择并提高模型的效率。</p>
 <ul>
 <li><strong>零范数与一范数</strong>：引入零范数最小化的新向量w，有助于筛选相关特征，提升模型准确性。</li>
 <li><strong>二一范数与线性回归</strong>：结合二一范数与线性回归，处理多类分类问题，简化计算过程并提升模型表现。</li>

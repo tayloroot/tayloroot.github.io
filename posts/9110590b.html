@@ -212,7 +212,7 @@
 <p>首先一定要清楚地意识到：『并行编程不简单』！最主要的原因恐怕就是我们自己的大脑，人脑实际上是一个非常精妙的系统，所采取的并行策略是一明一暗两条线，但是对于明线来说，是线性的，于是就和计算机中并行的概念冲突了。另外时间这个概念也是线性的，这就导致了想要处理好并行程序可能出现的各种问题几乎是不可能的（或者常常要出错）。</p>
 <p>常见的错误有仨：竞争条件[2]、死锁[3]和活锁[4]，尤其是在现在的多核处理器架构中，更容易出现这类并行问题。</p>
 <p>我们前面实现的服务器，一次只能处理一个请求，只有当前的请求处理完了，才能继续处理下一个。</p>
-<p><img src="/img/post/csapp/14620201714327.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14620201714327.jpg" alt=""></p>
 <p>这里具体讲解一下：Client 1 向 Server 发送连接请求(connect)，Server 接受(accept)之后开始等待 Client 1 发送请求（也就是开始 read），这之后 Client 1 发送具体的内容(write)后转为等待响应(call read)，Server 的 read 接收到了内容之后，发送响应(write) 后仅需进入等待(read)，而 Client 1 接收到了响应(ret read)，最后根据用户指令退出(close)。</p>
 <p>而只有当 Client 1 断开之后，Server 才会处理 Client 2 的请求，从图中也可以看到这一点。具体是在哪里等待呢？因为 TCP 会缓存，所以实际上 Client 2 在 <code>ret read</code> 之前进行等待，为了解决这个问题，我们可以使用并行的策略，同时处理不同客户端发来的请求。</p>
 <p>总体来说，根据系统机制的层级和实现方式，有下面三大类方法：</p>
@@ -375,7 +375,7 @@
 <p>复制</p>
 <p>在使用线程时，脑中需要有一个清晰的分享变量的概念，共享变量需要互斥访问，而 Semaphores 是一个基础的机制。</p>
 <h2 id="生产者-消费者问题">生产者-消费者问题</h2>
-<p><img src="/img/post/csapp/14620251080738.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14620251080738.jpg" alt=""></p>
 <p>具体的同步模型为：</p>
 <ul>
 <li>生产者等待空的 slot，把 item 存储到 buffer，并通知消费者</li>
@@ -484,13 +484,13 @@
 </ul>
 <h2 id="超线程">超线程</h2>
 <p>回想一下，我们之前是如何处理 I/O 的延迟的呢？一个办法是每个客户端都由一个线程来处理，这样就不需要互相等待。现在的多核/超线程处理器提供了另外一种可能。我们不但可以并行执行多个线程，更好的是这些都是自动进行的，当然，我们也可以通过把大任务分成小任务来加速运算。</p>
-<p><img src="/img/post/csapp/14620327073816.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14620327073816.jpg" alt=""></p>
 <p>上图是典型的多核处理器架构，这里需要注意的是 L3 缓存（图上没有显示）和主内存都是共享的。而具体的执行计算的架构，基本的乱序执行处理器的架构为：</p>
-<p><img src="/img/post/csapp/14601450728106.jpg" alt="Out-of-Order Processor Structure"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14601450728106.jpg" alt="Out-of-Order Processor Structure"></p>
 <p>指令控制器会动态把程序转换成操作流，操作会被映射到 Functional Unit 上进行并行处理。这种情况下，一个核心处理一个线程。而在超线程的设计中，一个核心可以处理若干个线程，秘诀在于多出来了若干套指令控制流，如下图：</p>
-<p><img src="/img/post/csapp/14601452084625.jpg" alt="Hyperthreading Implementation"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14601452084625.jpg" alt="Hyperthreading Implementation"></p>
 <p>如果我们想要了解机器的相关信息，可以访问 <code>/proc/cpuinfo</code></p>
-<p><img src="/img/post/csapp/14601453998378.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14601453998378.jpg" alt=""></p>
 <p>随后老师提及了两个例子，一个是并行求和，一个是并行快排，这里不赘述，如果感兴趣的话，可以自己思考一下。</p>
 <h2 id="总结">总结</h2>
 <p>这一讲是本系列的最后一部分了，我们首先学习了并行的几个层次：进程、事件、线程，并了解 Posix 标准。在此基础上，针对并行编程可能产生的同步问题，使用信号量给出了简单的解决办法。之后通过『生产者-消费者问题』和『读者-写者问题』对并行和同步进行更加深入的探讨，最后介绍了线程安全和一致性问题。</p>

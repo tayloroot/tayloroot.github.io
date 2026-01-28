@@ -307,11 +307,11 @@
 <p>复制</p>
 <h2 id="重定向">重定向</h2>
 <p>了解了具体的结构之后，我们来看看内核是如何表示已打开的文件的。其实过程很简单，每个进程都有自己的描述符表(Descriptor table)，然后 Descriptor 1 指向终端，Descriptor 4 指向磁盘文件，如下图所示：</p>
-<p><img src="/img/post/csapp/14614963360280.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614963360280.jpg" alt=""></p>
 <p>这里有一个需要说明的情况，就是使用 <code>fork</code>。子进程实际上是会继承父进程打开的文件的。在 fork 之后，子进程实际上和父进程的指向是一样的，这里需要注意的是会把引用计数加 1，如下图所示</p>
-<p><img src="/img/post/csapp/14614966173879.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614966173879.jpg" alt=""></p>
 <p>了解了这个，我们我们就可以知道所谓的重定向是怎么实现的了。其实很简单，只要调用 <code>dup2(oldfd, newfd)</code> 函数即可。我们只要改变文件描述符指向的文件，也就完成了重定向的过程，下图中我们把原来指向终端的文件描述符指向了磁盘文件，也就把终端上的输出保存在了文件中：</p>
-<p><img src="/img/post/csapp/14614968463687.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14614968463687.jpg" alt=""></p>
 <h2 id="标准输入输出">标准输入输出</h2>
 <p>C 标准库中包含一系列高层的标准 IO 函数，比如</p>
 <ul>

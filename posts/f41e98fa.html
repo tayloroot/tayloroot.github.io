@@ -210,7 +210,7 @@
 <h2 id="网络架构">网络架构</h2>
 <p>计算机网络的知识可谓是非常『保值』的，因为这么多基础设备还在运行着，基本机制在短时间内很难改变，关于网络的相关的讲解还有参考链接[1][2]，我觉得也非常不错，大家感兴趣可以看看。</p>
 <p>客户端-服务器模型是网络应用最广泛使用的模型，客户端进程发送请求给服务器进程，服务器进程获取所需资源并响应客户端进程的请求，客户端进程收到响应后展示给用户。网络相关的处理，都是通过网络适配器来完成的，具体在硬件上为（右下角）：</p>
-<p><img src="/img/post/csapp/14619458669883.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619458669883.jpg" alt=""></p>
 <p>根据网络的应用范围和架构层级，可以分成三个部分：</p>
 <ul>
 <li>SAN - System Area Network
@@ -231,7 +231,7 @@
 </ul>
 <h3 id="最底层-Ethernet-Segment">最底层 - Ethernet Segment</h3>
 <p>由若干主机(hosts)通过交换机(hub)连接，通常范围是房间或一层楼，如下图所示：</p>
-<p><img src="/img/post/csapp/14619464142056.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619464142056.jpg" alt=""></p>
 <ul>
 <li>每个 Ethernet 适配器有一个唯一的 48 位的地址（也就是 MAC 地址），例如 <code>00:16:ea:e3:54:e6</code></li>
 <li>不同主机间发送的数据称为帧(frame)</li>
@@ -243,12 +243,12 @@
 </ul>
 <h3 id="下一层-Bridged-Ethernet-Segment">下一层 - Bridged Ethernet Segment</h3>
 <p>通常范围是一层楼，通过不同的 bridge 来连接不同的 ethernet segment。Bridge 知道从某端口出发可达的主机，并有选择的在端口间复制数据。</p>
-<p><img src="/img/post/csapp/14619467342899.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619467342899.jpg" alt=""></p>
 <p>为了从概念上简化，我们可以认为，所有的 hub, bridge 可以抽象为一条线，如下图所示：</p>
-<p><img src="/img/post/csapp/14619469077741.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619469077741.jpg" alt=""></p>
 <h3 id="下一层-internets">下一层 - internets</h3>
 <p>不同的（也许不兼容）的 LAN 可以通过 router 来进行物理上的连接，这样连接起来的网络称为 internet（注意是小写，大写的 Internet 可以认为是最著名的 internet）</p>
-<p><img src="/img/post/csapp/14619471233534.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619471233534.jpg" alt=""></p>
 <p>internet 的逻辑结构为：</p>
 <ul>
 <li>Ad hoc interconnection of networks
@@ -286,7 +286,7 @@
 </li>
 </ul>
 <p>在这样的协议下，具体的数据传输如下图所示，这里 PH = Internet packet header, FH = LAN frame header（具体名词解释可见参考文末参考资料）：</p>
-<p><img src="/img/post/csapp/14619781335872.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619781335872.jpg" alt=""></p>
 <p>Internet 是 internet 最为著名的例子。主要基于 TCP/IP 协议族：</p>
 <ul>
 <li>IP (Internet Protocal)
@@ -350,7 +350,7 @@
 <p>一系列系统级的函数，和 Unix I/O 配合构造网络应用（在所有的现代操作系统上都可用）。</p>
 <p>对于 kernel 来说，socket 是 endpoint of communication；对于应用程序来说，socket 是 file descriptor，用来读写（回忆一下，STDIN 和 STDOUT 也是 file descriptor）。客户端和服务器通过读写对应的 socket descriptor 来进行。</p>
 <p>具体连接的过程可以参考下图，注意，这一讲不做过多细节探讨，相信相关信息请参考书本对应内容。</p>
-<p><img src="/img/post/csapp/14619808912880.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619808912880.jpg" alt=""></p>
 <h2 id="简单服务器实现">简单服务器实现</h2>
 <h3 id="架构总览">架构总览</h3>
 <p>写服务器，最重要的就是理清思路，上节课我们介绍了诸多概念，尤其是最后提到的 <code>getaddrinfo</code> 和 <code>getnameinfo</code>，都是我们在搭建过程中必不可少的工具。参考上面的流程图，整个的工作流程有 5 步：</p>

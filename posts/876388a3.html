@@ -217,10 +217,10 @@
 <h3 id="从-8086-到-Core-i7">从 8086 到 Core i7</h3>
 <p>1978 年，Intel 发布了第一款 x86 指令集的微处理器——Intel 8086[1]，以此拉开了 Intel x86 系列发展的序幕。8086 是 16 位微处理器，主要为 IBM PC 和 DOS 设计，有 1MB 的地址空间。八年后的 1985，第一个 32 位 Intel 处理器(IA32) 386 诞生。2004 年，奔腾(Pentium) 4E 成为了第一个 64 位处理器(x86-64)。后来随着摩尔定律在单个核心上达到极限，2006 年 Core 2 成为了第一个多核 Intel 处理器。</p>
 <p>多核心的处理器大概长这样：</p>
-<p><img src="/img/post/csapp/14531672465886.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14531672465886.jpg" alt=""></p>
 <p>随着时代和科技的发展，处理器除了支持最基本的运算指令集外，还增加了支持多媒体操作处理和更高效执行条件操作的指令，这部分内容涉及到分支预测[2]（又是一个很有意思但是没时间写的话题），因为篇幅关系不再赘述，简单来说就是研究人员为了让处理器效率提升采用了各种各样的方法，可能只是为了 1% 的提升。</p>
 <p>除了增加处理器本身的功能外，另外的趋势是集成，比如说 2015 年的 Core i7 Broadwell，可以从下图看到处理器芯片中加入了原来主板才有的许多部件，如 PCIe, SATA, DDR3 等等。</p>
-<p><img src="/img/post/csapp/14531674473247.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14531674473247.jpg" alt=""></p>
 <p>顺带说一下千年老二 AMD，主打性价比，研发的 Opteron 系列是 Pentium 4 的强劲对手，并且开发了自己的 64 位拓展 x86-64。</p>
 <p>Intel 在 64 位处理器的发展并不算顺风顺水，2001 年本打算使用全新的架构快速从 IA32 转换到 IA64，但是糟糕的性能反倒给了 AMD 机会。后者在 2003 年发布的 x86-64(现在叫 AMD64) 架构明显更厉害，搞得 Intel 疲于应战，最后在 2004 年搞出来一个叫 EM64T 的东西，其实几乎和 AMD64 一样。现在除了某些低端的处理器，几乎都支持 x86-64，也是这一讲主要介绍的内容。</p>
 <h3 id="从-C-到机器代码">从 C 到机器代码</h3>
@@ -239,7 +239,7 @@
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br></pre></td><td><pre><span>sumstore:</span><br><span>    pushq   %rbx</span><br><span>    movq    %rbx, %rbx</span><br><span>    call    plus</span><br><span>    movq    %rax, (%rbx)</span><br><span>    popq    %rbx</span><br><span>    ret</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>比较一下我们就发现，C 语言代码被处理成了有统一格式的汇编代码，在汇编代码中，第一个字符串叫做操作符，后面可能跟着 1/2/3 个以逗号分隔的操作数，为什么是以这样的形式呢？这就要从处理器的运算方式讲起了，先来看看处理器是如何配合内存进行计算的：</p>
-<p><img src="/img/post/csapp/14611529201796.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611529201796.jpg" alt=""></p>
 <ul>
 <li>程序计数器(PC, Program counter) - 存着下一条指令的地址，在 x86-64 中称为 RIP</li>
 <li>寄存器(Register) - 用来存储数据以便操作</li>
@@ -253,7 +253,7 @@
 <h3 id="汇编入门">汇编入门</h3>
 <p>前面我们简要了解了一下程序执行的基本过程，也对汇编有了一点点认识，这一节我们从寄存器的相关知识讲起，介绍汇编的基本知识。这部分内容虽然在实际编程中几乎用不到，但是对于后面内容的理解非常重要。</p>
 <p>x86-64 架构中的整型寄存器如下图所示（暂时不考虑浮点数的部分）</p>
-<p><img src="/img/post/csapp/14611562175522.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611562175522.jpg" alt=""></p>
 <p>仔细看看寄存器的分布，我们可以发现有不同的颜色以及不同的寄存器名称，黄色部分是 16 位寄存器，也就是 16 位处理器 8086 的设计，然后绿色部分是 32 位寄存器（这里我是按照比例画的），给 32 位处理器使用，而蓝色部分是为 64 位处理器设计的。这样的设计保证了令人震惊的向下兼容性，几十年前的 x86 代码现在仍然可以运行！</p>
 <p>前六个寄存器(%rax, %rbx, %rcx, %rdx, %rsi, %rdi)称为通用寄存器，有其『特定』的用途：</p>
 <ul>
@@ -327,7 +327,7 @@
 </ul>
 <h2 id="流程控制">流程控制</h2>
 <p>我们先来回顾一下 x86-64 处理器中不同的寄存器，这一部分很重要，务必要弄明白</p>
-<p><img src="/img/post/csapp/14611621119083.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611621119083.jpg" alt=""></p>
 <p>首先要理解的是，寄存器中存储着当前正在执行的程序的相关信息：</p>
 <ul>
 <li>临时数据存放在 (%rax, …)</li>
@@ -440,7 +440,7 @@
 <p>以上这三点，都是凭借机器指令实现的</p>
 <h3 id="栈结构">栈结构</h3>
 <p>在 x86-64 中，所谓的栈，实际上一块内存区域，这个区域的数据进出满足先进后出的原则。越新入栈的数据，地址越低，所以栈顶的地址是最小的。下图中箭头所指的就是寄存器 %rsp 的值，这个寄存器是栈指针，用来记录栈顶的位置。</p>
-<p><img src="/img/post/csapp/14611673348513.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611673348513.jpg" alt=""></p>
 <p>我们假设一开始 %rsp 为红色，对于 <code>push</code> 操作，对应的是 <code>pushq Src</code> 指令，具体会完成下面三个步骤：</p>
 <ol>
 <li>从地址 <code>Src</code> 中取出操作数</li>
@@ -464,7 +464,7 @@
 <p>复制</p>
 <p>可以看到，过程调用是利用栈来进行的，通过 <code>call label</code> 来进行调用（先把返回地址入栈，然后跳转到对应的 label），返回的地址，将是下一条指令的地址，通过 <code>ret</code> 来进行返回（把地址从栈中弹出，然后跳转到对应地址）</p>
 <p>我们『单步调试』来看看具体调用的过程</p>
-<p><img src="/img/post/csapp/14611722773236.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611722773236.jpg" alt=""></p>
 <ol>
 <li>在执行到 400544 那一行的时候 %rsp 指向栈顶（存储着栈顶的地址），%rip 指向当前要执行的指令（也就是 400544）</li>
 <li>在上一步操作完成之后，因为跳转的关系，%rip 指向 mult2 函数开始的地方（也就是 400550），之前的压栈操作也使得栈顶改变（返回值的位置），于是 %rsp 对应进行改变</li>
@@ -492,7 +492,7 @@
 <li>调用所需的参数</li>
 </ul>
 <p>具体如下图所示：</p>
-<p><img src="/img/post/csapp/14611733132821.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611733132821.jpg" alt=""></p>
 <h3 id="递归">递归</h3>
 <p>有了前面的的基础，要理解递归就简单很多了，直接上例子</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br></pre></td><td><pre><span><span><span>long</span> <span>pcount_r</span><span>(<span>unsigned</span> <span>long</span> x)</span> </span>{</span><br><span><span>if</span> (x == <span>0</span>)</span><br><span><span>return</span> <span>0</span>;</span><br><span><span>else</span></span><br><span><span>return</span> (x &amp; <span>1</span>) + pcount_r(x &gt;&gt; <span>1</span>);</span><br><span>}</span><br></pre></td></tr></tbody></table>
@@ -565,7 +565,7 @@
 </tbody>
 </table>
 <p>我们举几个具体的例子就一目了然了：</p>
-<p><img src="/img/post/csapp/14611748992035.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611748992035.jpg" alt=""></p>
 <p>既然是连续的地址空间，就有很多不同的访问方式，比方对于 <code>int val[5]</code> 来说</p>
 <table>
 <thead>
@@ -615,7 +615,7 @@
 </table>
 <h3 id="多维数组">多维数组</h3>
 <p>对于多维的数组，基本形式是 <code>T A[R][C]</code>，R 是行，C 是列，如果类型 T 占 K 个字节的话，那么数组所需要的内存是 <code>R*C*K</code> 字节。具体在内存里的排列方式如下：</p>
-<p><img src="/img/post/csapp/14611757048510.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611757048510.jpg" alt=""></p>
 <p>具体访问的方式如下：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br></pre></td><td><pre><span><span><span>int</span> <span>get_a_digit</span><span>(<span>int</span> index, <span>int</span> dig)</span></span></span><br><span><span></span>{</span><br><span>    <span>return</span> A[index][dig];</span><br><span>}</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
@@ -628,12 +628,12 @@
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br></pre></td><td><pre><span><span><span>struct</span> <span>rec</span> </span></span><br><span><span>{</span></span><br><span>    <span>int</span> a[<span>4</span>];</span><br><span>    <span>size_t</span> i;       </span><br><span>    <span><span>struct</span> <span>rect</span> *<span>next</span>;</span></span><br><span>};</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>那么在内存中的排列是</p>
-<p><img src="/img/post/csapp/14611816137150.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611816137150.jpg" alt=""></p>
 <p>如果我们换一下结构体元素的排列顺序，可能就会出现和我们预想不一样的结果，比如</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br></pre></td><td><pre><span><span><span>struct</span> <span>S1</span></span></span><br><span><span>{</span></span><br><span>    <span>char</span> c;</span><br><span>    <span>int</span> i[<span>2</span>];</span><br><span>    <span>double</span> v;</span><br><span>} *p;</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>因为需要对齐的缘故，所以具体的排列是这样的：</p>
-<p><img src="/img/post/csapp/14611821730508.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611821730508.jpg" alt=""></p>
 <p>具体对齐的原则是，如果数据类型需要 K 个字节，那么地址都必须是 K 的倍数，比方说这里 int 数组 i 需要是 4 的倍数，而 v 则需要是 8 的倍数。</p>
 <p>感谢网友『光河』的补充：文中讲“具体对齐的原则是，如果数据类型需要 K 个字节，那么地址都必须是 K 的倍数”——这只是windows的原则，而Linux中的对齐策略是“2字节数据类型的地址必须为2的倍数，较大的数据类型（int,double,float）的地址必须是4的倍数”</p>
 <p>为什么要这样呢，因为内存访问通常来说是 4 或者 8 个字节位单位的，不对齐的话访问起来效率不高。具体来看的话，是这样：</p>
@@ -667,16 +667,16 @@
 <p>对于一个结构体来说，所占据的内存空间必须是最大的类型所需字节的倍数，所以可能需要占据更多的空间，比如：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br></pre></td><td><pre><span><span><span>struct</span> <span>S2</span> {</span></span><br><span><span>double</span> v;</span><br><span><span>int</span> i[<span>2</span>];</span><br><span><span>char</span> c;</span><br><span>} *p;</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
-<p><img src="/img/post/csapp/14611824112595.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611824112595.jpg" alt=""></p>
 <p>根据这种特点，在设计结构体的时候可以采用一些技巧。例如，要把大的数据类型放到前面，加入我们有两个结构体：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br></pre></td><td><pre><span><span><span>struct</span> <span>S4</span> {</span></span><br><span><span>char</span> c;</span><br><span><span>int</span> i;</span><br><span><span>char</span> d;</span><br><span>} *p;</span><br><span></span><br><span><span><span>struct</span> <span>S5</span> {</span></span><br><span><span>int</span> i;</span><br><span><span>char</span> c;</span><br><span><span>char</span> d;</span><br><span>} *p;</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>对应的排列是：</p>
-<p><img src="/img/post/csapp/14611827570059.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611827570059.jpg" alt=""></p>
 <p>这样我们就通过不同的排列，节约了 4 个字节空间，如果这个结构体要被复制很多次，这也是很可观的内存优化。</p>
 <h2 id="缓冲区溢出">缓冲区溢出</h2>
 <p>这一节是机器代码的最后一部分，主要说说由缓冲区溢出引起的攻防大战。我们先来看看程序在内存中是如何组织的（x86-64 Linux）</p>
-<p><img src="/img/post/csapp/14611833392466.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611833392466.jpg" alt=""></p>
 <p>最上面是运行时栈，有 8MB 的大小限制，一般用来保存局部变量。然后是堆，动态的内存分配会在这里处理，例如 <code>malloc()</code>, <code>calloc()</code>, <code>new()</code> 等。然后是数据，指的是静态分配的数据，比如说全局变量，静态变量，常量字符串。最后是共享库等可执行的机器指令，这一部分是只读的。</p>
 <p>可以见到，栈在最上面，也就是说，栈再往上就是另一个程序的内存范围了，这种时候我们就可以通过这种方式修改内存的其他部分了。</p>
 <p>举个例子</p>
@@ -706,11 +706,11 @@
 <p>复制</p>
 <p>我们看 <code>4006cf</code> 这一行，可以发现实际上给 %rsp 分配了 0x18 的空间，所以可以容纳不止 4 个 char。</p>
 <p>在调用 <code>gets</code> 函数之前（第 <code>4006d6</code> 行），内存中栈帧示意图为：</p>
-<p><img src="/img/post/csapp/14611853013958.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611853013958.jpg" alt=""></p>
 <p>结合上面代码可以看到，<code>call_echo</code> 栈帧中保存着调用之前执行指令的地址 <code>4006f6</code>，用于返回之后继续执行。我们输入字符串 <code>01234567890123456789012</code> 之后，栈帧中缓冲区被填充，如下：</p>
-<p><img src="/img/post/csapp/14611855170102.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611855170102.jpg" alt=""></p>
 <p>虽然缓冲区溢出了，但是并没有损害当前的状态，程序还是可以继续运行（也就是没有出现段错误），但是如果再多一点的话，也就是输入 <code>0123456789012345678901234</code>，内存中的情况是这样的：</p>
-<p><img src="/img/post/csapp/14611856222781.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14611856222781.jpg" alt=""></p>
 <p>就把返回地址给覆盖掉了，当 <code>echo</code> 执行完成要回到 <code>call_echo</code> 函数时，就跳转到 <code>0x400034</code> 这个内容未知的地址中了。也就是说，通过缓冲区溢出，我们可以在程序返回时跳转到任何我们想要跳转到的地方！攻击者可以利用这种方式来执行恶意代码！</p>
 <p>那么我们现在来看看，怎么处理缓冲区溢出攻击，有几种方式：</p>
 <ol>

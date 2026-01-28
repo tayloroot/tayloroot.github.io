@@ -245,7 +245,7 @@
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br></pre></td><td><pre><span>linux&gt; gcc -Og -o prog main.c sum.c</span><br><span>linux&gt; ./prog</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>编译器实际上会分别编译不同的源代码，生成 <code>.o</code> 文件，具体把这些文件链接在一起的是 Linker 链接器，整个过程如下图所示：</p>
-<p><img src="/img/post/csapp/14613261957551.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613261957551.jpg" alt=""></p>
 <p>编译器部分这里不做过多介绍，以后有机会会专门写文章来说明，接下来主要说说链接器。</p>
 <h2 id="链接基本知识">链接基本知识</h2>
 <blockquote>
@@ -287,7 +287,7 @@
 </ul>
 <h3 id="对象文件格式">对象文件格式</h3>
 <p>上面提到的三种对象文件有统一的格式，即 Executable and Linkable Format(ELF)，因为，我们把它们统称为 ELF binaries，具体的文件格式如下</p>
-<p><img src="/img/post/csapp/14613276806705.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613276806705.jpg" alt=""></p>
 <p>下面分别介绍一下各个部分：</p>
 <ul>
 <li>ELF header
@@ -417,7 +417,7 @@
 </ul>
 <h3 id="第二步-重定位-Relocation">第二步 重定位 Relocation</h3>
 <p>重定位的过程比较简单，大概的过程，通过下图就可以看得比较清楚，就是把不同可重定位对象文件拼成可执行对象文件：</p>
-<p><img src="/img/post/csapp/14613302583660.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613302583660.jpg" alt=""></p>
 <p>我们从汇编代码的角度来看看具体链接器是如何工作的，还是之前的代码：</p>
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br></pre></td><td><pre><span><span><span>int</span> <span>sum</span><span>(<span>int</span> *a, <span>int</span> n)</span></span>;</span><br><span><span>int</span> <span>array</span>[<span>2</span>] = {<span>1</span>, <span>2</span>};</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> val = sum(<span>array</span>, <span>2</span>);</span><br><span>    <span>return</span> val;</span><br><span>}</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
@@ -430,7 +430,7 @@
 <p>复制</p>
 <p>对应的地址已经被填上去了，这里注意用的是相对的位置，比方说 <code>0x4004de</code> 中的 <code>05 00 00 00</code> 的意思实际上是说要在下一句的基础上加上 <code>0x5</code>，也就是 <code>0x4004e8</code>，即 <code>sum</code> 函数的开始位置。</p>
 <p>具体载入内存的时候，大概是这样的</p>
-<p><img src="/img/post/csapp/14613335526946.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613335526946.jpg" alt=""></p>
 <p>需要注意左边的部分地址从上往下（上面地址较小），右边则是从下往上（下面地址较小），这也是为什么黄色和蓝色的顺序在两边是不一样的。</p>
 <h2 id="打包常用程序">打包常用程序</h2>
 <p>基本上每个程序都会用到某些特定的函数，比如：数学计算, 输入输出, 内存管理, 字符串操作等等，我们能用什么方法把它们结合到程序中呢，有以下两个思路：</p>
@@ -447,7 +447,7 @@
 <table><tbody><tr><td><pre><span>1</span><br><span>2</span><br><span>3</span><br><span>4</span><br><span>5</span><br><span>6</span><br><span>7</span><br><span>8</span><br><span>9</span><br><span>10</span><br><span>11</span><br><span>12</span><br><span>13</span><br><span>14</span><br><span>15</span><br><span>16</span><br><span>17</span><br><span>18</span><br><span>19</span><br><span>20</span><br><span>21</span><br><span>22</span><br><span>23</span><br><span>24</span><br><span>25</span><br><span>26</span><br><span>27</span><br><span>28</span><br><span>29</span><br><span>30</span><br><span>31</span><br><span>32</span><br></pre></td><td><pre><span></span><br><span><span>#<span>include</span> <span>&lt;stdio.h&gt;</span></span></span><br><span><span>#<span>include</span> <span>"vector.h"</span></span></span><br><span></span><br><span><span>int</span> x[<span>2</span>] = {<span>1</span>, <span>2</span>};</span><br><span><span>int</span> y[<span>2</span>] = {<span>3</span>, <span>4</span>};</span><br><span><span>int</span> z[<span>2</span>];</span><br><span></span><br><span><span><span>int</span> <span>main</span><span>()</span></span></span><br><span><span></span>{</span><br><span>    addvec(x, y, z, <span>2</span>);</span><br><span>    <span>printf</span>(<span>"z = [%d %d]\n"</span>, z[<span>0</span>], z[<span>1</span>]);</span><br><span>    <span>return</span> <span>0</span>;</span><br><span>}</span><br><span></span><br><span></span><br><span></span><br><span><span><span>void</span> <span>addvec</span><span>(<span>int</span> *x, <span>int</span> *y, <span>int</span> *z, <span>int</span> n)</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> i;</span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; n; i++)</span><br><span>        z[i] = x[i] + y[i];</span><br><span>}</span><br><span></span><br><span></span><br><span></span><br><span><span><span>void</span> <span>multvec</span><span>(<span>int</span> *x, <span>int</span> *y, <span>int</span> *z, <span>int</span> n)</span></span></span><br><span><span></span>{</span><br><span>    <span>int</span> i;</span><br><span>    <span>for</span> (i = <span>0</span>; i &lt; n; i++)</span><br><span>        z[i] = x[i] * y[i];</span><br><span>}</span><br></pre></td></tr></tbody></table>
 <p>复制</p>
 <p>具体过程可见下图：</p>
-<p><img src="/img/post/csapp/14613353540958.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613353540958.jpg" alt=""></p>
 <p>链接器是如何解析外部引用的呢？详细的步骤为：</p>
 <ul>
 <li>扫描当前命令中的 <code>.o</code> 和 <code>.a</code> 文件</li>
@@ -464,7 +464,7 @@
 <p>静态库很方便，但是如果我们只是想用库中的某一个函数，却仍然得把所有的内容都链接进去。一个更现代的方法则是使用共享库，避免了在文件中静态库的大量重复。</p>
 <p>动态链接可以在首次载入的时候执行(load-time linking)，这是 Linux 的标准做法，会由动态链接器 <code>ld-linux.so</code> 完成，比方标准 C 库(<a target="_blank" rel="noopener" href="http://libc.so">libc.so</a>) 通常就是动态链接的，这样所有的程序可以共享同一个库，而不用分别进行封装。</p>
 <p>还是用刚才的例子，如果我们使用动态链接，过程如下：</p>
-<p><img src="/img/post/csapp/14613373029640.jpg" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14613373029640.jpg" alt=""></p>
 <p>动态链接也可以在程序开始执行的时候完成(run-time linking)，在 Linux 中使用 <code>dlopen()</code> 接口来完成（会使用函数指针），通常用于分布式软件，高性能服务器上。而且共享库也可以在多个进程间共享，这在后面学习到虚拟内存的时候会介绍。</p>
 <p>链接使得我们可以用多个对象文件构造我们的程序。可以在程序的不同阶段进行（编译、载入、运行期间均可），理解链接可以帮助我们避免遇到奇怪的错误。</p>
 <h2 id="案例学习-Library-Interpositioning">案例学习 Library Interpositioning</h2>

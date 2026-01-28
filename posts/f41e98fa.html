@@ -10,8 +10,8 @@
 <meta property="article:modified_time" content="2024-09-13T01:53:00.296Z">
 <meta property="article:author" content="MrMatrix">
 <meta property="article:tag" content="编程">
-<meta property="article:tag" content="计算机基础">
 <meta property="article:tag" content="深入理解计算机系统">
+<meta property="article:tag" content="计算机基础">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://mmwiki.cn/img/sea.jpg"><link rel="shortcut icon" href="/img/m.png"><link rel="canonical" href="http://mmwiki.cn/posts/f41e98fa.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
       const saveToLocal = {
@@ -198,7 +198,7 @@
     btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
     btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
   }
-})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">200</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-30T16:00:00.000Z" title="发表于 2021-01-31 00:00:00">2021-01-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br>
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">200</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">32</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">76</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSAPP-【第十一章】网络-补充阅读与总结【转载】</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2021-01-30T16:00:00.000Z" title="发表于 2021-01-31 00:00:00">2021-01-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/">编程与算法</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%BC%96%E7%A8%8B%E4%B8%8E%E7%AE%97%E6%B3%95/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/%F0%9F%93%97-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">📗-深入理解计算机系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B/">编程</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F/">深入理解计算机系统</a><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></div></div><article class="post-content" id="article-container"><p>补充阅读材料：<br>
 <a target="_blank" rel="noopener" href="https://fengmuzi2003.gitbook.io/csapp3e/di-11-zhang-wang-luo-bian-cheng">https://fengmuzi2003.gitbook.io/csapp3e/di-11-zhang-wang-luo-bian-cheng</a></p>
 <h2 id="学习目标">学习目标</h2>
 <ol>
@@ -210,7 +210,7 @@
 <h2 id="网络架构">网络架构</h2>
 <p>计算机网络的知识可谓是非常『保值』的，因为这么多基础设备还在运行着，基本机制在短时间内很难改变，关于网络的相关的讲解还有参考链接[1][2]，我觉得也非常不错，大家感兴趣可以看看。</p>
 <p>客户端-服务器模型是网络应用最广泛使用的模型，客户端进程发送请求给服务器进程，服务器进程获取所需资源并响应客户端进程的请求，客户端进程收到响应后展示给用户。网络相关的处理，都是通过网络适配器来完成的，具体在硬件上为（右下角）：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619458669883.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619458669883.jpg" alt=""></p>
 <p>根据网络的应用范围和架构层级，可以分成三个部分：</p>
 <ul>
 <li>SAN - System Area Network
@@ -231,7 +231,7 @@
 </ul>
 <h3 id="最底层-Ethernet-Segment">最底层 - Ethernet Segment</h3>
 <p>由若干主机(hosts)通过交换机(hub)连接，通常范围是房间或一层楼，如下图所示：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619464142056.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619464142056.jpg" alt=""></p>
 <ul>
 <li>每个 Ethernet 适配器有一个唯一的 48 位的地址（也就是 MAC 地址），例如 <code>00:16:ea:e3:54:e6</code></li>
 <li>不同主机间发送的数据称为帧(frame)</li>
@@ -243,12 +243,12 @@
 </ul>
 <h3 id="下一层-Bridged-Ethernet-Segment">下一层 - Bridged Ethernet Segment</h3>
 <p>通常范围是一层楼，通过不同的 bridge 来连接不同的 ethernet segment。Bridge 知道从某端口出发可达的主机，并有选择的在端口间复制数据。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619467342899.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619467342899.jpg" alt=""></p>
 <p>为了从概念上简化，我们可以认为，所有的 hub, bridge 可以抽象为一条线，如下图所示：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619469077741.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619469077741.jpg" alt=""></p>
 <h3 id="下一层-internets">下一层 - internets</h3>
 <p>不同的（也许不兼容）的 LAN 可以通过 router 来进行物理上的连接，这样连接起来的网络称为 internet（注意是小写，大写的 Internet 可以认为是最著名的 internet）</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619471233534.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619471233534.jpg" alt=""></p>
 <p>internet 的逻辑结构为：</p>
 <ul>
 <li>Ad hoc interconnection of networks
@@ -286,7 +286,7 @@
 </li>
 </ul>
 <p>在这样的协议下，具体的数据传输如下图所示，这里 PH = Internet packet header, FH = LAN frame header（具体名词解释可见参考文末参考资料）：</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619781335872.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619781335872.jpg" alt=""></p>
 <p>Internet 是 internet 最为著名的例子。主要基于 TCP/IP 协议族：</p>
 <ul>
 <li>IP (Internet Protocal)
@@ -350,7 +350,7 @@
 <p>一系列系统级的函数，和 Unix I/O 配合构造网络应用（在所有的现代操作系统上都可用）。</p>
 <p>对于 kernel 来说，socket 是 endpoint of communication；对于应用程序来说，socket 是 file descriptor，用来读写（回忆一下，STDIN 和 STDOUT 也是 file descriptor）。客户端和服务器通过读写对应的 socket descriptor 来进行。</p>
 <p>具体连接的过程可以参考下图，注意，这一讲不做过多细节探讨，相信相关信息请参考书本对应内容。</p>
-<p><img src= "/img/loading.gif" data-lazy-src="/img/post/csapp/14619808912880.jpg" alt=""></p>
+<p><img src="/img/post/csapp/14619808912880.jpg" alt=""></p>
 <h2 id="简单服务器实现">简单服务器实现</h2>
 <h3 id="架构总览">架构总览</h3>
 <p>写服务器，最重要的就是理清思路，上节课我们介绍了诸多概念，尤其是最后提到的 <code>getaddrinfo</code> 和 <code>getnameinfo</code>，都是我们在搭建过程中必不可少的工具。参考上面的流程图，整个的工作流程有 5 步：</p>

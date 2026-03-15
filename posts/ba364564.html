@@ -1,0 +1,377 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>A Deep Dive into Low-poly Reconstruction | MM's Journal of Technology</title><meta name="author" content="MrMatrix"><meta name="copyright" content="MrMatrix"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="中文版 Low-poly Reconstruction, which we might also call Vectorized 3D Reconstruction or Structured Reconstruction, centers on extracting structural, topological, and semantic information from scattered,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Deep Dive into Low-poly Reconstruction">
+<meta property="og:url" content="http://mmwiki.cn/posts/ba364564.html">
+<meta property="og:site_name" content="MM&#39;s Journal of Technology">
+<meta property="og:description" content="中文版 Low-poly Reconstruction, which we might also call Vectorized 3D Reconstruction or Structured Reconstruction, centers on extracting structural, topological, and semantic information from scattered,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
+<meta property="article:published_time" content="2026-03-01T16:01:00.000Z">
+<meta property="article:modified_time" content="2026-03-15T10:48:09.040Z">
+<meta property="article:author" content="MrMatrix">
+<meta property="article:tag" content="图形学">
+<meta property="article:tag" content="数字几何处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mmwiki.cn/img/sea.jpg"><link rel="shortcut icon" href="/img/m.png"><link rel="canonical" href="http://mmwiki.cn/posts/ba364564.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'A Deep Dive into Low-poly Reconstruction',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-03-15 18:48:09'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">203</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">78</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">A Deep Dive into Low-poly Reconstruction</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-01T16:01:00.000Z" title="发表于 2026-03-02 00:01:00">2026-03-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a></div></div><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/2009242867663667256">中文版</a></p>
+<p><strong>Low-poly Reconstruction</strong>, which we might also call <strong>Vectorized 3D Reconstruction</strong> or <strong>Structured Reconstruction</strong>, centers on extracting structural, topological, and semantic information from scattered, unordered, and redundant dense point clouds or triangular meshes. Its core objective is to represent a model using points, lines, and planes (and their combinations) defined by analytical mathematical equations.</p>
+<p>When the final model is completely composed of compact <strong>Planar Polygons</strong>, we have achieved <strong>Low-poly Reconstruction</strong>. Unlike traditional surface fitting, low-poly reconstruction pursues extreme vertex decimation and the preservation of structural features, all while maintaining geometric fidelity.</p>
+<p>But to truly understand low-poly reconstruction, we can’t <em>just</em> talk about low-poly reconstruction (jokes aside). Looking back at the history of 3D reconstruction, the technological evolution can be cleanly divided into the following five stages:</p>
+<h3 id="1-Point-Acquisition-Sensing-the-Physical-World">1. Point Acquisition: Sensing the Physical World</h3>
+<p>The foundation of all reconstruction starts with acquiring spatial coordinates $(x, y, z)$. The primary goal of this stage is to use sensors or multi-view geometry techniques to discretize real-world physical surfaces into point sets in digital space.</p>
+<ul>
+<li><strong>Hardware-driven:</strong> ToF (Time of Flight) cameras, structured light scanners.</li>
+<li><strong>Algorithm-driven:</strong> Epipolar geometry, SfM (Structure from Motion). Classic open-source solutions like <a target="_blank" rel="noopener" href="https://colmap.github.io/">COLMAP</a> have massively propelled image-based sparse point cloud generation.</li>
+</ul>
+<h3 id="2-Point-Reconstruction-From-Local-to-Global">2. Point Reconstruction: From Local to Global</h3>
+<p>A single sensor or a single scan can only capture local point cloud fragments. The task here is to register and fuse point clouds from different viewpoints, eliminating redundancy and reducing scanning errors to form a globally consistent representation of the scene.</p>
+<ul>
+<li><strong>Classic Algorithms:</strong> <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/project/kinectfusion-project-page/">KinectFusion</a>, a milestone for real-time 3D reconstruction based on depth cameras, alongside various ICP (Iterative Closest Point) variants.</li>
+<li><strong>Limitations:</strong> The fused point cloud remains an unordered, everywhere non-differentiable discrete set. Even with naive spatial partitioning using KNN or octrees, true topological connections cannot be established, making it difficult to support downstream geometric operations.</li>
+</ul>
+<h3 id="3-Dense-Surface-Reconstruction-Building-Continuous-Manifolds">3. Dense Surface Reconstruction: Building Continuous Manifolds</h3>
+<p>To perform physical simulations or extract elevation data in digital space, discrete point clouds must be converted into continuous, differentiable meshes with topological correlations. Taking the classic Stanford Bunny as an example, converting it from a point cloud into a surfaced model is the core task of this stage.</p>
+<ul>
+<li><strong>Classic Algorithms:</strong> <a target="_blank" rel="noopener" href="https://hhoppe.com/poissonrecon.pdf">Poisson Surface Reconstruction</a> frames surface reconstruction as a global optimization problem solving the Poisson equation; alternatively, computational geometry-based <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Delaunay_triangulation">Delaunay Triangulation</a>.</li>
+<li><strong>The Pain Point:</strong> Massive data volume. For dense reconstructions of city-scale scenes, vertex counts often hit the billions. Assuming a single vertex contains coordinates (3 doubles, 24 Bytes), normals (3 floats, 12 Bytes), and colors (3 chars, 3 Bytes), 3 billion vertices will consume roughly <strong>110 GB</strong> of RAM, ignoring byte alignment. This is an absolute disaster for storage, transmission, and online rendering.</li>
+</ul>
+<h3 id="4-Geometric-Simplification-Approximation-Alleviating-the-Data-Explosion">4. Geometric Simplification &amp; Approximation: Alleviating the Data Explosion</h3>
+<p>To tackle the compute and storage challenges brought by dense meshes, mesh simplification algorithms emerged. Their goal is to drastically reduce the number of faces while preserving as much geometric detail and visual characteristics as possible.</p>
+<ul>
+<li><strong>Classic Algorithms:</strong> <a target="_blank" rel="noopener" href="https://mgarland.org/files/papers/quadrics.pdf">QEM (Quadric Error Metrics)</a> is the quintessential edge-collapse simplification algorithm (its core idea is to determine the collapse order by minimizing the sum of squared distances from a vertex to its adjacent planes); <a target="_blank" rel="noopener" href="https://geometry.stanford.edu/papers/csad-vsa-04/csad-vsa-04.pdf">VSA (Variational Shape Approximation)</a> approximates the original geometry by extracting anisotropic Planar Proxies.</li>
+<li><strong>The Bottleneck:</strong> For large-scale buildings or macro urban scenes, these algorithms still generate “unstructured” triangular faces, and the polygon count remains massive. This fails to meet the machine’s need for a “high-level understanding” of the scene.</li>
+</ul>
+<h3 id="5-Low-poly-Vectorized-Reconstruction-Further-Slashing-Data-Volume">5. Low-poly &amp; Vectorized Reconstruction: Further Slashing Data Volume</h3>
+<p>Where there are pain points, there is demand; where there is demand, solutions emerge. To satisfy high-level tasks that require computers to “understand” geometry—such as real-time processing systems, online rendering, robotic manipulation, autonomous driving, and surveying—algorithms need to further slash data volume while guaranteeing precision. Thus, low-poly reconstruction took the stage.</p>
+<p>Low-poly reconstruction outputs a finite, compressed surface composed purely of polygons. Its core paradigm typically involves:</p>
+<ol>
+<li><strong>Primitive Extraction:</strong> Extracting geometric primitives like planes and cylinders.</li>
+<li><strong>Primitive Assembly:</strong> Determining the intersection relationships, boundary lines, and vertices between primitives.</li>
+<li><strong>Optimization:</strong> Finding the optimal solution that balances geometric fidelity and model compactness.</li>
+</ol>
+<hr>
+<h2 id="Key-Algorithms-in-Low-poly-Reconstruction">Key Algorithms in Low-poly Reconstruction</h2>
+<p><strong>[16’ ECCV] Manhattan-world Urban Reconstruction from Point Clouds</strong> Project Page: <a target="_blank" rel="noopener" href="https://github.com/LiangliangNan/ManhattanModeler">https://github.com/LiangliangNan/ManhattanModeler</a><br>
+It generates candidate cuboids from point clouds via non-uniform space partitioning and uses Markov Random Field (MRF) global optimization to filter out the optimal set of aligned cuboids. It robustly approximates and reconstructs urban building geometry under the Manhattan-world assumption without needing prior instance segmentation.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-e803121f143161cf3fcb0b2477e628aa_1440w.jpg" alt="MANHATON1"></p>
+<p><strong>[17’ ICCV] PolyFit: Polygonal Surface Reconstruction from Point Clouds</strong> Project Page: <a target="_blank" rel="noopener" href="https://github.com/LiangliangNan/PolyFit">https://github.com/LiangliangNan/PolyFit</a><br>
+It extracts planar primitives and intersects them to partition space (generating candidate polygonal faces). It then uses Integer Linear Programming (ILP) for global optimization to strike a balance between data fitting, point coverage, and model compactness, robustly reconstructing lightweight polygonal surfaces from point clouds.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-513b37bd64ba020d72b96da398acb639_1440w.jpg" alt="polyfit"></p>
+<p><strong>[20’ ToG] Kinetic Shape Reconstruction (KSR)</strong> Project Page: <a target="_blank" rel="noopener" href="https://www-sop.inria.fr/members/Florent.Lafarge/">https://www-sop.inria.fr/members/Florent.Lafarge/</a><br>
+Proposes a surface reconstruction method based on a Kinetic Data Structure. It allows planar polygons extracted from point clouds to expand at a constant speed until they collide, constructing a lightweight polyhedral space partition. Finally, a Min-cut algorithm extracts a compact, watertight, CAD-style polygonal mesh. It’s a very elegant algorithm with fewer space partitions compared to PolyFit.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-228aebc00b8195e529d6fd266194d1c5_1440w.jpg" alt="ksr"><br>
+As seen, the algorithm restores main structures well. However, fine details like the roof gutters and indoor ceiling beams cannot be recovered due to missing point cloud data.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-b51821a84b8981cce5f031bad8c0066c_1440w.jpg" alt="ksr2"><br>
+For the <em>Meeting Room</em> scene in the Tanks and Temples dataset, the data scale is abstracted from 3.1M points to a watertight model represented by roughly 3K vertices and 1.5K planar polygons.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-dfe68643ee3627e110f00d34598edb68_1440w.jpg" alt="ksr3"><br>
+For the <em>Barn</em> scene, it abstracts 613K points into a watertight model with around 500 vertices and 200 planar polygons.</p>
+<p><strong>[21’ ISPRS] Vectorized Indoor Surface Reconstruction from 3D Point Cloud with Multistep 2D Optimization</strong> Project Page: <a target="_blank" rel="noopener" href="https://github.com/3dv-casia/VecIM">https://github.com/3dv-casia/VecIM</a><br>
+Proposes a multi-step vectorized indoor reconstruction method (VecIM). It breaks the Manhattan or Atlanta world assumptions, reducing complex 3D structural extraction into a series of 2D arrangement-based global optimization problems (combining ILP and MRF) to robustly reconstruct models from heavily occluded indoor point clouds.</p>
+<p><strong>[22’ SIGGRAPH] Low-poly Mesh Generation for Building Models</strong> Project Page: <a target="_blank" rel="noopener" href="https://lowpoly-modeling.github.io/">https://lowpoly-modeling.github.io/</a><br>
+Introduces a visual metric-guided, three-stage automated algorithm (generating visual hulls, boolean carving of redundant structures, and progressive simplification) to automatically convert complex high-poly 3D building models into visually high-fidelity, watertight, and self-intersection-free low-poly meshes.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-86662a9882d17d9d60e0f2d5d4754ae1_1440w.jpg" alt="poly"></p>
+<p><strong>[23’ ToG] Robust Low-Poly Meshing for General 3D Models</strong> Project Page: <a target="_blank" rel="noopener" href="https://robust-low-poly-meshing.github.io/">https://robust-low-poly-meshing.github.io/</a><br>
+Presents a robust re-meshing method that automatically converts any complex high-precision 3D model into a visually accurate, watertight, manifold, and self-intersection-free low-poly mesh, integrating seamlessly into existing 3D asset pipelines.</p>
+<p><strong>[24’ ECCV] Concise Plane Arrangements for Low-Poly Surface and Volume Modelling</strong> Project Page: <a target="_blank" rel="noopener" href="https://github.com/raphaelsulzer/compod">https://github.com/raphaelsulzer/compod</a><br>
+By introducing plane insertion sorting and directly utilizing input points to guide local space partitioning, this paper successfully breaks the computational bottleneck of traditional plane arrangement algorithms. It achieves highly efficient reconstruction of minimalist, watertight 3D low-poly surfaces and lightweight volume models from massive point clouds.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-7f8227849fc7a7f67a0b3dfd29d2c4b2_1440w.jpg" alt="CONSICE"></p>
+<p><strong>[24’ ECCV] WindPoly: Polygonal Mesh Reconstruction via Winding Numbers</strong> Proposes a robust reconstruction scheme that discards traditional normal-vector dependency. It iteratively extracts planes from discrete point clouds to build a convex polyhedral space, then innovatively introduces <strong>Polygonal Winding Numbers</strong> for globally consistent orientation. This allows it to extract high-quality, highly detailed low-poly structural meshes even in the face of severe noise and missing data.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-6498b643c71821be9dda95cb4480ba06_1440w.jpg" alt="WINDPOLY"></p>
+<p><strong>[26’ 3DV] Hierarchical Space Partition for Surface Reconstruction</strong> Project Page: <a target="_blank" rel="noopener" href="https://hsr-3dv.github.io/">https://hsr-3dv.github.io/</a><br>
+First restores missing planes in the scene and utilizes visibility for plane classification. Building on dynamic data structures (KSR), it proposes a novel Hierarchical Space Partition strategy: it replaces traditional global exhaustive searches or simple dynamic collision intersection calculations with an adaptive multi-scale hierarchical structure. This significantly reduces computational complexity and memory consumption, efficiently and robustly reconstructing polygonal surfaces that preserve sharp features and topological consistency.<br>
+As seen in the paper’s results, it recovers local details like the window sills in the <em>Barn</em> scene and details in the <em>Meeting Room</em>. It also demonstrates great generalization, showing impressive reconstruction results for free-form objects.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-d1e72b67d49274d4a47a689788ae1e15_1440w.jpg" alt="hsr"></p>
+<p><strong>[26’ 3DV] NURBSFit: Robust Fitting of NURBS Surfaces to Point Clouds</strong> Introduces a robust fitting method called NURBSFit. By optimizing control points and knot vectors, it extracts and fits Non-Uniform Rational B-Spline (NURBS) parametric surfaces directly from noisy and incomplete 3D point clouds, generating highly smooth, precise, and continuous CAD surface models that meet industrial standards.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-46037d243075b14e82e9c70072d202f9_1440w.jpg" alt="nurb1"></p>
+<hr>
+<h2 id="Final-Thoughts">Final Thoughts</h2>
+<h3 id="Give-Data-to-the-Model-Not-the-Model-to-the-Data">Give Data to the Model, Not the Model to the Data</h3>
+<p>As we’ve seen, traditional reconstruction algorithms often carry a heavy flavor of “parameterization” or even “alchemy”: we need to manually design hand-crafted features and frantically fine-tune various thresholds based on experience. It feels a bit like forcing the issue, violently squeezing the desired geometric model out of the data. But hey, as long as there is compression, there is intelligence; manual compression is still intelligence (<em>sarcasm noted</em>).</p>
+<p>In this era where compute and data are soaring, changing the mindset to—“Give data to the model, rather than the model to the data” (Sci-Fi author Liu Cixin would have no objections)—allowing algorithms to figure out the intrinsic patterns of the data through learning, often works miracles. In fact, academia has already seen a surge in deep learning-based low-poly reconstruction methods. We’ll talk about those when I have time.</p>
+<h3 id="How-Does-the-Computer-Understand">How Does the Computer Understand?</h3>
+<p>Up to this point, we’ve successfully abstracted massive city-scale scenes into vectorized polygon models. The significance of this step isn’t just geometric simplification; it’s a “Memory Liberation Movement”. The computer can load it entirely into RAM at once, instead of flirting with the edge of crashing when facing hundreds of GBs of raw dense point clouds, barely surviving on frequent memory swapping (<em>Virtual Memory: “No worries mate, theoretically I’m as big as your hard drive”</em>).</p>
+<p>However, merely stopping at the rendering level is far from enough. To a computer, standard mesh models (like OBJ, STL, PLY) are essentially just “Polygon Soup”. They only record low-level geometric and topological information (vertices, edges, faces), lacking physical properties, topological hierarchies, and functional semantics. If we want the computer to genuinely “understand”, parametrically manipulate, and deeply edit them, we must cross the chasm from “Computer Vision 3D Reconstruction” to “Computer-Aided Design (CAD) &amp; Building Information Modeling (BIM)”.</p>
+<p>Mainstream software like AutoCAD and SolidWorks don’t rely on polygon meshes at their core; instead, they are based on precise Boundary Representation (B-Rep). This representation uses analytical surfaces (exact planes, cylinders) and NURBS, combined with Constructive Solid Geometry (CSG) feature trees. The current academic approach is to use Mesh Segmentation and Primitive Fitting algorithms to convert simplified planar meshes into B-Rep solids with analytical expressions, thereby recovering the model’s mechanical parametric editing capabilities.</p>
+<p>In the reconstruction of urban or indoor architectural scenes, the prevailing research direction is “Scan-to-BIM”. BIM is essentially a relational spatial database rich in semantics. A massive amount of literature and ongoing work is dedicated to using algorithms (like deep learning-based 3D semantic segmentation) to classify simplified geometric polygons. It doesn’t just extract the geometric boundaries of a plane, but accurately identifies it as a specific architectural component (e.g., wall, floor, ceiling, doors, and windows).</p>
+<p>Once a simplified planar model is endowed with semantics, how do we feed it to the computer for full parsing? This requires domain-specific structured modeling languages and standard data schemas.</p>
+<p>The industry doesn’t use loose general data structures; they have established highly structured underlying file standards: for instance, the STEP (ISO 10303) standard in mechanical CAD, IFC (Industry Foundation Classes) in BIM, and CityGML for urban digital twins.</p>
+<p>These structured files are typically based on XML or EXPRESS data modeling languages, strictly extending the logical scope of fundamental polygon data. For example, during conversion, a specific simplified planar polygon is no longer just a geometric face; it’s encapsulated as an <code>IfcWallStandardCase</code> object. The file defines not only its 3D coordinates but also attaches semantic information (load-bearing properties, materials) and topological relationships (e.g., this wall “contains” a window and is “connected” to the floor).</p>
+<p>The computer only needs to invoke standard library parsing interfaces at the lower level (like C++) to deserialize the geometric data into an entity object tree with logical correlations. At this point, the colossal 3D point cloud is truly transformed into a structured digital twin asset that the computer can fully comprehend and edit.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mmwiki.cn">MrMatrix</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mmwiki.cn/posts/ba364564.html">http://mmwiki.cn/posts/ba364564.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://mmwiki.cn" target="_blank">MM's Journal of Technology</a>！</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">The Stanford Bunny in 3D Wonderland</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/bfc9dac4.html" title="中科大-计算机图形学"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-30</div><div class="title">中科大-计算机图形学</div></div></a></div><div><a href="/posts/5547a98d.html" title="中科大-数字几何处理-网格修复1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">中科大-数字几何处理-网格修复1</div></div></a></div><div><a href="/posts/cc4ef837.html" title="中科大-数字几何处理-网格修复2"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-24</div><div class="title">中科大-数字几何处理-网格修复2</div></div></a></div><div><a href="/posts/c461987d.html" title="中科大-数字几何处理-网格映射"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">中科大-数字几何处理-网格映射</div></div></a></div><div><a href="/posts/705b0bfe.html" title="中科大-数字几何处理-Polycube1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-07</div><div class="title">中科大-数字几何处理-Polycube1</div></div></a></div><div><a href="/posts/631747bb.html" title="中科大-数字几何处理-曲面映射"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-12</div><div class="title">中科大-数字几何处理-曲面映射</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">MrMatrix</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">203</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">33</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">78</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/TaylorAmy1995"><i></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:mrmatrix@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com" target="_blank" title=""><i class="iconfont icon-bilibili"></i></a><a class="social-icon" href="https://www.zhihu.com" target="_blank" title=""><i class="iconfont icon-zhihu"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研👨‍🔬、工作👨‍💻和生活👨‍👩‍👧‍👦的过程中捕获到的有价值的课程📺、书籍📗与事件📰，是面向我自己搭建的查漏补缺的备忘录📝和记事本📓✏️。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Point-Acquisition-Sensing-the-Physical-World"><span class="toc-number">1.</span> <span class="toc-text">1. Point Acquisition: Sensing the Physical World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Point-Reconstruction-From-Local-to-Global"><span class="toc-number">2.</span> <span class="toc-text">2. Point Reconstruction: From Local to Global</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Dense-Surface-Reconstruction-Building-Continuous-Manifolds"><span class="toc-number">3.</span> <span class="toc-text">3. Dense Surface Reconstruction: Building Continuous Manifolds</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Geometric-Simplification-Approximation-Alleviating-the-Data-Explosion"><span class="toc-number">4.</span> <span class="toc-text">4. Geometric Simplification &amp; Approximation: Alleviating the Data Explosion</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Low-poly-Vectorized-Reconstruction-Further-Slashing-Data-Volume"><span class="toc-number">5.</span> <span class="toc-text">5. Low-poly &amp; Vectorized Reconstruction: Further Slashing Data Volume</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Key-Algorithms-in-Low-poly-Reconstruction"><span class="toc-number"></span> <span class="toc-text">Key Algorithms in Low-poly Reconstruction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Final-Thoughts"><span class="toc-number"></span> <span class="toc-text">Final Thoughts</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Give-Data-to-the-Model-Not-the-Model-to-the-Data"><span class="toc-number">1.</span> <span class="toc-text">Give Data to the Model, Not the Model to the Data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#How-Does-the-Computer-Understand"><span class="toc-number">2.</span> <span class="toc-text">How Does the Computer Understand?</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ba364564.html" title="A Deep Dive into Low-poly Reconstruction">A Deep Dive into Low-poly Reconstruction</a><time datetime="2026-03-01T16:01:00.000Z" title="发表于 2026-03-02 00:01:00">2026-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland">The Stanford Bunny in 3D Wonderland</a><time datetime="2026-01-27T16:01:00.000Z" title="发表于 2026-01-28 00:01:00">2026-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/6382afc7.html" title="观陶哲轩演讲-AI与数学-后有感">观陶哲轩演讲-AI与数学-后有感</a><time datetime="2024-08-29T16:00:00.000Z" title="发表于 2024-08-30 00:00:00">2024-08-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/69f843e5.html" title="大规模c++程序设计">大规模c++程序设计</a><time datetime="2024-05-01T16:00:00.000Z" title="发表于 2024-05-02 00:00:00">2024-05-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/b9a84247.html" title="国科大-随机过程-写在后面">国科大-随机过程-写在后面</a><time datetime="2024-01-28T16:00:00.000Z" title="发表于 2024-01-29 00:00:00">2024-01-29</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By MrMatrix</div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>浙ICP备2024121111号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.gov.cn/"><img class="icp-icon" src="http://www.beian.gov.cn/img/new/gongan.png"/><span>浙公网安备33010802013618号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div></div><script src="/js/category.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":0,"vOffset":-100},"mobile":{"show":false},"react":{"opacity":0.85},"log":false});</script></body></html>

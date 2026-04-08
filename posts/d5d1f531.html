@@ -1,0 +1,650 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>图生三维概览, 从神经渲染、表面重建到万物生成 | MM's Journal of Technology</title><meta name="author" content="Tomato Tom"><meta name="copyright" content="Tomato Tom"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="写在前面 图生三维大概有五个阶段： 第一阶段是古法时期(传统的多视图几何)[2010-2020]：使用SFM, MVS从图片中恢复相机位姿，然后生成稠密点云，现在已经非常的成熟，有colmap, openmvg等非常优秀的开源工具，还有视觉slam等一系列的工作(如果这种也算重建的话)； 第二阶段是深度学习时期[2018-2021]：利用大量的二维数据进行单目深度估计，以及使用gan模型，进行3d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图生三维概览, 从神经渲染、表面重建到万物生成">
+<meta property="og:url" content="http://mmwiki.cn/posts/d5d1f531.html">
+<meta property="og:site_name" content="MM&#39;s Journal of Technology">
+<meta property="og:description" content="写在前面 图生三维大概有五个阶段： 第一阶段是古法时期(传统的多视图几何)[2010-2020]：使用SFM, MVS从图片中恢复相机位姿，然后生成稠密点云，现在已经非常的成熟，有colmap, openmvg等非常优秀的开源工具，还有视觉slam等一系列的工作(如果这种也算重建的话)； 第二阶段是深度学习时期[2018-2021]：利用大量的二维数据进行单目深度估计，以及使用gan模型，进行3d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
+<meta property="article:published_time" content="2025-05-27T16:01:00.000Z">
+<meta property="article:modified_time" content="2026-04-08T08:16:08.784Z">
+<meta property="article:author" content="Tomato Tom">
+<meta property="article:tag" content="图形学">
+<meta property="article:tag" content="数字几何处理">
+<meta property="article:tag" content="论文">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mmwiki.cn/img/sea.jpg"><link rel="shortcut icon" href="/img/m.png"><link rel="canonical" href="http://mmwiki.cn/posts/d5d1f531.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '图生三维概览, 从神经渲染、表面重建到万物生成',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-04-08 16:16:08'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">78</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">图生三维概览, 从神经渲染、表面重建到万物生成</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2025-05-27T16:01:00.000Z" title="发表于 2025-05-28 00:01:00">2025-05-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">13.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>43分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87/">论文</a></div></div><article class="post-content" id="article-container"><h2 id="写在前面">写在前面</h2>
+<p>图生三维大概有五个阶段：<br>
+<strong>第一阶段是古法时期(传统的多视图几何)[2010-2020]</strong>：使用SFM, MVS从图片中恢复相机位姿，然后生成稠密点云，现在已经非常的成熟，有colmap, openmvg等非常优秀的开源工具，还有视觉slam等一系列的工作(如果这种也算重建的话)；<br>
+<strong>第二阶段是深度学习时期[2018-2021]</strong>：利用大量的二维数据进行单目深度估计，以及使用gan模型，进行3d gan生成的尝试；<br>
+<strong>第三阶段是神经渲染时期[2020-2023]</strong>：利用Nerf的可微分体渲染对单个场景进行过拟合，输出神经辐射场，随后也衍生出了 3DGS 等更高效的显式/混合表达；<br>
+<strong>第四个阶段是2D 先验（Diffusion）时期[2022-2024]</strong>：二维扩散模型的大火让研究者发现了从二维知识蒸馏监督三维生成的可行性，除了三渲二，还能“二训三”（代表就是引入 SDS 损失的 DreamFusion）；<br>
+<strong>第五阶段是 3D 原生大模型（LRM/DiT）时期[2023-至今]</strong>：随着 3D VAE 的验证、DiT 架构的完善、海量 3D 数据的积累以及 Triplane 等高效结构的广泛应用，直接进行“三维监督三维”成为了主流，图生三维真正开启了前馈生成的大模型时代。</p>
+<p>后续行文整体分为这几个部分：预备知识、神经渲染、表面重建、生成模型。预备知识会介绍基础的三维表征，如何从隐式空间中提取mesh，以及一些主流模型范式与架构；神经渲染部分介绍Nerf和3DGS的详细原理；表面重建讲为了拿到高质量mesh进行了哪些尝试；生成模型则主要概述上面第四阶段和第五阶段的代表作。</p>
+<h2 id="1-预备知识">1. 预备知识</h2>
+<h3 id="1-1-基础的三维表征方案">1.1 基础的三维表征方案</h3>
+<p><strong>a、显式表征: 多边形网格、点云、体素</strong><br>
+显式表示（比如网格）对于人类很直观，但<strong>对于神经网络来说非常难生成和优化</strong>（因为点和面的数量、连接关系一直在变，不连续）。<br>
+<strong>b、隐式表征</strong><br>
+神经网络更喜欢连续的，可微的表达, 即用<strong>隐式函数</strong>来表示3D表面。即定义一个 3D 空间的函数 $f(x,y,z)$，当这个函数的值等于某个特定常数 $c$ 时（通常是 $0$），这些点的集合就构成了物体的表面（Level set，水平集）。</p>
+<p><strong>SDF (Signed Distance Fields)</strong> 是一种特殊的隐式表示。对于空间中的任意一点 $(x, y, z)$，SDF 会输出一个数值 $D$：数值大小代表这个点距离物体表面最近的绝对距离，符号的正负代表这个点在物体内部($D &lt; 0$)还是外部($D &gt; 0$)。<strong>$D = 0$：点正好在物体的表面上</strong>（零面，Zero-level set）。</p>
+<p>根据不同任务的需求，SDF 还可以变形：</p>
+<ul>
+<li><strong>TSDF (Truncated SDF，截断符号距离场)</strong>：很多时候我们只关心物体表面附近的细节，离表面太远的空间毫无意义。TSDF 设置了一个阈值 $t$，把距离限制在 $[-1, 1]$ 之间。离表面远的统统截断，节省算力（常用于 Kinect 等深度相机的实时 3D 重建）。</li>
+<li><strong>Occupancy Fields (占用场)</strong>：最暴力的简化版。不关心距离是多少，只关心“是”或“否”。如果在物体内或表面 ($SDF \le 0$)，值为 $1$；如果在外部，值为 $0$。(这里引入了 场 的概念，场的介绍在第二章。)</li>
+</ul>
+<p><strong>c、参数化表示</strong><br>
+比如参数化曲线和曲面Beizer curves, Catmull-Rom splines, B-spline curves, NURBS, etc.，但是和本次内容不太相关，跳过了。</p>
+<p>当然了nerf,3dgs其实都是三维表征方案，但是它们可太不基础了:)</p>
+<h3 id="1-2-Marching-Cubes">1.2 Marching Cubes</h3>
+<p>TL;DR: Marching Cubes是一种等值面提取（Isosurface Extraction）方案，它旨在从离散的占据网格（Occupancy grid）或标量场中重建出显式的几何边界。现代的各种神经方法最终输出的都是占据场或者SDF，可以理解为接入这个组件就可以生成显式的mesh了。</p>
+<p><strong>二维情况：退化为Marching Squares (MS)</strong><br>
+Marching Squares将二维空间划分为规则的正方形网格。针对每个网格单元，算法评估其四个顶点的函数值，并根据符号（正或负，代表外部或内部）对顶点进行二值化分类。四个顶点共产生 $2^4 = 16$ 种状态组合。算法通过查询预先构建的包含这 16 种情况的查找表，确定网格边界上发生符号变化的边。随后，基于线性插值计算出精确的边界交点坐标，并将这些交点连接，形成闭合的二维等值线。</p>
+<p><strong>三维情况：Marching Cubes（MC）</strong><br>
+空间被离散化为三维网格，基本单元为立方体。每个立方体具有 8 个顶点，产生 $2^8 = 256$ 种状态组合。通过应用旋转和镜像对称性，这 256 种组合被简化为 15 种基础情况。算法独立遍历空间中的所有立方体，利用查找表确定三角形面片在立方体内部的连接方式。该算法的局部独立性极大地提升了计算速度，并使其高度适合并行化处理。</p>
+<p><strong>缺陷与改进方案</strong></p>
+<ul>
+<li>缺陷1：在 Marching Squares 和 Marching Cubes 的执行过程中存在拓扑二义性问题。当网格单元对角线上的顶点状态一致，而相邻顶点状态相异时，系统缺乏足够的信息来唯一确定面片的连接拓扑（即判断应该连接还是断开）。在 Marching Cubes 的 15 种基础情况中，存在 6 种具有二义性的情况，这可能导致最终生成的网格出现孔洞或错误的拓扑结构。</li>
+</ul>
+<ul>
+<li>改进：Marching Tetrahedra算法通过改变空间离散化方式来解决此问题。该算法将三维空间划分为四面体而非立方体。由于四面体仅有 4 个顶点，其内部的等值面相交情况更为简单，从几何与数学原理上完全消除了状态组合的二义性，从而保证了生成的网格具备严格的水密性和正确的拓扑结构。</li>
+</ul>
+<ul>
+<li>缺陷2：传统的 Marching Cubes 算法通过在网格边上进行线性插值来确定顶点位置。这种机制本质上具有平滑效应，导致算法无法准确还原原始几何模型中的尖锐特征（如直角、折痕），常在边缘处产生阶梯状伪影。</li>
+</ul>
+<ul>
+<li>改进：以 Dual Marching Cubes 和 Dual Contouring (DC) 为代表的对偶算法重构了顶点的生成逻辑。这类算法不再将顶点放置于网格边上，而是利用内部交点信息（通常结合法线数据，通过最小化二次误差函数 QEF）在每个包含边界的网格单元内部计算出一个特征顶点。随后，算法将相邻网格单元内部的特征顶点连接起来构成多边形面片。这种对偶机制能够极其精确地捕捉并重建几何模型的尖锐边缘。</li>
+</ul>
+<p>各种基础几何表征之间如何相互转换？<br>
+<strong>1. 多边形网格（Mesh）→ 点云（Point Cloud）</strong>：先进行多边形三角剖分（ear clipping），然后在三角面片上进行采样（基于重心坐标）。<br>
+<strong>2. 隐式表面（Implicit Surface）→ Mesh</strong> ：使用 Marching Cubes 算法提取等值面。<br>
+<strong>3. 点云（Point Cloud）→ 隐式表面</strong>: 局部拟合方法：MLS、RBF; 全局方法：Poisson Surface Reconstruction; 体素方法：基于 TSDF 的融合（如 KinectFusion）。<br>
+<strong>4. 点云（Point Cloud）→ Mesh</strong>：间接方法：点云 → 隐式表面 → Mesh；直接方法：三角化（Delaunay： 适用于二维或局部参数化场景，以及其他的三角化方法）。</p>
+<h3 id="1-3-主流模型范式与架构">1.3 主流模型范式与架构</h3>
+<ul>
+<li>
+<p><strong>VAE (Variational Autoencoder, 变分自编码器)：走向隐空间的先驱</strong></p>
+<ul>
+<li><strong>核心机制</strong>：传统的自编码器只是将图像压缩成一个固定的特征向量再还原。而 VAE 引入了概率论的思想，它的 Encoder（编码器）不输出固定的点，而是输出一个<strong>概率分布</strong>（通常是均值和方差）。在生成时，模型从这个分布中进行采样（Sampling），再由 Decoder（解码器）还原为图像。为了让反向传播能够穿透采样过程，VAE 引入了经典的“重参数化技巧（Reparameterization Trick）”。</li>
+<li><strong>意义</strong>：VAE 最大的贡献在于构建了一个连续且结构化的<strong>隐空间（Latent Space）</strong>。这使得模型具备了真正的“生成”能力，而非单纯的“记忆”。如今大火的 Stable Diffusion（基于 Latent Diffusion），其第一步就是利用 VAE 将高维的像素图像压缩到低维隐空间中进行处理，极大降低了计算成本。</li>
+</ul>
+</li>
+<li>
+<p><strong>GAN (Generative Adversarial Network, 生成对抗网络)：左右互搏的造假大师</strong></p>
+<ul>
+<li><strong>核心机制</strong>：GAN 彻底抛弃了传统的逐像素误差计算，引入了博弈论。它由两部分组成：Generator（生成器）负责凭空捏造数据，Discriminator（判别器）负责辨别数据是来自真实数据集还是生成器。两者在训练中“左右互搏”，生成器不断提升造假技术，判别器不断提升鉴谎能力，最终达到纳什均衡，生成器就能输出以假乱真的图像。</li>
+<li><strong>意义</strong>：GAN 开启了高保真图像生成的时代。虽然它存在训练不稳定、模式崩溃（Mode Collapse）等缺点，但其生成的图像细节锐利、极其逼真。目前，GAN 的对抗损失思想仍常被作为附加模块，用于提升生成模型（或 3D 渲染结果）的高频纹理细节。</li>
+</ul>
+</li>
+<li>
+<p><strong>Transformer：大模型时代的绝对主宰</strong></p>
+<ul>
+<li><strong>核心机制</strong>：诞生于 NLP 领域的 Transformer 彻底抛弃了 RNN/CNN 等依赖局部或顺序计算的架构。它的核心是<strong>自注意力机制（Self-Attention）</strong>：在处理一个序列时，序列中的每一个元素（Token）都会和所有其他元素计算相关性（注意力权重），从而获得全局上下文信息。</li>
+<li><strong>意义</strong>：自注意力机制打破了长距离依赖的瓶颈，并且天然支持极高并发的矩阵运算，极其适合在大规模集群上“大力出奇迹”。它不仅是所有大语言模型（LLM）的基石，其架构的泛化能力也促成了视觉大模型的诞生。</li>
+</ul>
+</li>
+<li>
+<p><strong>ViT (Vision Transformer)：降维打击，图像也是一串 Token</strong></p>
+<ul>
+<li><strong>核心机制</strong>：ViT 优雅地回答了“如何用 Transformer 处理图像”这个问题。它将一张完整的图像像切披萨一样切成一个个固定大小的图像块（Patches），然后将这些块展平并通过线性映射转化为一串向量（类似于 NLP 中的单词 Token），最后加上位置编码（Positional Embedding），直接送入标准的 Transformer 架构中进行特征提取。</li>
+<li><strong>意义</strong>：ViT 证明了在海量数据面前，CNN 曾经引以为傲的“归纳偏置（如平移不变性）”是不必要的。纯 Transformer 架构在视觉任务上的上限远高于 CNN。在 LRM 等 3D 前馈重建模型中，常用来提取多视角特征的 DINOv2 等预训练模型，其底层架构正是 ViT。</li>
+</ul>
+</li>
+<li>
+<p><strong>MAE (Masked Autoencoder, 掩码自编码器)：视觉领域的完形填空</strong></p>
+<ul>
+<li><strong>核心机制</strong>：MAE 是一种极其高效的自监督学习范式。它的做法非常极致：将图像切块后，随机<strong>掩码（Mask）掉极高比例（如 75%）的图像块</strong>，然后只把剩下的 25% 喂给 ViT 编码器，最后要求解码器根据这些支离破碎的线索，还原出完整的原图。</li>
+<li><strong>意义</strong>：这种“地狱难度”的完形填空逼迫模型深刻理解了图像的全局语义、几何结构和物理常识。MAE 极大地加速了 ViT 的预训练过程，证明了自监督学习在视觉领域同样拥有巨大的潜力。</li>
+</ul>
+</li>
+<li>
+<p><strong>Diffusion Models (扩散模型)：摧毁与重建的艺术</strong></p>
+<ul>
+<li><strong>核心机制</strong>：扩散模型的灵感来自热力学。它分为两个过程：<strong>前向过程（加噪）</strong>，分多步缓慢地向真实图像中添加高斯噪声，直到图像变成一团纯噪声；<strong>反向过程（去噪）</strong>，训练一个神经网络（通常是 U-Net），学习如何一步步从噪声中预测并剔除这些噪声，最终还原出清晰的图像。</li>
+<li><strong>意义</strong>：扩散模型一举击败了 GAN，成为了目前 2D 图像和视频生成（如 Midjourney, Stable Diffusion）的绝对统治者。相比 GAN，扩散模型训练极度稳定，生成多样性极高，并且很容易通过文本、深度图等条件（Condition）对其生成过程进行精准控制。</li>
+</ul>
+</li>
+<li>
+<p><strong>DiT (Diffusion Transformer)：当扩散遇上 Transformer</strong></p>
+<ul>
+<li><strong>核心机制</strong>：DiT 是一次强强联合的架构革命。它抛弃了扩散模型传统的 U-Net（基于 CNN）骨干网络，将核心的去噪网络替换为了 Transformer。它将带噪的隐空间特征“Patch化”，结合时间步（Timestep）和文本条件作为 Token 序列，利用 Transformer 强大的全局建模能力进行去噪预测。</li>
+<li><strong>意义</strong>：DiT 继承了 Transformer 完美的“Scaling Law（缩放定律）”——模型越大、数据越多，效果就越好。它是目前最顶级的生成模型（如 OpenAI 的视频生成模型 Sora、Stable Diffusion 3）背后的核心架构，代表了目前视觉生成的最高技术水准。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-神经渲染">2. 神经渲染</h2>
+<p>这一切的一切要从2020年的ECCV上发表的NeRF(Neural Radiance Field)说起。Neural Radiance Field翻译为神经辐射场 = 神经+辐射+场。</p>
+<ul>
+<li>
+<p><strong>什么是场</strong>：在空间（或时间）的<strong>每一个坐标点</strong>上，都有一个明确定义的物理量或数值，这就叫作“场”。比如你房间里的温度，空间中任何一个点都有一个温度值，这就是“温度场”&lt;标量场&gt;；风吹过，每个点都有风速和风向，有数值有方向，这就是“矢量场”。 一段音频（1D的时间场）、一张照片（2D的颜色场）、磁场/风场（3D的向量场），三维的参数化曲面(nub, 显式曲面)，三维的符号距离场(sdf，隐式曲面)。</p>
+</li>
+<li>
+<p><strong>什么是神经场</strong>：如果一个“场”的数值，是用一个<strong>神经网络</strong>来计算和表示的，那它就叫“神经场”。具体的，如果前面提到的sdf是通过神经网络实现的，也就是输入 3D 空间坐标 $(x, y, z)$，神经网络输出一个数字（该点距离物体表面的距离）。中间的映射关系f是通过神经网络来实现的，就是神经场，叫neural SDF。</p>
+</li>
+<li>
+<p><strong>为什么要用神经场？</strong> 真实世界的自然信号是连续的波形; 传统的显式表示（像素、体素）是采样后的离散的信号，放大后会丢失细节; 而神经场使用神经网络作为一个连续的参数化函数，能够<strong>平滑且无限分辨率地拟合真实的自然信号</strong>。</p>
+</li>
+<li>
+<p><strong>什么是神经辐射场?</strong> 简单的说：nerf是一种特殊的神经场，用神经网络来表达3d场景，输入位置与角度，输出光场，颜色等信息(所谓的辐射), 这就是神经辐射场。下面详细展开。</p>
+</li>
+</ul>
+<h3 id="2-1-NeRF-究竟在干什么？">2.1. NeRF 究竟在干什么？</h3>
+<p>新视角合成 (Novel View Synthesis)。什么是新视角合成？</p>
+<ul>
+<li><strong>输入</strong>：一组已知相机参数（位置、朝向）的 2D RGB 图像。</li>
+<li><strong>输出</strong>：一个 3D 场景的表示。基于这个表示，你可以任意移动虚拟相机，渲染出从未拍摄过的全新角度的照片。</li>
+</ul>
+<h3 id="2-2-NeRF-是怎么做的">2.2. NeRF 是怎么做的?</h3>
+<p>三个核心组件：神经体积表征+可微体积渲染+基于渲染的优化</p>
+<ol>
+<li><strong>神经体积表征</strong>：放弃传统的网格或体素，用一个连续的神经网络来隐式表达整个 3D 空间。</li>
+<li><strong>可微体积渲染</strong>：如何把 3D 空间变成 2D 照片？通过“发射光线”来采样并计算颜色。关键在于“可微”，这意味着渲染过程产生的误差，可以通过反向传播直接传递给神经网络进行修正。</li>
+<li><strong>基于渲染的优化</strong>：训练逻辑非常纯粹。网络“猜”一张图(生成的图片) -&gt; 和真实的输入图对比算误差 -&gt; 更新网络权重。</li>
+</ol>
+<p>Q: 这里说的体积是啥意思？<br>
+A：只要在三维空间中定义了一个连续的密度函数 ( \sigma(x,y,z) )，这个空间就可以被视为<strong>体积（volume）</strong>，也称为<strong>密度场（density field）或体积场（volumetric field）</strong>。</p>
+<p>下面逐个拆解各个组件：</p>
+<h3 id="2-2-1-神经体积表征">2.2.1. 神经体积表征</h3>
+<p>NeRF 将 3D 场景严格定义为一个 <strong>5D 到 4D 的映射函数</strong> $F_\Theta$：</p>
+<ul>
+<li><strong>5D 输入</strong>：包含 3D 空间坐标 $(x, y, z)$ 和 2D 观察视角（偏航角和俯仰角，即 $\theta, \phi$）。</li>
+<li><strong>网络主体</strong>：一个非常经典的 MLP（多层感知机），拥有 9 层，每层 256 个通道。</li>
+<li><strong>4D 输出</strong>：输出该空间点在特定视角下的发光颜色 $(r, g, b)$，以及该点本身的体密度 $(\sigma)$。(后面会讲何为体密度)<br>
+PS: 为什么需要加入观察视角 $(\theta, \phi)$？因为现实世界中的物体往往具有<strong>高光、反光或金属质感</strong>。同一个空间点 $(x, y, z)$，你从左边看和从右边看，它反射到你眼里的颜色 $(r, g, b)$ 是不一样的。引入视角作为输入，赋予了 NeRF 表达逼真的复杂光影的能力。</li>
+</ul>
+<h3 id="2-2-2-可微体积渲染">2.2.2. 可微体积渲染</h3>
+<ul>
+<li><strong>计算光线</strong>：要渲染出 2D 照片上的一个像素，我们需要从虚拟相机的中心，穿过该像素所在的屏幕位置，向 3D 空间发射一条射线。像素的最终颜色，是这条射线上所有点的颜色累加。</li>
+<li><strong>将渲染建模为概率问题</strong>：传统的渲染（如光线追踪）需要计算光线“撞击”到了哪个具体的硬表面（具体的多边形）。但这在数学上是不连续、不可微的（要么撞到，要么没撞到）。NeRF 将整个空间视为一团<strong>半透明的云雾（体积，Volumetric）</strong>。光线穿过空间时，没有绝对的碰撞，只有密度的累积。这种“软性”的连续模型，完美契合了神经网络基于梯度的优化方式。</li>
+<li><strong>替代传统网格</strong>：空间中并没有真实的体素网格在存储数据，所有的场景属性（颜色、密度）全部被压缩和编码在了那个 9 层的 MLP 神经网络的权重里。</li>
+</ul>
+<h4 id="体积渲染详细推导">体积渲染详细推导</h4>
+<p><strong>1. 定义光线方程</strong><br>
+首先定义从相机射出的光线方程：<br>
+$$\mathbf{r}(t) = \mathbf{o} + t\mathbf{d}$$<br>
+其中，$\mathbf{o}$ 是光线起点（相机位置），$\mathbf{d}$ 是射出方向。$t$ 为代表距离或时间的标量，沿途的每一个点都可以用 $t$ 来表示（$t$ 越大，光线飞得越远）。</p>
+<p><strong>2. 空间（云雾）属性</strong><br>
+当光线飞行到距离 $t$ 时，会遇到由 NeRF 神经网络预测出的两个属性：</p>
+<ul>
+<li><strong>颜色 $\mathbf{c}(t)$</strong>：该位置的 RGB 颜色。</li>
+<li><strong>体密度 $\sigma(t)$</strong>：代表这团雾有多浓。严谨的数学定义是<strong>概率</strong>——光线在经过 $t$ 附近一个极小的步长 $dt$ 时，撞上粒子的概率为 $\sigma(t)dt$。</li>
+</ul>
+<p><strong>3. 透射率 $T(t)$ 与连续渲染积分</strong><br>
+假设光线在距离 $t$ 处遇到了红雾，它能把红色带回相机吗？<strong>不一定！如果前方（更靠近相机处）有一堵极浓的黑墙，光线早就被挡死了！</strong> 因此，我们需要计算<strong>透射率 $T(t)$</strong>，即光线从起点飞到距离 $t$ 处，沿途未撞上任何东西的存活概率。基于逻辑“存活到 $t + dt$ 的概率 = 存活到 $t$ 的概率 $\times$ 在 $dt$ 内没撞上的概率”，可得 $T(t + dt) = T(t) \times (1 - \sigma(t)dt)$。通过泰勒展开与解微分方程，得到透射率公式：<br>
+$$T(t) = \exp\left(-\int_{t_0}^t \sigma(s)ds\right)$$<br>
+<em>(注：即光线飞到 $t$ 的存活率，等于沿途经历的所有密度累加后套一个负指数。沿途雾越浓，存活率呈指数级下降。)</em></p>
+<p>要计算最终屏幕上的像素颜色 $C$，光线在 $t$ 处必须同时满足两个条件：<strong>活着飞到 $t$</strong> (概率 $T(t)$) 且 <strong>恰好在 $t$ 处撞上粒子</strong> (概率 $\sigma(t)dt$)。将整条光线上所有位置的贡献累加，即得到连续渲染方程：<br>
+$$C = \int_{t_n}^{t_f} T(t)\sigma(t)\mathbf{c}(t) dt$$</p>
+<p><strong>4. 离散化 (代码实现)</strong><br>
+计算机无法直接计算连续且无限的微积分，需将连续公式转为离散加法。把光线切成 $N$ 个小段（第 $i$ 段长度为 $\delta_i$）：</p>
+<ul>
+<li><strong>不透明度 $\alpha_i$</strong>：光线穿过第 $i$ 小段时被挡住的概率，$\alpha_i = 1 - \exp(-\sigma_i \delta_i)$。</li>
+<li><strong>离散透射率 $T_i$</strong>：光线活着到达第 $i$ 段的概率（前面所有段都没挡住它的概率连乘），$T_i = \prod_{j=1}^{i-1} (1 - \alpha_j)$。</li>
+<li><strong>最终离散求和公式</strong>：<br>
+$$\hat{C} \approx \sum_{i=1}^N T_i \alpha_i \mathbf{c}_i$$<br>
+<em>(最终颜色 = $\sum$ 存活率 $\times$ 当前段不透明度 $\times$ 当前段颜色)</em></li>
+</ul>
+<p><strong>5. 渲染权重 $w$ 与深度拓展</strong><br>
+公式中的 $T_i \alpha_i$ 被称为<strong>渲染权重 (Rendering weights)</strong>。</p>
+<ul>
+<li><strong>遮挡原理</strong>：如果前方有不透明的墙（某处 $\alpha$ 极大），墙后所有点的透射率 $T_i$ 会瞬间归零，权重也随之归零。即墙后面的东西不参与颜色计算。</li>
+<li><strong>深度提取</strong>：把沿途每个点的距离 $t_i$ 乘以它的权重 $T_i \alpha_i$ 再求和，就能算出光线大概在多远的距离“撞墙”，这就是 NeRF 提取 3D 深度图的原理（具体可分为期望深度与中位数深度）。</li>
+<li><strong>物理量拓展</strong>：同理，若将 $\mathbf{c}_i$ 替换成 3D 空间中的任何其他物理量 $\mathbf{v}_i$（如语义、法向量等），就可以渲染出对应的特征图。</li>
+</ul>
+<h3 id="2-2-3-训练方式">2.2.3. <strong>训练方式</strong></h3>
+<p>通过前向传播计算出合成图像，再计算合成图像与真实图像的损失，梯度回传(因为渲染过程是可微的)，优化mlp参数。</p>
+<p>后续学术界针对nerf提出了非常非常多的改进方案, 有基于位置编码的，压缩与提速渲染的，针对无边界场景与未知相机位姿的，动态场景处理的，复杂光照与少样本泛化的等等等等。</p>
+<h3 id="2-3-3DGS是怎么做的">2.3 3DGS是怎么做的</h3>
+<p><strong>Surface Splatting (表面泼溅)</strong> 技术2001年就有了：为了解决点云在渲染时的稀疏空洞问题，把点云中的每个点变成一个高斯核(一维就是高斯基函数，二维就是椭圆，三维就是椭球)。当无数个这样的高斯核挨在一起时，它们边缘的模糊部分就会互相融合（连续信号重建），原本的点与点之间的缝隙就被完美填补了。当我们从相机的视角看过去时，就像是把这些 3D 的高斯球拍扁 <strong>泼溅（Splat）</strong> 到了 2D 屏幕的网格上，这就叫 Splatting。NeRF 算一个像素要沿着光线采样成百上千次，算无数个积分。而泼溅技术中，每个高斯球都是独立的，GPU可以一口气并行处理几百万个球，渲染速度快。</p>
+<p>既然 2001 年就有的泼溅技术，为什么还要等到 2023 年才火呢？首先是因为早期缺乏可微的方案。直到 2019 年以《Differentiable Surface Splatting》为代表的一系列工作出现，证明了表面泼溅的渲染过程在数学上是可以求导的。这意味着我们可以利用反向传播，让计算机看着 2D 照片，自动去调整空间中数十万个图元的位置和属性。其次，NeRF的积累。3DGS 巧妙地继承了 NeRF 验证过的球谐函数（SH）和透明度混合逻辑，并将图元升级为各向异性的 3D 高斯核（位置、颜色、大小和透明度全自由度可微）。3DGS的作者进行了极致的工程化：想法非常简单，效果非常惊艳，里面手搓了基于 Tile 分块的高效 CUDA 光栅化算子，完美解决了数百万高斯核的排序与混合问题。</p>
+<h3 id="2-3-1-3DGS训练过程：">2.3.1 3DGS训练过程：</h3>
+<ol>
+<li><strong>初始化 (Initialization)</strong>：先用传统的摄影测量算法 (SfM，比如 COLMAP) 从照片里提取出一堆稀疏的 3D 坐标点。</li>
+<li><strong>生成高斯球 (3D Gaussians)</strong>：把每一个稀疏的 3D 点，都变成一个半透明的“3D 高斯椭球”。</li>
+<li><strong>光栅化与梯度回传 (Differentiable Tile Rasterizer)</strong>：把这些 3D 球“拍扁”到 2D 屏幕上，和真实照片做对比算误差。然后通过梯度反向传播，去调整每一个球的形状、颜色和位置。</li>
+<li><strong>自适应密度控制 (Adaptive Density Control)</strong>：这是个非常人工指定的机制。在训练中，如果网络发现某个地方细节很复杂（比如头发），它会自动把一个大球<strong>分裂</strong>成几个小球；如果发现某个地方是纯色背景，它会把小球<strong>合并</strong>，或者把完全透明的球<strong>删除</strong>。</li>
+</ol>
+<p>每个 3D 高斯球的参数：$p$: 中心位置坐标；$\Sigma$: 协方差矩阵（控制长短胖瘦和旋转）,$o$: 透明度；$SH$: 球谐函数（Spherical Harmonics，记录从不同角度看过去的不同颜色，也就是反光效果）</p>
+<h3 id="2-3-2-3DGS与nerf的关联：">2.3.2 3DGS与nerf的关联：</h3>
+<ul>
+<li><strong>传统表面泼溅</strong>：它的颜色融合方式是<strong>加权平均</strong> ($c = \frac{\sum c_i w_i}{\sum w_i}$)。这处理不了“遮挡关系”。</li>
+<li><strong>3DGS 泼溅 <strong>：它引入了</strong>透明度 ($o$, Opacity)</strong> 的概念，公式变成了从前向后的 <strong>Alpha 混合 (Alpha compositing)</strong>。<br>
+$$c = \sum_{i \in N} c_i o_i w_i \prod_{j=1}^{i-1} (1 - o_j w_j)$$</li>
+</ul>
+<p>3DGS 公式里的 $\prod_{j=1}^{i-1} (1 - o_j w_j)$ 完全等价于NeRF 的那个“透射率 $T(t)$”。3DGS 在数学本质上，就是在算 NeRF 的体积渲染积分。只不过，NeRF 是在连续的空间里沿着光线一步步采”，而 3DGS 是直接把空间变成了离散的球，然后用 GPU 直接算这些球的叠加上色。<strong>目标完全一致，但 3DGS 的计算速度快了几个数量级。</strong> 换句话说3DGS 就是<strong>用显式的 3D 椭球数据结构，去跑隐式的 NeRF 体积渲染公式。</strong> 既有 NeRF 的极致逼真(对场景的学习能力)，又有传统多边形的极速渲染。</p>
+<h3 id="2-3-3-3DGS渲染步骤：">2.3.3 3DGS渲染步骤：</h3>
+<ol>
+<li><strong>Sort (排序)</strong>：要想正确计算上面那个类似 NeRF 的““透射率”，必须知道谁在前面谁在后面。所以第一步是根据深度，把几百万个 3D 球从前到后排好队。</li>
+<li><strong>Splat (泼溅)</strong>：把这些 3D 椭球投影（拍扁）到 2D 屏幕上，算出它们在 2D 上的形状。</li>
+<li><strong>Blend (混合)</strong>：利用上面那个 Alpha 混合公式，把排好队的球一层层叠加上去，算出最终像素的颜色。</li>
+</ol>
+<p>3dgs是一份非常完善的工作，以至于后面的论文更像是在缝缝补补，不过这种纯手动捏造的“克隆、分裂、修剪”感觉很生硬，不如nerf优雅，有些步骤像是在工程中一拍脑袋尝试出来的。</p>
+<h2 id="3-表面重建">3. 表面重建</h2>
+<p>这里的表面重建旨在从连续的神经场（如体密度场、SDF）或离散基元中，提取出可供传统渲染管线直接使用的显式 Mesh 模型。</p>
+<h3 id="3-1-基于体密度场的等值面提取">3.1. 基于体密度场的等值面提取</h3>
+<p>在原始的 NeRF 架构中，神经网络预测空间中任意点的颜色与体密度（Volume density, $\sigma$）。体密度反映了光线在空间某点被物理实体遮挡的衰减率（或局部终止概率）。由于物体内部通常具有极高的不透明度，而外部为自由空间，密度的突变位置即可被视为物体表面。</p>
+<ul>
+<li><strong>提取机制</strong>：通过人为设定一个固定的密度阈值 $\tau$，可以将连续的三维空间隐式划分为占据态（$\sigma &gt; \tau$）和非占据态（$\sigma &lt; \tau$）。这一划分构成了等值面（Isosurface）。随后，应用 Marching Cubes (MC) 等经典算法，即可在网格空间中定位交点并生成三角面片。</li>
+<li><strong>局限性</strong>：这种基于密度的提取方案缺乏对底层表面几何的显式约束。由于多视角图像重建存在的病态问题及视角依赖效应，网络倾向于在自由空间中生成高密度的离散区域以降低光度误差。这导致提取出的网格通常包含大量悬浮伪影（Floaters）、孔洞以及高频噪声。此外，阈值 $\tau$ 的选取高度依赖经验，缺乏泛化理论保证。</li>
+</ul>
+<h3 id="3-2-从密度转向SDF">3.2. 从密度转向SDF</h3>
+<p>相比体密度场的缺陷，SDF 的零等值面（Zero-level set）能够自然、精确且符合严格数学定义地表示连续表面。</p>
+<ul>
+<li>
+<p><strong>VolSDF</strong>：尝试将 SDF 框架引入体渲染。该算法通过累积分布函数（CDF）建立了 SDF 与体密度之间的解析映射。然而，其实证模型在表面附近的密度积分估计存在一定偏差（Biased），影响了精细结构的恢复。</p>
+</li>
+<li>
+<p><strong>NeuS</strong>：针对 VolSDF 的偏差问题，NeuS 提出了一种无偏（Unbiased）的体渲染公式。具体的，VolSDF 本质上使用了拉普拉斯分布（Laplace distribution）的 CDF，而 NeuS 使用了逻辑分布（Logistic distribution）推导其无偏权重。利用 SDF 诱导的权重函数，NeuS 确保了网络在光线追踪计算时，渲染权重严格在 SDF 零等值面处达到全局最高峰。这一数学性质极大地提升了重建表面的平滑度和几何保真度。</p>
+</li>
+<li>
+<p><strong>Neuralangelo</strong>：后续工作通过引入混合表示（如基于张量分解的 Tensor-based 架构）加速了 SDF 的优化过程。进一步地，NVIDIA 提出的 <strong>Neuralangelo</strong> 结合了多分辨率哈希网格编码（Instant-NGP 架构）与数值梯度优化策略，成功克服了哈希表造成的表面粗糙问题，使得从神经场中重建具备极高逼真度和微小细节的表面拓扑成为可能。</p>
+</li>
+</ul>
+<h3 id="3-3-可微分网格提取与光栅化">3.3. 可微分网格提取与光栅化</h3>
+<p>尽管基于 SDF 的隐式方法提升了表面质量，但提取 Mesh 仍属于前向渲染完成后的后处理步骤。传统的 Marching Cubes 算法由于涉及离散的顶点状态判断与拓扑组合枚举，其操作是不可微的。为了实现直接利用二维图像空间的监督信号对三维网格顶点进行联合优化，可微分网格提取技术被提出，并常与可微分光栅化处理器（如 NVIDIA 的 <code>nvdiffrast</code>）结合，实现从网格生成到图像渲染的全链路可微：</p>
+<ul>
+<li><strong>DMTet (Differentiable Marching Tetrahedra)</strong>：该算法摒弃了传统立方体网格，采用四面体空间划分以消除拓扑二义性。DMTet 不仅预测空间节点的 SDF 值，还预测顶点的几何偏移量（Deformation offset）。通过可微地计算等值面交点坐标，网络能够直接接收来自光栅化图像的重投影误差梯度，从而精细调整顶点位置。</li>
+<li><strong>FlexiCubes</strong>：NVIDIA 进一步提出了 FlexiCubes 算法。它回归了立方体划分的范式，但在网格参数化设计上引入了更高的灵活性（引入了额外的顶点权重参数）。相比 DMTet，FlexiCubes 展现出更优的动态拓扑适应能力，能够更加锐利、精准地拟合工业级模型中的尖锐特征和复杂边界。</li>
+</ul>
+<h3 id="3-4-基于高斯泼溅的表面重建">3.4. 基于高斯泼溅的表面重建</h3>
+<p>与 NeRF 依赖隐式连续场进行光线追踪不同，3D Gaussian Splatting采用显式的三维高斯椭球集合来表示场景，实现了实时的渲染速度。然而，原始的 3DGS 由于缺乏显式的几何约束，高斯椭球在空间中往往呈现高度无序、重叠的分布状态，直接从中提取网格（例如将其转化为密度场后应用 MC 算法）会导致表面极度粗糙、充满噪声并带有明显的厚度伪影。为了解决这一痛点，近期的研究开始在显式高斯表示中引入严格的表面约束。</p>
+<ul>
+<li><strong>SuGaR (Surface-Aligned Gaussian Splatting)</strong>：SuGaR算法引入了一种巧妙的正则化机制，在优化过程中强制引导三维高斯椭球变得扁平，并使其紧密贴合且对齐到场景的真实表面。通过这种对齐操作，SuGaR 能够将离散的高斯点云转化为平滑的表面指示场，随后利用泊松表面重建等经典点云算法，并通过将高斯基元绑定至网格面片进行联合优化，高效提取出兼具高质量拓扑结构与实时渲染能力的 Mesh 模型。</li>
+<li><strong>2D Gaussian Splatting (2DGS)</strong>：Huang 等人指出，3D 体积椭球在表达极薄或平滑表面时存在固有的多视角不一致性。为此，2DGS 摒弃了 3D 椭球，直接将场景建模为二维的定向圆盘（2D Surfels）。这种“降维”处理使得每一个高斯基元天然具备明确的表面属性和法线方向。结合深度失真正则化与光度一致性约束，2DGS 能够获得极其精确的几何外观与法线场，从根本上消除了 3DGS 的厚度与悬浮伪影，实现了高保真的网格生成。</li>
+</ul>
+<h2 id="4-3D生成模型">4. 3D生成模型</h2>
+<p>从图片直接输出三维表征（aka，逆向图形学），显然是个高度病态的问题，因为单视角输入极度缺乏几何结构与深度信息。前面阐述了如何通过多视角图片进行神经渲染，并从体密度场或SDF中提取Mesh。但这仅仅是“逐场景、逐模型”的优化过程，本质上是过拟合的，仅仅是实验室产品，工业界不可能会用这些方案的。面对少样本甚至单视角输入，到底该如何优化？局部缺失的视角能否恢复？怎样才能让模型具备跨实例的泛化能力，直接从单张图片或一段文字中生成整体三维模型？这就是三维生成的命题。从早期的测试时优化到如今的前馈式生成，三维重建开始步入大模型时代。</p>
+<h3 id="4-1-视觉模型">4.1 视觉模型</h3>
+<p>由于高质量原生三维数据的匮乏，3D生成模型在起步阶段高度依赖于二维视觉模型提供的语义与几何先验。在图生三维（Image-to-3D）任务中，强大的二维特征提取能力是三维重建的绝对基础，也是早期唯一可以仰仗的数据。</p>
+<ul>
+<li>语义与表征先验：如 MAE (Masked Autoencoder)、CLIP、DINOv2 等基于自监督学习的视觉 Transformer，能够提供对物体结构、语义边缘高度敏感的密集特征图，充当稳健的视觉 backbone。</li>
+<li>几何与深度先验：CroCo 通过跨视角掩码自编码器隐式学习立体视觉，为下游提供对遮挡鲁棒的特征体系。Depth Anything (v1/v2/v3) 的出现让单图深度估计得以高精度提取，为后续的“2D升维”（Lifting）提供了确定性空间约束。</li>
+</ul>
+<h3 id="4-2-早期对泛化性-少样本的尝试">4.2 早期对泛化性/少样本的尝试</h3>
+<p>有了二维特征的辅助，研究者开始尝试打破“一个网络只认一个场景”的局限，试图让模型具备举一反三的能力。</p>
+<ul>
+<li>
+<p>DeepSDF 通过学习一个类别级（class-level）的连续符号距离函数表示，将多个形状实例嵌入到共享的隐空间（latent space）中。在推理阶段，给定新的观测（如点云或部分几何），只需优化一个低维 latent code，即可重建对应的 3D 形状。虽然这种方式在一定程度上具备了跨实例的表达能力，但其对新样本仍依赖迭代优化 latent code，因此在严格意义上仍未摆脱测试时优化的范式。</p>
+</li>
+<li>
+<p>MetaSDF 在 DeepSDF 的基础上进一步引入元学习（meta-learning）框架，通过在训练阶段模拟“快速适应新任务”的过程，使模型能够在面对新形状时，仅通过**少量梯度更新（few gradient steps）**即可完成重建。这种方法显著提升了对新实例的适应速度，但本质上仍然依赖测试时的参数更新，因此在实时性和推理效率方面仍存在一定限制。随着神经渲染的兴起，MetaNeRF 等工作也将 MAML 算法引入 NeRF，利用强大的先验初始化权重，在极少视角下几步微调即可收敛。</p>
+</li>
+</ul>
+<p>然而，无论是 MetaSDF 还是 MetaNeRF，核心瓶颈依旧存在：没有彻底跳出测试时优化，推理效率依然受限。为了突破这一点，研究范式开始向直接的前向映射转变：</p>
+<ul>
+<li>PixelNeRF 通过引入“空间投影”机制，将输入图像中的像素特征（由 CNN 提取）投影到三维空间中的采样点上，从而在 NeRF 的体渲染过程中实现条件建模。这一设计在结构上优雅地桥接了2D 视觉理解（CNN）与3D 场景表示（NeRF）。更重要的是，其 CNN 编码器与 MLP 渲染网络均在大规模 3D 数据集上进行预训练，使模型具备了显著的跨场景泛化能力：在测试阶段，面对一张或少量新视角图像时，模型可以<strong>直接前向推理</strong>生成新视图，而无需像原始 NeRF 那样进行耗时的逐场景优化（通常需要数小时）。</li>
+</ul>
+<h3 id="4-3-基于对抗学习的-3D-感知生成-3D-aware-GANs">4.3 基于对抗学习的 3D 感知生成 (3D-aware GANs)</h3>
+<p>上面的工作大多局限于特定类别或简单场景。要实现更自由的生成，怎么能少了GAN。3D感知生成对抗网络（3D-aware GANs）也曾辉煌过：</p>
+<ul>
+<li>早期的 HoloGAN 展示了仅从自然图像集中就能无监督地学习 3D 场景表征，无需任何 3D 标注或多视角约束；</li>
+<li>随后 pi-GAN 将 NeRF 与周期性激活函数引入 GAN 框架，实现了高精度的 3D 感知图像合成；</li>
+<li>而 EG3D 则提出了高效的几何感知三平面（Triplane）表征，大幅降低了计算复杂度。直接在 3D 体素空间生成会导致计算量呈立方级爆炸，而生成点云/网格则面临拓扑不规则的问题。Triplane 将 3D 空间投影到三个正交的 2D 平面（XY, YZ, XZ）上，采样点特征通过正交投影和双线性插值拼接获取。这种巧妙的降维完美契合了现代 CNN 与 Transformer 架构，直接启发了后来的 LRM 等大规模模型。</li>
+</ul>
+<p>但是 GANs 这部分主要集中在人脸等特定域，在面对开放世界复杂场景时，受限于模型容量和模式崩塌问题，多样性和泛化性遇到了天花板。</p>
+<h3 id="4-3-基于二维先验的优化生成">4.3 基于二维先验的优化生成</h3>
+<p>随着 2D 扩散模型（Diffusion Models）展现出惊人的开放世界生成能力，大家顺理成章地开辟了一条捷径：将 2D 扩散模型作为“工匠”，去监督三维场景的优化过程（极大似然估计, 根据观测来推导场景参数）。“二训三”时代由此开启：</p>
+<ul>
+<li>
+<p>DreamFusion: 把预训练 2D 文生图扩散模型变成三维监督信号，通过分数蒸馏采样（SDS）评估渲染图合理性并回传梯度更新 NeRF，或者将相对位姿作为条件实现新视角合成；</p>
+</li>
+<li>
+<p>随后 Magic3D 采用粗到细两阶段策略，提高了分辨率和生成质量；</p>
+</li>
+<li>
+<p>接着ProlificDreamer 用 VSD 替换 SDS，试图从概率建模层面缓解过平滑和低多样性；</p>
+</li>
+<li>
+<p>DreamGaussian 则把 SDS 优化对象从 NeRF 换成 3DGS，显著提升了速度。</p>
+</li>
+<li>
+<p>GET3D 则走的是另一条路：它不是“靠扩散优化三维”，而是直接训练 GAN 生成显式纹理网格，证明了显式网格也可以通过生成式学习直接产出。</p>
+</li>
+</ul>
+<p>这类 2D 引导优化的方案让开放词汇的三维生成成为可能，但致命缺陷也随之暴露：耗时依然较长（以小时计），且极易出现 Janus 问题。所谓的Janus问题是指的：由于 2D 扩散模型缺乏原生的三维一致性意识，各自独立的视角采样会导致监督信号“互相打架”，进而生成三头六臂、结构异常的畸形物体。</p>
+<h3 id="4-4-多视角扩散与联合去噪">4.4 多视角扩散与联合去噪</h3>
+<p>面对 Janus 问题，单纯依赖单视角 2D 引导已走不通。解法变成了：微调 2D 扩散模型，强制其在单次去噪中吐出具备严格几何关联的“多视角图像族”。</p>
+<ul>
+<li>
+<p>Zero-1-to-3 是一个关键转折点，它把单图变换成指定相机位姿的新视角图像，证明了扩散模型可以学习相对视角控制；但它本身仍是单视图到单视图的生成，因此一致性仍有限。</p>
+</li>
+<li>
+<p>SyncDreamer: 引入 3D 代价体积注入注意力机制，强制虚拟视角在 3D 空间上对齐。</p>
+</li>
+<li>
+<p>Wonder3D: 使用跨域注意力机制同步生成多视角 RGB 与法线图，利用法线局部几何先验增强一致性。</p>
+</li>
+<li>
+<p>BoostDream： 更偏工程化，它把已有 3D 先验注入多视角扩散过程，用于修正已有三维草稿。</p>
+</li>
+</ul>
+<p>这些方法显著缓解了结构错乱，但它们本质上仍是披着 3D 外衣的 2D 生成，依然是&quot;二训三&quot;。受制于视角覆盖范围和相机条件设定，它们并没有彻底解决优化管线速度慢、步骤繁琐的问题，无法满足工业界对于“秒级出模”的即时性需求。</p>
+<h3 id="4-5-前馈式大规模重建模型（LRM-Large-Reconstruction-Models）">4.5 前馈式大规模重建模型（LRM, Large Reconstruction Models）</h3>
+<p>上面的其实都是基于优化的方法，每遇到一个新物体，网络都要从头开始，靠计算误差慢慢“炼丹”，耗时几十分钟到几个小时。优化管线速度太慢，多视角扩散步骤繁琐，无法满足工业界的即时性需求。于是顶着稀疏视角和极高泛化压力的挑战，3D重建终于(强行)迎来了属于自己的“大模型”：LRM（Large Reconstruction Models）。</p>
+<p>标准 LRM 摒弃了逐场景优化。它使用 DINO 等预训练模型提取图像 Token，然后通过基于交叉注意力（Cross-Attention）的 Image-to-Triplane Transformer 网络，一次前向传播直接预测出该物体的三平面特征，最后通过微型 MLP 解码为 NeRF 进行体渲染。</p>
+<p>后续如 Large Gaussian Reconstruction Model、Long LRM 及 RayZer 等工作在架构上不断精进。更有如 Turbo3D 等加速工作，将生成管线推向了极致速度，彻底验证了前馈式重建模型在效率上的绝对优势。</p>
+<ul>
+<li><strong>Large Gaussian Reconstruction Model (如 LGM / GRM)：表征替换，告别体渲染瓶颈</strong><br>
+标准 LRM 依赖 Triplane 和 NeRF 的体渲染，在推理和渲染高分辨率图像时，庞大的显存占用和 MLP 密集查询依然是一座大山。于是，这类工作将输出端的底层表征果断替换为了 <strong>3D Gaussian Splatting (3DGS)</strong>。基于 Transformer 或非对称 U-Net 的网络直接将输入的特征 Token 映射为 3D 空间中像素对齐的高斯球属性（位置、缩放、旋转、不透明度等）。这不仅彻底打破了体渲染的计算瓶颈，大幅提升了生成分辨率，也让生成的 3D 资产在光栅化管线下的实时渲染变得极为丝滑。</li>
+<li><strong>Long LRM：超长上下文，从“单体”迈向“大场景”</strong><br>
+早期的 LRM 受限于 Transformer 注意力机制的二次方显存爆炸问题，通常只能处理 1 到 4 张输入图片，因此基本局限于单个物体的重建。而 Long LRM 引入了针对长序列优化的混合架构，巧妙结合了 <strong>Mamba2 与传统 Transformer 模块</strong>，并配合 Token 合并与高斯剪枝策略。这使得网络能够在单次前向传播中“一口气”吃下长达数十张（如 32 张）的高清图像，处理超过 250K 个 Token。它直接完成了对复杂<strong>大尺度场景</strong>（Scene-level）的 360 度 3D 建模，将前馈重建的能力从 Object 级跃迁到了 Scene 级。</li>
+<li><strong>RayZer：自监督学习，摆脱 3D 位姿“真值”依赖</strong><br>
+传统 LRM 的训练是一台“数据胃口”极大的机器，高度依赖诸如 Objaverse 等合成数据集中精准的相机位姿（Camera Poses）标注。但现实世界中，靠 COLMAP 等传统视觉方法提取位姿耗时且容易失败。RayZer 提出了一种极其优雅的**自监督（Self-supervised）**范式，直接输入无位姿、未标定的多视角图像。在没有任何显式 3D 标签监督的情况下，仅靠学习底层的光线结构（Ray Structure）进行新视角合成，网络就能同时完成相机的自校准和场景隐式表征重建。这证明了 3D 模型也能像大语言模型一样，在海量无标注真实数据中涌现出（Emergent）强大的 3D 几何感知能力。</li>
+<li><strong>Turbo3D：隐空间直接重建，将生成管线推向极致加速</strong><br>
+为了满足工业界“立等可取”的苛刻要求，Turbo3D 将文本到 3D 的生成与重建速度压缩到了惊人的亚秒级（~0.35秒）。它的核心秘诀是<strong>跳过耗时的像素空间解码</strong>。在前端，它使用创新的双教师蒸馏策略（DMD），让扩散模型在极少步数内生成一致性极高的多视角“隐特征（Latent representations）”；在后端，它设计了一个 Latent GS-LRM 架构，直接吃进这些隐空间特征来预测 3D 高斯参数。这种端到端的隐空间处理彻底规避了 VAE 解码器带来的时间开销，把“前馈式”的速度优势压榨到了物理极限。</li>
+</ul>
+<p>但速度起来了，质量够用吗？当面对复杂拓扑和工业级材质需求时，由 2D Lifting 升维带来的信息折损再次成为了天花板。</p>
+<h3 id="4-6-基于直接三维监督的模型生成">4.6 基于直接三维监督的模型生成</h3>
+<p>无论是 SDS 监督还是前馈式 Triplane 预测，跨模态特征映射（2D Lifting）都在用降维的投影间接约束高维空间。当遭遇几何分布错综复杂、纹理高度耦合时，二维先验往往显得力不从心，难以直接生成具备严谨物理材质（PBR）、拓扑干净的 3D 资产。</p>
+<p>众所周知，问题的关键在于高质量数据的积累与网络架构的缩放。随着 Objaverse 等百万级高质量 3D 资产的开源，以及 DiT (Scalable Diffusion Models with Transformers) 在图像生成中展现出的惊人 Scaling Law，大家意识到：只要将数据合理地 Token 化，Transformer 就能炼化海量原生 3D 几何与纹理。</p>
+<h4 id="3D-表征与-Transformer-的结合">3D 表征与 Transformer 的结合</h4>
+<p>想要在 3D 空间应用 DiT，首先要解决 3D 数据的输入格式（3D VAE）：</p>
+<ul>
+<li><strong>Shap-E</strong> (OpenAI) 摒弃了直接生成单一 NeRF 或 Mesh 的传统思路，而是先训练了一个 3D 编码器，将海量 3D 资产映射为隐式神经表征（同时包含 NeRF 和 SDF 的隐式参数）。随后，在这个高度压缩的隐空间上，直接应用基于 Transformer 的 Diffusion 模型进行去噪。</li>
+<li><strong>3DShape2VecSet</strong> 进一步提出将 3D 形状表征为一组隐变量向量集合（Latent Vector Set）。这种基于 Set 的表征天然契合 Transformer 的无序注意力机制（Permutation Invariance），在表征神经场时不仅具备极高的压缩率，更为后续的生成式 Diffusion 模型提供了极佳的连续 Token 输入格式。</li>
+</ul>
+<h4 id="原生-3D-空间内的直接扩散">原生 3D 空间内的直接扩散</h4>
+<p>事实上，诸如 AutoSDF、Diffusion-SDF 以及 SDFusion 等早期工作，已经充分验证了在原生 SDF 或体素空间内直接引入生成与扩散网络的强大潜力。 既然原生的三维扩散路线走得通，有了上述 Token 化的基础，研究者们开始将性能更强的 DiT 架构更加激进地引入原生三维空间：</p>
+<ul>
+<li>
+<p><strong>DiT-3D</strong> ：探索了将 3D 体素或点云转化为序列化的 3D Token，并在 3D 窗口上应用三维的自注意力机制。这种直接在 3D 空间进行去噪的 DiT 架构，证明了 Transformer 在处理纯三维几何特征时的强大潜力。</p>
+</li>
+<li>
+<p><strong>Direct3D</strong> 则将“原生 3D 监督”推向了更高的保真度。面对 2D Lifting 经常导致的几何崩坏，Direct3D 直接在三维隐空间（如高分辨率的 3D Voxel Latents 或 Triplane）上构建 DiT 模型，利用真实 3D 数据的几何分布进行端到端的扩散训练。它生成的不再是基于多视角的视觉错觉，而是具备连续表面、可以直接导出高质量 Mesh 的坚实几何。</p>
+</li>
+</ul>
+<p>相比于二维，三维世界依然缺少高质量、大规模的数据，这其实才是最大的瓶颈。</p>
+<h4 id="基于自回归范式的离散网格生成">基于自回归范式的离散网格生成</h4>
+<p>除了在连续场或体素空间中应用扩散模型，另一种极具潜力的原生 3D 生成路线是自回归范式。受到大语言模型的启发，研究者们开始将三维几何完全离散化，把网格生成转化为类似“文本接龙”的 Next-Token Prediction 任务。这种范式可以解决传统表面重建中 Marching Cubes 算法导致的网格致密、拓扑混乱的痛点：</p>
+<ul>
+<li>
+<p>MeshAnything：将 3D 网格生成建模为自回归的序列生成问题。它不仅能以点云、体素或单张图像为条件，更关键的是专注于生成艺术家手工创建级别的网格。这意味着它生成的不再是无序的三角面片海，而是具有干净拓扑、高度符合低多边形建模（Low-poly modeling）标准的优美几何结构，可直接无缝接入下游渲染和物理引擎。</p>
+</li>
+<li>
+<p>DeepMesh：在自回归网格生成的基础上进一步突破，引入了全新的 Token 化压缩算法，并将强化学习（尤其是直接偏好优化 DPO）引入了三维网格生成领域。通过结合 3D 几何评估指标与人类视觉偏好作为反馈信号，DeepMesh 能够显著提升自回归模型在处理复杂几何细节和保持严格拓扑时的精度，使得生成的网格在视觉表现力与严谨物理结构之间达到了极佳的平衡。</p>
+</li>
+</ul>
+<h4 id="工业级精度的资产生成">工业级精度的资产生成</h4>
+<p>最新的三维生成算法不仅仅是单纯的“视觉合理”，还有规整拓扑（Regular Topology）、高保真几何细节以及严谨物理材质（PBR），开始真正接轨工业管线：</p>
+<p>CraftsMan3D (Li et al., CVPR 2024) 提出了一种仿生“工匠”雕刻逻辑的生成范式。为了解决传统生成方法导致的网格拓扑混乱问题，该框架首先利用 3D-Native DiT 在三维隐空间（Latent Space）中直接拟合数据分布，秒级生成具备规整网格结构的粗糙几何体。随后，引入基于法线的交互式几何优化器，允许在保证水密性及利用环绕数（Winding Number）进行可见性检查的前提下，对局部表面细节进行高精度雕刻。这种解耦架构不仅大幅提升了三维重建的成功率，更首次在原生 3D 生成中引入了极具工业价值的交互编辑能力。</p>
+<p>Hunyuan3D 2.0(Tencent et al., 2025) 提出了一种面向工业级高保真 3D 资产生成的可扩展解耦范式。为了弥合生成式 3D 内容与传统人工精雕模型之间的质量鸿沟，该框架首先利用参数量高达百亿级的 Hunyuan3D-DiT（一种基于流匹配的扩散 Transformer），在大规模数据上直接学习三维几何先验。这一阶段能够精准对齐视觉或文本条件，生成表面平滑、拓扑干净的高质量白模（Bare Mesh），为后续底层的表面重建与网格提取奠定了极佳的几何基础。随后，框架引入了 Hunyuan3D-Paint 纹理合成模型，通过多视角扩散架构与几何先验的深度结合，不仅实现了高分辨率的纹理映射，更支持了 PBR（基于物理的渲染）材质的直接生成，能够精确还原真实世界的光影交互（如金属反射与次表面散射）。这种“形色分离”的解耦架构有效拆解了 3D 资产生成的优化难度，不仅大幅提升了复杂几何的生成稳定性，更构建了一条能无缝兼容现有工业界标准图形学管线的即插即用工作流。</p>
+<p>从利用 2D 视觉模型辅助，到依靠原生 3D 数据自强，三维生成发展太快了。当然，相比于二维图像，三维世界目前最大的瓶颈，依然是高质量、大规模的原生数据的极度匮乏。（注：市面上也有如 Meshy AI 等表现出色的商业产品，但由于闭源，其具体技术细节暂无法考证。）</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mmwiki.cn">Tomato Tom</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mmwiki.cn/posts/d5d1f531.html">http://mmwiki.cn/posts/d5d1f531.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://mmwiki.cn" target="_blank">MM's Journal of Technology</a>！</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">The Stanford Bunny in 3D Wonderland</div></div></a></div><div class="next-post pull-right"><a href="/posts/6382afc7.html" title="观陶哲轩演讲-AI与数学-后有感"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">观陶哲轩演讲-AI与数学-后有感</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/c461987d.html" title="中科大-数字几何处理-网格映射"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">中科大-数字几何处理-网格映射</div></div></a></div><div><a href="/posts/705b0bfe.html" title="中科大-数字几何处理-Polycube1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-07</div><div class="title">中科大-数字几何处理-Polycube1</div></div></a></div><div><a href="/posts/5547a98d.html" title="中科大-数字几何处理-网格修复1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">中科大-数字几何处理-网格修复1</div></div></a></div><div><a href="/posts/cc4ef837.html" title="中科大-数字几何处理-网格修复2"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-24</div><div class="title">中科大-数字几何处理-网格修复2</div></div></a></div><div><a href="/posts/631747bb.html" title="中科大-数字几何处理-曲面映射"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-12</div><div class="title">中科大-数字几何处理-曲面映射</div></div></a></div><div><a href="/posts/2f7573f8.html" title="中科大-数字几何处理-纹理映射"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-28</div><div class="title">中科大-数字几何处理-纹理映射</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Tomato Tom</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">78</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/TaylorAmy1995"><i></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:mrmatrix@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com" target="_blank" title=""><i class="iconfont icon-bilibili"></i></a><a class="social-icon" href="https://www.zhihu.com" target="_blank" title=""><i class="iconfont icon-zhihu"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研👨‍🔬、工作👨‍💻和生活👨‍👩‍👧‍👦的过程中捕获到的有价值的课程📺、书籍📗与事件📰，是面向我自己搭建的查漏补缺的备忘录📝和记事本📓✏️。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="toc-number">2.</span> <span class="toc-text">1. 预备知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%9F%BA%E7%A1%80%E7%9A%84%E4%B8%89%E7%BB%B4%E8%A1%A8%E5%BE%81%E6%96%B9%E6%A1%88"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 基础的三维表征方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Marching-Cubes"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 Marching Cubes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E4%B8%BB%E6%B5%81%E6%A8%A1%E5%9E%8B%E8%8C%83%E5%BC%8F%E4%B8%8E%E6%9E%B6%E6%9E%84"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 主流模型范式与架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%A5%9E%E7%BB%8F%E6%B8%B2%E6%9F%93"><span class="toc-number">3.</span> <span class="toc-text">2. 神经渲染</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-NeRF-%E7%A9%B6%E7%AB%9F%E5%9C%A8%E5%B9%B2%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">3.1.</span> <span class="toc-text">2.1. NeRF 究竟在干什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-NeRF-%E6%98%AF%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84"><span class="toc-number">3.2.</span> <span class="toc-text">2.2. NeRF 是怎么做的?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%E7%A5%9E%E7%BB%8F%E4%BD%93%E7%A7%AF%E8%A1%A8%E5%BE%81"><span class="toc-number">3.3.</span> <span class="toc-text">2.2.1. 神经体积表征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%E5%8F%AF%E5%BE%AE%E4%BD%93%E7%A7%AF%E6%B8%B2%E6%9F%93"><span class="toc-number">3.4.</span> <span class="toc-text">2.2.2. 可微体积渲染</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%93%E7%A7%AF%E6%B8%B2%E6%9F%93%E8%AF%A6%E7%BB%86%E6%8E%A8%E5%AF%BC"><span class="toc-number">3.4.1.</span> <span class="toc-text">体积渲染详细推导</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%E8%AE%AD%E7%BB%83%E6%96%B9%E5%BC%8F"><span class="toc-number">3.5.</span> <span class="toc-text">2.2.3. 训练方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3DGS%E6%98%AF%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84"><span class="toc-number">3.6.</span> <span class="toc-text">2.3 3DGS是怎么做的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-3DGS%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B%EF%BC%9A"><span class="toc-number">3.7.</span> <span class="toc-text">2.3.1 3DGS训练过程：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-3DGS%E4%B8%8Enerf%E7%9A%84%E5%85%B3%E8%81%94%EF%BC%9A"><span class="toc-number">3.8.</span> <span class="toc-text">2.3.2 3DGS与nerf的关联：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-3DGS%E6%B8%B2%E6%9F%93%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="toc-number">3.9.</span> <span class="toc-text">2.3.3 3DGS渲染步骤：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%A1%A8%E9%9D%A2%E9%87%8D%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">3. 表面重建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%9F%BA%E4%BA%8E%E4%BD%93%E5%AF%86%E5%BA%A6%E5%9C%BA%E7%9A%84%E7%AD%89%E5%80%BC%E9%9D%A2%E6%8F%90%E5%8F%96"><span class="toc-number">4.1.</span> <span class="toc-text">3.1. 基于体密度场的等值面提取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%BB%8E%E5%AF%86%E5%BA%A6%E8%BD%AC%E5%90%91SDF"><span class="toc-number">4.2.</span> <span class="toc-text">3.2. 从密度转向SDF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%8F%AF%E5%BE%AE%E5%88%86%E7%BD%91%E6%A0%BC%E6%8F%90%E5%8F%96%E4%B8%8E%E5%85%89%E6%A0%85%E5%8C%96"><span class="toc-number">4.3.</span> <span class="toc-text">3.3. 可微分网格提取与光栅化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E5%9F%BA%E4%BA%8E%E9%AB%98%E6%96%AF%E6%B3%BC%E6%BA%85%E7%9A%84%E8%A1%A8%E9%9D%A2%E9%87%8D%E5%BB%BA"><span class="toc-number">4.4.</span> <span class="toc-text">3.4. 基于高斯泼溅的表面重建</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3D%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">4. 3D生成模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E8%A7%86%E8%A7%89%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 视觉模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%97%A9%E6%9C%9F%E5%AF%B9%E6%B3%9B%E5%8C%96%E6%80%A7-%E5%B0%91%E6%A0%B7%E6%9C%AC%E7%9A%84%E5%B0%9D%E8%AF%95"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 早期对泛化性&#x2F;少样本的尝试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E5%AF%B9%E6%8A%97%E5%AD%A6%E4%B9%A0%E7%9A%84-3D-%E6%84%9F%E7%9F%A5%E7%94%9F%E6%88%90-3D-aware-GANs"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 基于对抗学习的 3D 感知生成 (3D-aware GANs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E5%9F%BA%E4%BA%8E%E4%BA%8C%E7%BB%B4%E5%85%88%E9%AA%8C%E7%9A%84%E4%BC%98%E5%8C%96%E7%94%9F%E6%88%90"><span class="toc-number">5.4.</span> <span class="toc-text">4.3 基于二维先验的优化生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%A4%9A%E8%A7%86%E8%A7%92%E6%89%A9%E6%95%A3%E4%B8%8E%E8%81%94%E5%90%88%E5%8E%BB%E5%99%AA"><span class="toc-number">5.5.</span> <span class="toc-text">4.4 多视角扩散与联合去噪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E5%89%8D%E9%A6%88%E5%BC%8F%E5%A4%A7%E8%A7%84%E6%A8%A1%E9%87%8D%E5%BB%BA%E6%A8%A1%E5%9E%8B%EF%BC%88LRM-Large-Reconstruction-Models%EF%BC%89"><span class="toc-number">5.6.</span> <span class="toc-text">4.5 前馈式大规模重建模型（LRM, Large Reconstruction Models）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E5%9F%BA%E4%BA%8E%E7%9B%B4%E6%8E%A5%E4%B8%89%E7%BB%B4%E7%9B%91%E7%9D%A3%E7%9A%84%E6%A8%A1%E5%9E%8B%E7%94%9F%E6%88%90"><span class="toc-number">5.7.</span> <span class="toc-text">4.6 基于直接三维监督的模型生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3D-%E8%A1%A8%E5%BE%81%E4%B8%8E-Transformer-%E7%9A%84%E7%BB%93%E5%90%88"><span class="toc-number">5.7.1.</span> <span class="toc-text">3D 表征与 Transformer 的结合</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%94%9F-3D-%E7%A9%BA%E9%97%B4%E5%86%85%E7%9A%84%E7%9B%B4%E6%8E%A5%E6%89%A9%E6%95%A3"><span class="toc-number">5.7.2.</span> <span class="toc-text">原生 3D 空间内的直接扩散</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E8%87%AA%E5%9B%9E%E5%BD%92%E8%8C%83%E5%BC%8F%E7%9A%84%E7%A6%BB%E6%95%A3%E7%BD%91%E6%A0%BC%E7%94%9F%E6%88%90"><span class="toc-number">5.7.3.</span> <span class="toc-text">基于自回归范式的离散网格生成</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%B8%9A%E7%BA%A7%E7%B2%BE%E5%BA%A6%E7%9A%84%E8%B5%84%E4%BA%A7%E7%94%9F%E6%88%90"><span class="toc-number">5.7.4.</span> <span class="toc-text">工业级精度的资产生成</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/5ca14474.html" title="An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation">An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation</a><time datetime="2026-03-30T16:01:00.000Z" title="发表于 2026-03-31 00:01:00">2026-03-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ba364564.html" title="A Deep Dive into Low-poly Reconstruction">A Deep Dive into Low-poly Reconstruction</a><time datetime="2026-03-01T16:01:00.000Z" title="发表于 2026-03-02 00:01:00">2026-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland">The Stanford Bunny in 3D Wonderland</a><time datetime="2026-01-27T16:01:00.000Z" title="发表于 2026-01-28 00:01:00">2026-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d5d1f531.html" title="图生三维概览, 从神经渲染、表面重建到万物生成">图生三维概览, 从神经渲染、表面重建到万物生成</a><time datetime="2025-05-27T16:01:00.000Z" title="发表于 2025-05-28 00:01:00">2025-05-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/6382afc7.html" title="观陶哲轩演讲-AI与数学-后有感">观陶哲轩演讲-AI与数学-后有感</a><time datetime="2024-08-29T16:00:00.000Z" title="发表于 2024-08-30 00:00:00">2024-08-30</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Tomato Tom</div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>浙ICP备2024121111号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.gov.cn/"><img class="icp-icon" src="http://www.beian.gov.cn/img/new/gongan.png"/><span>浙公网安备33010802013618号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div></div><script src="/js/category.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":0,"vOffset":-100},"mobile":{"show":false},"react":{"opacity":0.85},"log":false});</script></body></html>

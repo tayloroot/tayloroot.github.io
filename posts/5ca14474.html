@@ -1,0 +1,631 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation | MM's Journal of Technology</title><meta name="author" content="Tomato Tom"><meta name="copyright" content="Tomato Tom"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="中文版 Prologue This is a document I wrote last year (2025). It started because a few game developer friends were super interested in 3D generation. At the time, they were already using text-to-image too">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation">
+<meta property="og:url" content="http://mmwiki.cn/posts/5ca14474.html">
+<meta property="og:site_name" content="MM&#39;s Journal of Technology">
+<meta property="og:description" content="中文版 Prologue This is a document I wrote last year (2025). It started because a few game developer friends were super interested in 3D generation. At the time, they were already using text-to-image too">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
+<meta property="article:published_time" content="2026-03-30T16:01:00.000Z">
+<meta property="article:modified_time" content="2026-04-08T07:58:56.778Z">
+<meta property="article:author" content="Tomato Tom">
+<meta property="article:tag" content="图形学">
+<meta property="article:tag" content="论文">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mmwiki.cn/img/sea.jpg"><link rel="shortcut icon" href="/img/m.png"><link rel="canonical" href="http://mmwiki.cn/posts/5ca14474.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-04-08 15:58:56'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">78</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 目录</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-03-30T16:01:00.000Z" title="发表于 2026-03-31 00:01:00">2026-03-31</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">8.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>50分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%BD%A2%E5%AD%A6/">图形学</a><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87/">论文</a></div></div><article class="post-content" id="article-container"><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/2024910367176796023">中文版</a></p>
+<h2 id="Prologue">Prologue</h2>
+<p>This is a document I wrote last year (2025). It started because a few game developer friends were super interested in 3D generation. At the time, they were already using text-to-image tools in their workflows to generate various character models, props, and even 3DGS-based scene assets. They really wanted to understand how these productivity-liberating tools worked under the hood, so I hastily scribbled down this document for them, (hopefully) explaining things in plain English. It was written in a rush, very casually, and pretty much stream-of-consciousness—writing whatever came to mind.</p>
+<p>During a recent holiday gathering, this topic came up again, and everyone dug it out to reminisce (and critique) it a bit. Then I realized that AIGC is developing way too fast; in less than a year, we’ve basically gone through another Great Leap Forward in tech, and 3D reconstruction has sprinted straight into the era of large models lol. “Top-tier conference papers are flooding in endlessly…” Yet, I don’t really have the energy to do a complete overhaul. This time, I just made a few tweaks and additions to the original draft. It’s not a formal paper anyway, so I’m just dumping it directly on Zhihu for our future reference (definitely <em>not</em> just using it as a free image host). The text is full of wild hot takes, so take them with a grain of salt.</p>
+<p>[2026 Update - Start*/]<br>
+Image-to-3D Capability Test — Hunyuan 3D 3.1 Results: <a target="_blank" rel="noopener" href="https://3d.hunyuan.tencent.com/">https://3d.hunyuan.tencent.com/</a></p>
+<p>Input a picture of a truck, and output the truck mesh model:<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-b201dce108b6defb6cd1faa6925522dd_1440w.jpg" alt="car_ori"><br>
+Output Model - White Model (Clay):<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-791e44897ac3058e96556bc4205d7d7c_b.webp" alt="car_model"><br>
+Output Model - Topology:<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-881f0a71249031ab5e8d2b6bd97eaea2_b.webp" alt="car_tp"><br>
+Output Model - Textures:<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-effdd1cc0ae5cc46ad9b7b85a20f53c8_b.webp" alt="car_tex"></p>
+<p>Input a picture of Louis XVI (jk):<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-7052b7774af1a655d37c9408e58d9b90_1440w.jpg" alt="fu-ori"><br>
+Output a complete Louis XVI, a gift from fate ():<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-f696c2b05198dee270299a71c9222355_1440w.jpg" alt="fu-model"></p>
+<p>Input a sculpture of horses (testing freeform surfaces) “Eight Steeds”, output the white model and topology, along with something weird mixed in ():<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-b0e82c28bb269f083015a86de65e21da_1440w.jpg" alt="horse"></p>
+<p>Input a photo of a barn scene (failure case), the output model has severe missing parts. This might be related to the larger scale of the scene, the fact that the input image doesn’t fully cover it, and the presence of many interfering elements:<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-31cc1baa00bea6d585698f6434a195f5_1440w.jpg" alt="barn"></p>
+<p>In my opinion, the results are quite stunning. For small-scale objects, it’s virtually flawless and ready to use out of the box. (Off-topic: How do we protect the copyright of these generated models? I heard the official platform might embed hidden watermarks in the models for tracing? But adding watermarks to standard format models feels a bit unrealistic.) It’s basically unusable for large scenes, though for those, you could arguably brute-force it with methods like 3DGS. Last year I tested version 2.0, and it was nowhere near as good as this 3.1 version.<br>
+[2026 Update - End/*]<br>
+[2026 Edit]====== Deleted Hunyuan 2.0 results =================</p>
+<p>Image-to-3D generally has five stages:<br>
+<strong>Stage 1: The Antiquity Era (Traditional Multi-View Geometry) [2010-2020]</strong>: Using SfM (Structure from Motion) and MVS (Multi-View Stereo) to recover camera poses from images, then generating dense point clouds. This is very mature now, with excellent open-source tools like COLMAP and OpenMVG, plus a series of works in visual SLAM (if you count that as reconstruction).<br>
+<strong>Stage 2: The Deep Learning Era [2018-2021]</strong>: Utilizing massive amounts of 2D data for monocular depth estimation, as well as experimenting with 3D GAN generation using GAN models.<br>
+<strong>Stage 3: The Neural Rendering Era [2020-2023]</strong>: Using NeRF’s differentiable volume rendering to overfit a single scene and output a neural radiance field. This subsequently spawned more efficient explicit/hybrid representations like 3DGS.<br>
+<strong>Stage 4: The 2D Prior (Diffusion) Era [2022-2024]</strong>: The explosive popularity of 2D diffusion models made researchers realize the feasibility of distilling 2D knowledge to supervise 3D generation. Aside from 3D-to-2D rendering, we could do “2D-training-3D” (the prime example being DreamFusion, which introduced the SDS loss).<br>
+<strong>Stage 5: The Native 3D Large Model (LRM/DiT) Era [2023-Present]</strong>: With the validation of 3D VAEs, the refinement of the DiT architecture, the accumulation of massive 3D data, and the widespread application of highly efficient structures like Triplanes, direct “3D supervising 3D” has become the mainstream. Image-to-3D has truly entered the feed-forward generation large model era.</p>
+<p>The rest of this article is divided into these sections: Prerequisites, Neural Rendering, Surface Reconstruction, and Generative Models. The prerequisites will cover basic 3D representations, how to extract meshes from implicit spaces, and some mainstream model paradigms and architectures. The Neural Rendering section details the mechanics of NeRF and 3DGS. Surface Reconstruction discusses the attempts made to obtain high-quality meshes. The Generative Models section primarily summarizes the representative works from Stages 4 and 5 mentioned above.</p>
+<h2 id="1-Prerequisites">1. Prerequisites</h2>
+<h3 id="1-1-Basic-3D-Representations">1.1 Basic 3D Representations</h3>
+<p><strong>a. Explicit Representations: Polygon Meshes, Point Clouds, Voxels</strong><br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-103de7247c35ff69918a7dc472be5d33_1440w.jpg" alt="3drp"></p>
+<p>Explicit representations (like meshes) are very intuitive to humans, but <strong>extremely difficult for neural networks to generate and optimize</strong> (because the number of vertices and faces, as well as their connectivity, are constantly changing and discontinuous).</p>
+<p><strong>b. Implicit Representations</strong><br>
+Neural networks prefer continuous, differentiable expressions—namely, using <strong>implicit functions</strong> to represent 3D surfaces. This means defining a function $f(x,y,z)$ in 3D space. When the value of this function equals a specific constant $c$ (usually $0$), the set of these points forms the surface of the object (Level set).</p>
+<p><strong>SDF (Signed Distance Fields)</strong> is a special type of implicit representation. For any point $(x, y, z)$ in space, the SDF outputs a scalar value $D$: the magnitude represents the absolute shortest distance from this point to the object’s surface, and the sign (positive or negative) indicates whether the point is inside ($D &lt; 0$) or outside ($D &gt; 0$) the object. <strong>$D = 0$: The point is exactly on the surface of the object</strong> (Zero-level set).</p>
+<p>Depending on task requirements, SDFs can also be adapted:</p>
+<ul>
+<li><strong>TSDF (Truncated SDF)</strong>: Often, we only care about the details near the surface of the object; space that is too far away is meaningless. TSDF sets a threshold $t$ to limit the distance to between $[-1, 1]$. Anything further away is simply truncated to save computational power (commonly used in real-time 3D reconstruction with depth cameras like Kinect).</li>
+<li><strong>Occupancy Fields</strong>: The most aggressively simplified version. It doesn’t care about the distance; it only cares about “Yes” or “No”. If a point is inside or on the surface ($SDF \le 0$), the value is $1$; if it is outside, the value is $0$. (This introduces the concept of a <em>field</em>, which will be covered in Chapter 2.)</li>
+</ul>
+<p><strong>c. Parametric Representations</strong><br>
+For example, parametric curves and surfaces like Bezier curves, Catmull-Rom splines, B-spline curves, NURBS, etc. However, these aren’t highly relevant to our topic today, so we’ll skip them.</p>
+<p>Of course, NeRF and 3DGS are technically 3D representations too, but they are far from “basic” :)</p>
+<h3 id="1-2-Marching-Cubes">1.2 Marching Cubes</h3>
+<p><strong>TL;DR:</strong> Marching Cubes is an Isosurface Extraction scheme designed to reconstruct explicit geometric boundaries from a discrete Occupancy grid or scalar field. Various modern neural methods ultimately output an occupancy field or an SDF; you can think of it as simply plugging in this component to generate an explicit mesh.</p>
+<p><strong>2D Scenario: Degrades to Marching Squares (MS)</strong><br>
+Marching Squares divides 2D space into a regular square grid. For each grid cell, the algorithm evaluates the function values of its four vertices and binarizes them based on their sign (positive or negative, representing outside or inside). The four vertices yield $2^4 = 16$ state combinations (middle of the image below). By querying a pre-built lookup table containing these 16 cases, the algorithm determines which edges of the grid boundaries have a sign change. Subsequently, exact boundary intersection coordinates are calculated based on linear interpolation, and these intersections are connected to form closed 2D isolines (like the far left of the image below).</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-64f645583fbe669cdebabd68eecfb17d_1440w.jpg" alt="mc"></p>
+<p><strong>3D Scenario: Marching Cubes (MC)</strong><br>
+Space is discretized into a 3D grid, with the basic unit being a cube. Each cube has 8 vertices, resulting in $2^8 = 256$ state combinations. By applying rotation and mirror symmetry, these 256 combinations are simplified into 15 base cases (right side of the image above). The algorithm independently iterates through all cubes in space, using a lookup table to determine how triangle faces connect inside the cube. The local independence of this algorithm drastically increases computational speed, making it highly suitable for parallel processing.</p>
+<p><strong>Flaws and Improvement Schemes</strong></p>
+<ul>
+<li><strong>Flaw 1:</strong> Topological ambiguity exists during the execution of both Marching Squares and Marching Cubes. When vertices on the diagonal of a grid cell have the same state, while adjacent vertices have different states, the system lacks enough information to uniquely determine the topological connectivity of the faces (i.e., whether they should connect or disconnect—see the bottom middle of the image above for a 2D example). Among the 15 base cases of Marching Cubes, 6 are ambiguous. This can result in holes or incorrect topologies in the final generated mesh.
+<ul>
+<li><strong>Improvement:</strong> The <strong>Marching Tetrahedra</strong> algorithm solves this by changing how space is discretized. It divides 3D space into tetrahedra instead of cubes. Since a tetrahedron only has 4 vertices, the isosurface intersections within it are much simpler. This completely eliminates state combination ambiguity from a geometric and mathematical standpoint, ensuring the generated mesh has strict watertightness and correct topology.</li>
+</ul>
+</li>
+<li><strong>Flaw 2:</strong> Traditional Marching Cubes determines vertex positions via linear interpolation along the grid edges. This mechanism inherently has a smoothing effect, meaning the algorithm cannot accurately restore sharp features (like right angles or creases) from the original geometric model, often producing stair-step artifacts at the edges.
+<ul>
+<li><strong>Improvement:</strong> Dual algorithms, represented by <strong>Dual Marching Cubes</strong> and <strong>Dual Contouring (DC)</strong>, restructured the vertex generation logic. Instead of placing vertices on the grid edges, these algorithms use internal intersection data (usually combined with normal data, by minimizing a Quadratic Error Function, QEF) to calculate a feature vertex <em>inside</em> each boundary-containing grid cell. Then, the algorithm connects the feature vertices of adjacent cells to form polygonal faces. This dual mechanism can capture and reconstruct sharp geometric edges with extreme precision.</li>
+</ul>
+</li>
+</ul>
+<p><strong>How do these basic geometric representations convert between each other?</strong></p>
+<ol>
+<li><strong>Polygon Mesh → Point Cloud</strong>: First, perform polygon triangulation (ear clipping), then sample points on the triangular faces (based on barycentric coordinates).</li>
+<li><strong>Implicit Surface → Mesh</strong>: Use the Marching Cubes algorithm to extract the isosurface.</li>
+<li><strong>Point Cloud → Implicit Surface</strong>:
+<ul>
+<li>Local fitting methods: MLS, RBF.</li>
+<li>Global methods: Poisson Surface Reconstruction.</li>
+<li>Voxel methods: TSDF-based fusion (e.g., KinectFusion).</li>
+</ul>
+</li>
+<li><strong>Point Cloud → Mesh</strong>:
+<ul>
+<li>Indirect methods: Point Cloud → Implicit Surface → Mesh.</li>
+<li>Direct methods: Triangulation (Delaunay: suitable for 2D or locally parameterized scenes, along with other triangulation methods).</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-3-Mainstream-Model-Paradigms-and-Architectures">1.3 Mainstream Model Paradigms and Architectures</h3>
+<p>MAE, VAE, GAN, Transformer, ViT, Diffusion, DiT<br>
+[2026 Edit]====== Deleted this section =================</p>
+<h2 id="2-Neural-Rendering">2. Neural Rendering</h2>
+<p>All of this has to start with NeRF (Neural Radiance Field), published at ECCV in 2020. Neural Radiance Field = Neural + Radiance + Field.</p>
+<ul>
+<li><strong>What is a Field</strong>: If there is a clearly defined physical quantity or value at <strong>every coordinate point</strong> in space (or time), this is called a “field”. For example, the temperature in your room—every point in space has a temperature value, which makes it a “temperature field” (scalar field); when the wind blows, every point has a wind speed and direction (both magnitude and direction), making it a “vector field”. A piece of audio (1D time field), a photograph (2D color field), magnetic/wind fields (3D vector fields), 3D parameterized surfaces (NURBS, explicit surfaces), and 3D Signed Distance Fields (SDF, implicit surfaces) are all fields.</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-51f70a82f9a20be15450cb1f0c035989_1440w.jpg" alt="field"></p>
+<ul>
+<li>
+<p><strong>What is a Neural Field</strong>: If the values of a “field” are calculated and represented by a <strong>neural network</strong>, it’s called a “neural field”. Specifically, if the SDF mentioned earlier is implemented via a neural network—meaning you input the 3D spatial coordinates $(x, y, z)$ and the neural network outputs a number (the distance from that point to the object’s surface)—the intermediate mapping relationship $f$ is realized through the neural network. This is a neural field, specifically called a Neural SDF.</p>
+</li>
+<li>
+<p><strong>Why use Neural Fields?</strong> Natural signals in the real world are continuous waveforms; traditional explicit representations (pixels, voxels) are sampled, discrete signals that lose detail when magnified. A neural field, however, uses a neural network as a continuous parameterized function, which can <strong>smoothly fit true natural signals at an infinite resolution</strong>.</p>
+</li>
+<li>
+<p><strong>What is a Neural Radiance Field?</strong> Simply put: NeRF is a special type of neural field that uses a neural network to represent a 3D scene. You input position and angle, and it outputs information like the light field and color (the so-called “radiance”). This is a neural radiance field. Let’s break it down in detail below.</p>
+</li>
+</ul>
+<h3 id="2-1-What-exactly-is-NeRF-doing">2.1. What exactly is NeRF doing?</h3>
+<p>Novel View Synthesis. What is Novel View Synthesis?</p>
+<ul>
+<li><strong>Input</strong>: A set of 2D RGB images with known camera parameters (position, orientation).</li>
+<li><strong>Output</strong>: A representation of a 3D scene. Based on this representation, you can freely move a virtual camera to render photos from entirely new angles that were never captured.</li>
+</ul>
+<h3 id="2-2-How-does-NeRF-do-it">2.2. How does NeRF do it?</h3>
+<p>Three core components: Neural Volumetric Representation + Differentiable Volume Rendering + Rendering-Based Optimization.</p>
+<ol>
+<li><strong>Neural Volumetric Representation</strong>: Abandoning traditional meshes or voxels, it uses a continuous neural network to implicitly represent the entire 3D space.</li>
+<li><strong>Differentiable Volume Rendering</strong>: How do you turn 3D space into a 2D photo? By “shooting rays” to sample and calculate colors. The key here is “differentiable,” meaning the errors generated during the rendering process can be directly passed back to the neural network for correction via backpropagation.</li>
+<li><strong>Rendering-Based Optimization</strong>: The training logic is extremely pure. The network “guesses” an image (the generated photo) -&gt; compares it with the real input image to calculate the error -&gt; updates the network weights.</li>
+</ol>
+<p>Q: What does “volumetric” mean here?<br>
+A: As long as a continuous density function $\sigma(x,y,z)$ is defined in 3D space, this space can be considered a <strong>volume</strong>, also known as a <strong>density field</strong> or <strong>volumetric field</strong>.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-046684cc88355bf03f9af8bbadacd824_1440w.jpg" alt="nerf1"></p>
+<p>Let’s dismantle these components one by one:</p>
+<h3 id="2-2-1-Neural-Volumetric-Representation">2.2.1. Neural Volumetric Representation</h3>
+<p>NeRF strictly defines a 3D scene as a <strong>5D to 4D mapping function</strong> $F_\Theta$:</p>
+<ul>
+<li><strong>5D Input</strong>: Contains the 3D spatial coordinates $(x, y, z)$ and the 2D viewing direction (yaw and pitch, i.e., $\theta, \phi$).</li>
+<li><strong>Network Body</strong>: A very classic MLP (Multilayer Perceptron) with 9 layers, each having 256 channels.</li>
+<li><strong>4D Output</strong>: Outputs the emitted color $(r, g, b)$ of that spatial point from the specific viewing angle, as well as the volume density $(\sigma)$ of the point itself. (We’ll explain what volume density is later).</li>
+</ul>
+<p>PS: Why do we need to include the viewing direction $(\theta, \phi)$? Because objects in the real world often have <strong>specular highlights, reflections, or metallic textures</strong>. For the exact same spatial point $(x, y, z)$, the color $(r, g, b)$ it reflects into your eyes will look different depending on whether you look at it from the left or the right. Introducing the viewing angle as an input gives NeRF the ability to express realistic, complex lighting and shadows.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-203a186533cb8f85f6880462ab3d87de_1440w.jpg" alt="n1"></p>
+<h3 id="2-2-2-Differentiable-Volume-Rendering">2.2.2. Differentiable Volume Rendering</h3>
+<ul>
+<li><strong>Calculating Rays</strong>: To render a pixel on a 2D photo, we need to shoot a ray from the center of the virtual camera, passing through the screen position of that pixel, out into 3D space. The final color of the pixel is the accumulation of the colors of all the points along this ray.</li>
+<li><strong>Modeling Rendering as a Probability Problem</strong>: Traditional rendering (like ray tracing) needs to calculate exactly which hard surface (specific polygon) a ray “hits”. But mathematically, this is discontinuous and non-differentiable (you either hit it or you don’t). NeRF treats the entire space as a cloud of <strong>semi-transparent fog (Volumetric)</strong>. When a ray travels through space, there are no absolute collisions, only the accumulation of density. This “soft” continuous model perfectly matches the gradient-based optimization methods of neural networks.</li>
+<li><strong>Replacing Traditional Meshes</strong>: There is no actual voxel grid storing data in space; all scene properties (color, density) are entirely compressed and encoded within the weights of that 9-layer MLP neural network.</li>
+</ul>
+<h4 id="Detailed-Derivation-of-Volume-Rendering">Detailed Derivation of Volume Rendering</h4>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-151f27445f84a79e280d6a2f57704f5a_1440w.jpg" alt="vr"><br>
+<strong>1. Defining the Ray Equation</strong><br>
+First, define the equation for a ray emitted from the camera:<br>
+$$\mathbf{r}(t) = \mathbf{o} + t\mathbf{d}$$<br>
+Where $\mathbf{o}$ is the ray origin (camera position) and $\mathbf{d}$ is the emission direction. $t$ is a scalar representing distance or time; every point along the path can be represented by $t$ (the larger $t$ is, the further the ray has traveled).</p>
+<p><strong>2. Spatial (Fog) Properties</strong><br>
+When the ray travels to distance $t$, it encounters two properties predicted by the NeRF neural network:</p>
+<ul>
+<li><strong>Color $\mathbf{c}(t)$</strong>: The RGB color at that position.</li>
+<li><strong>Volume Density $\sigma(t)$</strong>: Represents how thick this fog is. The rigorous mathematical definition is a <strong>probability</strong>—when the ray travels through an infinitesimally small step $dt$ near $t$, the probability of hitting a particle is $\sigma(t)dt$.</li>
+</ul>
+<p><strong>3. Transmittance $T(t)$ and the Continuous Rendering Integral</strong><br>
+Suppose the ray encounters red fog at distance $t$; will it bring the color red back to the camera? <strong>Not necessarily! If there’s an extremely thick black wall right in front (closer to the camera), the ray would have been blocked entirely!</strong> Therefore, we need to calculate the <strong>Transmittance $T(t)$</strong>, which is the survival probability that the ray flies from the origin to distance $t$ without hitting anything along the way. Based on the logic “probability of surviving to $t + dt$ = probability of surviving to $t$ $\times$ probability of not hitting anything in $dt$”, we get $T(t + dt) = T(t) \times (1 - \sigma(t)dt)$. Through Taylor expansion and solving the differential equation, we get the transmittance formula:<br>
+$$T(t) = \exp\left(-\int_{t_0}^t \sigma(s)ds\right)$$<br>
+<em>(Note: Meaning the survival rate of the ray reaching $t$ equals the sum of all accumulated densities along the way, wrapped in a negative exponential. The thicker the fog along the path, the exponentially faster the survival rate drops.)</em></p>
+<p>To calculate the final pixel color $C$ on the screen, the ray at $t$ must simultaneously satisfy two conditions: <strong>survive to reach $t$</strong> (probability $T(t)$) AND <strong>exactly hit a particle at $t$</strong> (probability $\sigma(t)dt$). Accumulating the contributions of all positions along the entire ray gives us the continuous rendering equation:<br>
+$$C = \int_{t_n}^{t_f} T(t)\sigma(t)\mathbf{c}(t) dt$$</p>
+<p><strong>4. Discretization (Code Implementation)</strong><br>
+Computers cannot directly calculate continuous and infinite calculus, so we need to convert the continuous formula into a discrete addition. We chop the ray into $N$ small segments (the $i$-th segment having a length of $\delta_i$):</p>
+<ul>
+<li><strong>Opacity $\alpha_i$</strong>: The probability of the ray being blocked when passing through the $i$-th segment, $\alpha_i = 1 - \exp(-\sigma_i \delta_i)$.</li>
+<li><strong>Discrete Transmittance $T_i$</strong>: The probability of the ray surviving to reach the $i$-th segment (the product of the probabilities of all previous segments not blocking it), $T_i = \prod_{j=1}^{i-1} (1 - \alpha_j)$.</li>
+<li><strong>Final Discrete Summation Formula</strong>:<br>
+$$\hat{C} \approx \sum_{i=1}^N T_i \alpha_i \mathbf{c}_i$$<br>
+<em>(Final Color = $\sum$ Survival Rate $\times$ Current Segment Opacity $\times$ Current Segment Color)</em></li>
+</ul>
+<p><strong>5. Rendering Weights $w$ and Depth Extension</strong><br>
+The $T_i \alpha_i$ in the formula is called the <strong>Rendering weights</strong>.</p>
+<ul>
+<li><strong>Occlusion Principle</strong>: If there’s an opaque wall in front (where $\alpha$ is huge somewhere), the transmittance $T_i$ for all points behind the wall will instantly drop to zero, and the weights will correspondingly drop to zero. This means anything behind the wall won’t participate in the color calculation.</li>
+<li><strong>Depth Extraction</strong>: By multiplying the distance $t_i$ of each point along the path by its weight $T_i \alpha_i$ and summing them up, we can calculate approximately how far away the ray “hits a wall”. This is the principle behind how NeRF extracts a 3D depth map (specifically, it can be divided into expected depth and median depth).</li>
+<li><strong>Physical Quantity Extension</strong>: By the same logic, if we replace $\mathbf{c}_i$ with any other physical quantity $\mathbf{v}_i$ in 3D space (such as semantics, normal vectors, etc.), we can render out corresponding feature maps.</li>
+</ul>
+<h3 id="2-2-3-Training-Method">2.2.3. <strong>Training Method</strong></h3>
+<p>Calculate the synthesized image via forward propagation, then calculate the loss between the synthesized image and the real image, backpropagate the gradients (because the rendering process is differentiable), and optimize the MLP parameters.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-8c94ae13fb98b4bfcdd6f3bdb2a76cd8_1440w.jpg" alt="nerf2"><br>
+Subsequently, academia has proposed a massive number of improvement schemes for NeRF. There are optimizations based on positional encoding, compressing and speeding up rendering, targeting unbounded scenes and unknown camera poses, processing dynamic scenes, dealing with complex lighting and few-shot generalization, and so on and so forth.</p>
+<h3 id="2-3-How-does-3DGS-do-it">2.3 How does 3DGS do it?</h3>
+<p><strong>Surface Splatting</strong> technology has actually been around since 2001: To solve the problem of sparse holes when rendering point clouds, each point in the point cloud is turned into a Gaussian kernel (in 1D it’s a Gaussian basis function, in 2D it’s an ellipse, in 3D it’s an ellipsoid). When countless such Gaussian kernels are packed together, their blurry edges blend into each other (continuous signal reconstruction), and the original gaps between points are perfectly filled. When we look at it from the camera’s perspective, it looks as if these 3D Gaussian spheres are squashed and <strong>splatted</strong> onto the 2D screen grid. To calculate a single pixel, NeRF has to sample hundreds or thousands of times along a ray, computing endless integrals. But with splatting technology, each Gaussian sphere is independent, and the GPU can process millions of spheres in parallel in one breath, making rendering blazing fast.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-4bd3ab887ca6cbcd68c722a395c0bd10_1440w.jpg" alt="gs0"></p>
+<p>If splatting tech existed back in 2001, why did it take until 2023 to blow up? Firstly, because early on there was a lack of differentiable schemes. It wasn’t until a series of works represented by “Differentiable Surface Splatting” appeared around 2019, proving that the surface splatting rendering process is mathematically differentiable. This meant we could use backpropagation to let a computer look at 2D photos and automatically adjust the positions and attributes of hundreds of thousands of primitives in space. Secondly, the groundwork laid by NeRF. 3DGS cleverly inherited the Spherical Harmonics (SH) and alpha blending logic validated by NeRF, and upgraded the primitives to anisotropic 3D Gaussian kernels (with position, color, scale, and opacity all having fully differentiable degrees of freedom). The authors of 3DGS executed extreme engineering: the idea is very simple, the results are stunning, and they hand-rolled highly efficient CUDA rasterization operators based on Tile partitioning, perfectly solving the sorting and blending problem for millions of Gaussian kernels.</p>
+<h3 id="2-3-1-3DGS-Training-Process">2.3.1 3DGS Training Process:</h3>
+<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-febc46a010574fc533b4d9af14f304cd_1440w.jpg" alt="gs"></p>
+<ol>
+<li><strong>Initialization</strong>: First, use traditional photogrammetry algorithms (SfM, like COLMAP) to extract a bunch of sparse 3D coordinate points from the photos.</li>
+<li><strong>Generating 3D Gaussians</strong>: Turn every single sparse 3D point into a semi-transparent “3D Gaussian ellipsoid”.</li>
+<li><strong>Rasterization and Gradient Backpropagation (Differentiable Tile Rasterizer)</strong>: “Squash” these 3D spheres onto a 2D screen, compare them with real photos, and calculate the error. Then, via gradient backpropagation, adjust the shape, color, and position of each sphere.</li>
+<li><strong>Adaptive Density Control</strong>: This is a very hand-crafted mechanism. During training, if the network finds that details in a certain area are highly complex (like hair), it will automatically <strong>split</strong> a large sphere into several smaller ones; if it finds an area is just a solid color background, it will <strong>clone/merge</strong> small spheres, or <strong>prune</strong> completely transparent ones.</li>
+</ol>
+<p>The parameters for each 3D Gaussian sphere: $p$: Center position coordinates; $\Sigma$: Covariance matrix (controls scale and rotation); $o$: Opacity; $SH$: Spherical Harmonics (records different colors seen from different angles, i.e., reflection/specular effects).</p>
+<h3 id="2-3-2-The-Connection-Between-3DGS-and-NeRF">2.3.2 The Connection Between 3DGS and NeRF:</h3>
+<ul>
+<li><strong>Traditional Surface Splatting</strong>: Its color blending method is a <strong>weighted average</strong> ($c = \frac{\sum c_i w_i}{\sum w_i}$). This cannot handle “occlusion relationships”.</li>
+<li><strong>3DGS Splatting</strong>: It introduces the concept of <strong>Opacity ($o$)</strong>, changing the formula to front-to-back <strong>Alpha compositing</strong>.<br>
+$$c = \sum_{i \in N} c_i o_i w_i \prod_{j=1}^{i-1} (1 - o_j w_j)$$</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-4c96e73319eefeaa3d42bebe92236a7a_1440w.jpg" alt="gs2"></p>
+<p>The $\prod_{j=1}^{i-1} (1 - o_j w_j)$ in the 3DGS formula is completely mathematically equivalent to NeRF’s “Transmittance $T(t)$”. In mathematical essence, 3DGS is just calculating NeRF’s volume rendering integral. It’s just that NeRF “samples step-by-step along a ray in continuous space”, whereas 3DGS directly turns space into discrete spheres and uses the GPU to directly compute the overlapping coloring of these spheres. <strong>The goal is identical, but the calculation speed of 3DGS is orders of magnitude faster.</strong> In other words, 3DGS is <strong>using an explicit 3D ellipsoid data structure to run the implicit NeRF volume rendering formula.</strong> It has both the extreme photorealism of NeRF (the ability to learn a scene) and the blazing fast rendering speeds of traditional polygons.</p>
+<h3 id="2-3-3-3DGS-Rendering-Steps">2.3.3 3DGS Rendering Steps:</h3>
+<ol>
+<li><strong>Sort</strong>: To correctly calculate the NeRF-like “transmittance” mentioned above, we must know who is in front and who is behind. So the first step is to line up the millions of 3D spheres from front to back based on depth.</li>
+<li><strong>Splat</strong>: Project (squash) these 3D ellipsoids onto the 2D screen to calculate their 2D shapes.</li>
+<li><strong>Blend</strong>: Using the Alpha compositing formula above, layer the sorted spheres on top of each other to calculate the final pixel color.</li>
+</ol>
+<p>3DGS is such a complete and refined piece of work that subsequent papers feel more like minor patches and tweaks. However, this purely hand-crafted “clone, split, prune” mechanism feels very rigid and clunky; it’s not as mathematically elegant as NeRF. Some steps feel like they were off-the-cuff engineering brainwaves tested via trial-and-error.</p>
+<h2 id="3-Surface-Reconstruction">3. Surface Reconstruction</h2>
+<p>Surface reconstruction here aims to extract explicit Mesh models—ready for direct use in traditional rendering pipelines—from continuous neural fields (like volume density fields, SDFs) or discrete primitives.</p>
+<h3 id="3-1-Isosurface-Extraction-Based-on-Volume-Density-Fields">3.1. Isosurface Extraction Based on Volume Density Fields</h3>
+<p>In the original NeRF architecture, the neural network predicts the color and volume density ($\sigma$) of any point in space. Volume density reflects the attenuation rate (or local termination probability) of a ray being blocked by physical entities at a certain point in space. Since the interior of an object usually has extremely high opacity while the exterior is free space, the location of an abrupt change in density can be treated as the object’s surface.</p>
+<ul>
+<li><strong>Extraction Mechanism</strong>: By manually setting a fixed density threshold $\tau$, the continuous 3D space can be implicitly divided into occupied states ($\sigma &gt; \tau$) and unoccupied states ($\sigma &lt; \tau$). This division forms the Isosurface. Subsequently, by applying classic algorithms like Marching Cubes (MC), intersection points can be located within the grid space to generate triangular faces.</li>
+<li><strong>Limitations</strong>: This density-based extraction scheme lacks explicit constraints on the underlying surface geometry. Due to the ill-posed nature of multi-view image reconstruction and view-dependent effects, the network tends to generate high-density discrete regions in free space to reduce photometric errors. As a result, the extracted meshes usually contain a large number of floaters, holes, and high-frequency noise. Furthermore, the selection of the threshold $\tau$ is highly empirical and lacks theoretical guarantees for generalization.</li>
+</ul>
+<h3 id="3-2-Shifting-from-Density-to-SDF">3.2. Shifting from Density to SDF</h3>
+<p>Compared to the flaws of volume density fields, the zero-level set of an SDF can represent continuous surfaces naturally, accurately, and in accordance with strict mathematical definitions.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-b12ae6c22bcac759e24e37c8b13b5cc3_1440w.jpg" alt="vsdf"></p>
+<ul>
+<li><strong>VolSDF</strong>: Attempts to introduce the SDF framework into volume rendering. This algorithm establishes an analytical mapping between the SDF and volume density through a Cumulative Distribution Function (CDF). However, its empirical model has a certain bias in the density integral estimation near the surface, which affects the recovery of fine structures.</li>
+<li><strong>NeuS</strong>: Addressing the bias issue in VolSDF, NeuS proposes an unbiased volume rendering formulation. Specifically, while VolSDF essentially uses the CDF of the Laplace distribution, NeuS uses the Logistic distribution to derive its unbiased weights. Using the weight function induced by the SDF, NeuS ensures that the rendering weights during ray tracing computation strictly reach their global peak at the SDF zero-level set. This mathematical property greatly improves the smoothness and geometric fidelity of the reconstructed surface.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-bd8ce729df5ae486e96522edae85e30a_1440w.jpg" alt="sdf"></li>
+<li><strong>Neuralangelo</strong>: Subsequent works accelerated the SDF optimization process by introducing hybrid representations (like Tensor-based architectures using tensor decomposition). Taking this further, NVIDIA proposed <strong>Neuralangelo</strong>, which combines multi-resolution hash grid encoding (the Instant-NGP architecture) with numerical gradient optimization strategies. It successfully overcomes the surface roughness caused by hash tables, making it possible to reconstruct surface topologies with extreme photorealism and minute details directly from neural fields.</li>
+</ul>
+<h3 id="3-3-Differentiable-Mesh-Extraction-and-Rasterization">3.3. Differentiable Mesh Extraction and Rasterization</h3>
+<p>Although SDF-based implicit methods improved surface quality, extracting the Mesh is still a post-processing step performed after forward rendering is complete. Traditional Marching Cubes algorithms are non-differentiable because they involve discrete vertex state judgments and topological combination enumeration. To enable the joint optimization of 3D mesh vertices directly using supervision signals from the 2D image space, differentiable mesh extraction technologies were proposed. These are often combined with differentiable rasterizers (like NVIDIA’s <code>nvdiffrast</code>) to achieve a fully differentiable pipeline from mesh generation to image rendering:<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-b0cb3f373e92e953a930bda6fdbe69e4_1440w.jpg" alt="dmtet"></p>
+<ul>
+<li><strong>DMTet (Differentiable Marching Tetrahedra)</strong>: This algorithm abandons the traditional cubic grid and adopts tetrahedral spatial partitioning to eliminate topological ambiguity. DMTet not only predicts the SDF values of spatial nodes but also predicts the geometric deformation offsets of the vertices. By differentiably calculating the coordinates of isosurface intersections, the network can directly receive reprojection error gradients from the rasterized image, thereby finely adjusting the vertex positions.</li>
+<li><strong>FlexiCubes</strong>: NVIDIA further proposed the FlexiCubes algorithm. It returns to the cubic partitioning paradigm but introduces higher flexibility in mesh parameterization design (introducing additional vertex weight parameters). Compared to DMTet, FlexiCubes demonstrates superior dynamic topological adaptability and can more sharply and accurately fit sharp features and complex boundaries in industrial-grade models.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-51343836dbd50f824108d989c7a02620_1440w.jpg" alt="fc"></li>
+</ul>
+<h3 id="3-4-Surface-Reconstruction-Based-on-Gaussian-Splatting">3.4. Surface Reconstruction Based on Gaussian Splatting</h3>
+<p>Unlike NeRF, which relies on continuous implicit fields for ray tracing, 3D Gaussian Splatting uses an explicit collection of 3D Gaussian ellipsoids to represent the scene, achieving real-time rendering speeds. However, because the original 3DGS lacks explicit geometric constraints, the Gaussian ellipsoids often exhibit a highly disordered and overlapping distribution in space. Directly extracting a mesh from them (e.g., by converting them into a density field and applying the MC algorithm) results in surfaces that are extremely rough, full of noise, and suffer from obvious thickness artifacts. To solve this pain point, recent research has begun introducing strict surface constraints into the explicit Gaussian representation.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-fd5b0ab32e9dc7b32a6af45013e27e4c_1440w.jpg" alt="gsm"></p>
+<ul>
+<li><strong>SuGaR (Surface-Aligned Gaussian Splatting)</strong>: The SuGaR algorithm introduces a clever regularization mechanism that forces the 3D Gaussian ellipsoids to flatten out and tightly align with the true surface of the scene during optimization. Through this alignment operation, SuGaR can convert the discrete Gaussian point cloud into a smooth surface indicator field. It then utilizes classic point cloud algorithms like Poisson Surface Reconstruction, and by binding the Gaussian primitives to the mesh faces for joint optimization, efficiently extracts a Mesh model that boasts both high-quality topological structure and real-time rendering capabilities.</li>
+<li><strong>2D Gaussian Splatting (2DGS)</strong>: Huang et al. pointed out that 3D volumetric ellipsoids have inherent multi-view inconsistencies when representing extremely thin or flat surfaces. Therefore, 2DGS discards 3D ellipsoids and directly models the scene as 2D oriented discs (2D Surfels). This “dimensionality reduction” ensures that each Gaussian primitive naturally possesses clear surface properties and normal directions. Combined with depth distortion regularization and photometric consistency constraints, 2DGS can obtain extremely accurate geometric appearances and normal fields, fundamentally eliminating the thickness and floater artifacts of 3DGS to achieve high-fidelity mesh generation.</li>
+</ul>
+<p>[2026 Edit] Deleted the quantitative comparison of mesh quality.</p>
+<h2 id="4-3D-Generative-Models">4. 3D Generative Models</h2>
+<p>Directly outputting 3D representations from images (aka, inverse graphics) is obviously a highly ill-posed problem, as single-view inputs severely lack geometric structure and depth information. Earlier, we explained how to perform neural rendering using multi-view images and extract Meshes from volume density fields or SDFs. But this is merely a “per-scene, per-model” optimization process; it is essentially overfitting, strictly a laboratory product, and the industry would never use these schemes. When faced with few-shot or even single-view inputs, how exactly do we optimize? Can locally missing views be recovered? How can we make the model possess cross-instance generalization capabilities, generating entire 3D models directly from a single image or a piece of text? This is the core proposition of 3D generation. From early test-time optimization to today’s feed-forward generation, 3D reconstruction has begun to step into the era of large models.</p>
+<h3 id="4-1-Vision-Models">4.1 Vision Models</h3>
+<p>Due to the scarcity of high-quality native 3D data, 3D generative models in their initial stages relied heavily on semantic and geometric priors provided by 2D vision models. In Image-to-3D tasks, a powerful 2D feature extraction capability is the absolute foundation for 3D reconstruction, and it was the only data that could be relied upon in the early days.</p>
+<ul>
+<li><strong>Semantic and Representation Priors</strong>: Self-supervised learning-based Vision Transformers like MAE (Masked Autoencoder), CLIP, and DINOv2 can provide dense feature maps that are highly sensitive to object structures and semantic edges, acting as robust visual backbones.</li>
+<li><strong>Geometric and Depth Priors</strong>: CroCo implicitly learns stereo vision through a cross-view masked autoencoder, providing downstream tasks with an occlusion-robust feature system. The emergence of Depth Anything (v1/v2/v3) enabled high-precision monocular depth estimation, providing deterministic spatial constraints for subsequent “2D-to-3D lifting”.</li>
+</ul>
+<h3 id="4-2-Early-Attempts-at-Generalization-Few-Shot">4.2 Early Attempts at Generalization / Few-Shot</h3>
+<p>With the assistance of 2D features, researchers started trying to break the limitation of “one network only recognizing one scene,” attempting to give models the ability to extrapolate and generalize.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-e2df94829b30910907f5f0014ff63ed8_1440w.jpg" alt="dsdf"></p>
+<ul>
+<li><strong>DeepSDF</strong> learns a class-level continuous signed distance function representation, embedding multiple shape instances into a shared latent space. During the inference phase, given a new observation (like a point cloud or partial geometry), one only needs to optimize a low-dimensional latent code to reconstruct the corresponding 3D shape. Although this method possesses cross-instance expressive capabilities to some extent, it still relies on iteratively optimizing the latent code for new samples. Therefore, strictly speaking, it hasn’t escaped the test-time optimization paradigm.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-c20abe63074b979234175cff0f08810b_1440w.jpg" alt="metasdf"></li>
+<li><strong>MetaSDF</strong> goes a step further by introducing a meta-learning framework on top of DeepSDF. By simulating the process of “fast adaptation to new tasks” during training, it enables the model to reconstruct new shapes using just a <strong>few gradient steps</strong> when faced with new instances. This method significantly speeds up adaptation but inherently still relies on parameter updates at test time, thus still having limitations in real-time performance and inference efficiency. With the rise of neural rendering, works like MetaNeRF also introduced the MAML algorithm to NeRF, leveraging powerful prior initialization weights to converge with just a few fine-tuning steps under extremely sparse views.</li>
+</ul>
+<p>However, whether it’s MetaSDF or MetaNeRF, the core bottleneck remains: they haven’t completely jumped out of test-time optimization, and inference efficiency remains constrained. To break through this, the research paradigm began shifting towards direct forward mapping:</p>
+<ul>
+<li><strong>PixelNeRF</strong> introduces a “spatial projection” mechanism, projecting pixel features (extracted by a CNN) from input images onto sampled points in 3D space, thereby achieving conditional modeling during NeRF’s volume rendering process. This design elegantly bridges 2D visual understanding (CNN) with 3D scene representation (NeRF) structurally. More importantly, both its CNN encoder and MLP rendering network are pre-trained on large-scale 3D datasets, giving the model significant cross-scene generalization capabilities: during testing, when faced with one or a few novel-view images, the model can perform <strong>direct forward inference</strong> to generate new views without the time-consuming per-scene optimization (which usually takes hours) required by the original NeRF.</li>
+</ul>
+<h3 id="4-3-3D-Aware-Generation-Based-on-Adversarial-Learning-3D-aware-GANs">4.3 3D-Aware Generation Based on Adversarial Learning (3D-aware GANs)</h3>
+<p>Most of the above works were limited to specific categories or simple scenes. To achieve freer generation, how could we leave out GANs? 3D-aware GANs also had their moments of glory:</p>
+<ul>
+<li>Early on, <strong>HoloGAN</strong> demonstrated the unsupervised learning of 3D scene representations purely from a collection of natural images, without any 3D annotations or multi-view constraints.</li>
+<li>Later, <strong>pi-GAN</strong> integrated NeRF and periodic activation functions into the GAN framework, achieving high-precision 3D-aware image synthesis.</li>
+<li>Then, <strong>EG3D</strong> proposed an efficient geometry-aware Triplane representation, drastically reducing computational complexity. Generating directly in 3D voxel space leads to a cubic explosion in computation, while generating point clouds/meshes faces topological irregularity issues. Triplanes project 3D space onto three orthogonal 2D planes (XY, YZ, XZ), and the features of sampled points are obtained via orthogonal projection, bilinear interpolation, and concatenation. This ingenious dimensionality reduction perfectly matched modern CNN and Transformer architectures, directly inspiring later large-scale models like LRM.</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-5daccf0e49bd339bb2a9994bf1e21e66_1440w.jpg" alt="gan"></p>
+<p>However, these GANs were mostly focused on specific domains like human faces. When facing complex open-world scenes, limited by model capacity and mode collapse issues, their diversity and generalization hit a ceiling.</p>
+<h3 id="4-3-Optimization-Generation-Based-on-2D-Priors">4.3 Optimization Generation Based on 2D Priors</h3>
+<p><em>(Note: Preserved your original numbering here)</em><br>
+As 2D Diffusion Models demonstrated astonishing open-world generation capabilities, people naturally carved out a shortcut: using 2D diffusion models as “craftsmen” to supervise the optimization process of 3D scenes (maximum likelihood estimation, inferring scene parameters based on observations). The era of “2D-training-3D” thus began:</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-f78805f82325fb4eab324eb8d9100f4a_1440w.jpg" alt="DF"></p>
+<ul>
+<li><strong>DreamFusion</strong>: Turned pre-trained 2D text-to-image diffusion models into 3D supervision signals, evaluating the rationality of rendered images via Score Distillation Sampling (SDS) and backpropagating gradients to update NeRF, or achieving novel view synthesis conditioned on relative poses.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-717baa7ad1054d441093c0855d874756_1440w.jpg" alt="md"></li>
+<li>Subsequently, <strong>Magic3D</strong> adopted a coarse-to-fine two-stage strategy, improving resolution and generation quality.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-282e2cb91bb6a139655bc37f72238260_1440w.jpg" alt="VSD"></li>
+<li>Next, <strong>ProlificDreamer</strong> replaced SDS with VSD, attempting to alleviate over-smoothing and low diversity from a probabilistic modeling perspective.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-eac51d5841c94b6b69e31acea9a61a31_1440w.jpg" alt="gd"></li>
+<li><strong>DreamGaussian</strong> swapped the SDS optimization target from NeRF to 3DGS, significantly boosting speed.</li>
+<li><strong>GET3D</strong> took a different path: instead of “relying on diffusion to optimize 3D”, it directly trained a GAN to generate explicit textured meshes, proving that explicit meshes can also be directly produced through generative learning.</li>
+</ul>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-2f6fa9cd29e095e4efb246fcc2cc7b93_1440w.jpg" alt="jan"></p>
+<p>These 2D-guided optimization schemes made open-vocabulary 3D generation possible, but a fatal flaw was also exposed: they are still quite time-consuming (measured in hours) and highly prone to the Janus problem. The so-called Janus problem refers to the fact that because 2D diffusion models lack native 3D consistency awareness, independent viewpoint sampling causes the supervision signals to “fight each other,” resulting in the generation of deformed objects with multiple heads, extra limbs, and abnormal structures.</p>
+<h3 id="4-4-Multi-View-Diffusion-and-Joint-Denoising">4.4 Multi-View Diffusion and Joint Denoising</h3>
+<p>Faced with the Janus problem, relying solely on single-view 2D guidance was a dead end. The solution became: fine-tune 2D diffusion models to force them to spit out a “family of multi-view images” with strict geometric correlations in a single denoising pass.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-53137e219c6f944284d76d7425bb3ffc_1440w.jpg" alt="z123"></p>
+<ul>
+<li><strong>Zero-1-to-3</strong> was a critical turning point. It transformed a single image into novel view images at specified camera poses, proving that diffusion models can learn relative viewpoint control; but it was still inherently single-view-to-single-view generation, so consistency was still limited.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-6e9f94d7ae0b1583c77d6c98feb2296f_1440w.jpg" alt="sd"></li>
+<li><strong>SyncDreamer</strong>: Introduced a 3D cost volume to inject an attention mechanism, forcing virtual views to align in 3D space.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-222f122fafa2f34c4bbdbceb5698fedf_1440w.jpg" alt="wd"></li>
+<li><strong>Wonder3D</strong>: Used a cross-domain attention mechanism to synchronously generate multi-view RGB and normal maps, leveraging local geometric priors from normals to enhance consistency.</li>
+<li><strong>BoostDream</strong>: Leaning more towards engineering, it injected existing 3D priors into the multi-view diffusion process to refine existing 3D drafts.</li>
+</ul>
+<p>These methods significantly alleviated structural chaos, but fundamentally, they are still 2D generation disguised as 3D; they are still “2D-training-3D”. Constrained by viewpoint coverage and camera conditioning settings, they haven’t completely solved the issues of slow optimization pipelines and tedious steps, failing to meet the industry’s demand for instant, “seconds-level model generation”.</p>
+<h3 id="4-5-Feed-Forward-Large-Reconstruction-Models-LRMs">4.5 Feed-Forward Large Reconstruction Models (LRMs)</h3>
+<p>The methods mentioned above are actually all optimization-based. Every time the network encounters a new object, it has to start from scratch, slowly “brewing alchemy” by calculating errors, which takes anywhere from tens of minutes to a few hours. The optimization pipeline is simply too slow, and the multi-view diffusion steps are too tedious, making it impossible to meet the real-time demands of the industry. Thus, braving the challenges of sparse viewpoints and extreme generalization pressure, 3D reconstruction finally (and somewhat forcefully) ushered in its own “Large Model” era: Large Reconstruction Models (LRMs).</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-7d2fe2c66d2ca52ac66ba95cd0a9e48a_1440w.jpg" alt="lrm"><br>
+Standard LRMs abandon per-scene optimization. They use pre-trained models like DINO to extract image tokens, then through a Cross-Attention-based Image-to-Triplane Transformer network, they directly predict the object’s triplane features in a single forward pass. Finally, these features are decoded by a tiny MLP into a NeRF for volume rendering.</p>
+<p>[2026 Update] Deleted the subsequent descriptions of other LRMs.</p>
+<p>Subsequent works like Large Gaussian Reconstruction Model, Long LRM, and RayZer have continuously refined the architecture. There are even acceleration works like Turbo3D that have pushed the generation pipeline to extreme speeds, thoroughly validating the absolute efficiency advantage of feed-forward reconstruction models.</p>
+<p>But with speed scaling up, is the quality good enough? When facing complex topologies and industrial-grade material requirements, the information loss caused by 2D Lifting once again becomes the ceiling.</p>
+<h3 id="4-6-Generative-Models-Based-on-Direct-3D-Supervision">4.6 Generative Models Based on Direct 3D Supervision</h3>
+<p>Whether it’s SDS supervision or feed-forward Triplane prediction, cross-modal feature mapping (2D Lifting) is essentially using dimensionality-reduced projections to indirectly constrain a high-dimensional space. When encountering intricately distributed geometry and highly coupled textures, 2D priors often fall short, making it difficult to directly generate 3D assets with rigorous Physically Based Rendering (PBR) materials and clean topology.</p>
+<p>As everyone knows, the key to the problem lies in the accumulation of high-quality data and the scaling of network architectures. With the open-sourcing of million-scale, high-quality 3D assets like Objaverse, and the astonishing Scaling Laws demonstrated by DiT (Scalable Diffusion Models with Transformers) in image generation, people realized: as long as the data is properly tokenized, Transformers can digest and refine massive amounts of native 3D geometry and textures.</p>
+<h4 id="Combining-3D-Representations-with-Transformers">Combining 3D Representations with Transformers</h4>
+<p>To apply DiT in 3D space, we first need to solve the input format for 3D data (3D VAE):</p>
+<ul>
+<li><strong>Shap-E</strong> (OpenAI) abandons the traditional idea of directly generating a single NeRF or Mesh. Instead, it first trains a 3D encoder to map massive 3D assets into an implicit neural representation (containing implicit parameters for both NeRF and SDF). Subsequently, on this highly compressed latent space, it directly applies a Transformer-based Diffusion model for denoising.</li>
+<li><strong>3DShape2VecSet</strong> further proposes representing 3D shapes as a Set of Latent Vectors. This set-based representation naturally fits the Permutation Invariance of the Transformer’s unordered attention mechanism. When representing neural fields, it not only boasts an extremely high compression rate but also provides an excellent continuous Token input format for subsequent generative Diffusion models.</li>
+</ul>
+<h4 id="Direct-Diffusion-within-Native-3D-Space">Direct Diffusion within Native 3D Space</h4>
+<p>In fact, early works such as AutoSDF, Diffusion-SDF, and SDFusion have already fully validated the powerful potential of directly introducing generation and diffusion networks within native SDF or voxel spaces. Since the native 3D diffusion route works, and armed with the tokenization foundations mentioned above, researchers began to aggressively introduce the more powerful DiT architecture into native 3D space:<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-eb25bf7d5d45887a529d408782fa4586_1440w.jpg" alt="d3d"></p>
+<ul>
+<li><strong>DiT-3D</strong>: Explored converting 3D voxels or point clouds into serialized 3D Tokens and applying 3D self-attention mechanisms over 3D windows. This DiT architecture, which performs denoising directly in 3D space, proves the powerful potential of Transformers in processing pure 3D geometric features.<br>
+<img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-bf3081858ea53bba89df1d03cfe06054_1440w.jpg" alt="d3d2"></li>
+<li><strong>Direct3D</strong> pushes “native 3D supervision” to even higher fidelity. Facing the geometric collapse frequently caused by 2D Lifting, Direct3D builds a DiT model directly on the 3D latent space (such as high-resolution 3D Voxel Latents or Triplanes), utilizing the geometric distribution of real 3D data for end-to-end diffusion training. What it generates is no longer an optical illusion based on multiple viewpoints, but solid geometry with continuous surfaces that can be directly exported as a high-quality Mesh.</li>
+</ul>
+<p>Compared to the 2D world, the 3D world still severely lacks high-quality, large-scale data. This is actually the biggest bottleneck.</p>
+<h4 id="Discrete-Mesh-Generation-Based-on-the-Autoregressive-Paradigm">Discrete Mesh Generation Based on the Autoregressive Paradigm</h4>
+<p>Besides applying diffusion models in continuous fields or voxel spaces, another highly promising native 3D generation route is the autoregressive paradigm. Inspired by Large Language Models, researchers began to completely discretize 3D geometry, transforming mesh generation into a Next-Token Prediction task—much like playing a text continuation game. This paradigm can solve the pain points of dense meshes and chaotic topologies caused by the Marching Cubes algorithm in traditional surface reconstruction:</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-af24bc966c1c62a3c9f68d3556caa223_1440w.jpg" alt="ma"></p>
+<ul>
+<li>
+<p><strong>MeshAnything</strong>: Models 3D mesh generation as an autoregressive sequence generation problem. Not only can it be conditioned on point clouds, voxels, or single images, but more importantly, it focuses on generating meshes at the level of human artists. This means it no longer generates a chaotic sea of triangular faces, but rather beautiful geometric structures with clean topology that highly conform to low-poly modeling standards, which can be seamlessly integrated into downstream rendering and physics engines.</p>
+</li>
+<li>
+<p><strong>DeepMesh</strong>: Makes further breakthroughs based on autoregressive mesh generation by introducing a brand-new tokenization compression algorithm, and bringing Reinforcement Learning (specifically, Direct Preference Optimization, DPO) into the realm of 3D mesh generation. By combining 3D geometric evaluation metrics with human visual preferences as feedback signals, DeepMesh significantly improves the accuracy of autoregressive models when handling complex geometric details and maintaining strict topology, allowing the generated meshes to achieve an excellent balance between visual expressiveness and rigorous physical structure.</p>
+</li>
+</ul>
+<h4 id="Industry-Grade-Asset-Generation">Industry-Grade Asset Generation</h4>
+<p>The latest 3D generation algorithms are no longer just “visually plausible”; they now feature Regular Topology, high-fidelity geometric details, and rigorous physical materials (PBR), truly beginning to integrate into industrial pipelines:</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-cb0ed1d94e9893b041790e8f3ba799b7_1440w.jpg" alt="crfman"></p>
+<p><strong>CraftsMan3D</strong> (Li et al., CVPR 2024) proposes a generation paradigm that mimics the sculpting logic of a “craftsman”. To solve the mesh topology chaos caused by traditional generative methods, this framework first uses a 3D-Native DiT to directly fit the data distribution in the 3D Latent Space, generating rough geometry with a regular mesh structure in seconds. Subsequently, it introduces an interactive geometric optimizer based on normals, allowing high-precision sculpting of local surface details while ensuring watertightness and using the Winding Number for visibility checks. This decoupled architecture not only drastically improves the success rate of 3D reconstruction but also introduces highly industry-valuable interactive editing capabilities to native 3D generation for the first time.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-f7deb134c6e4c1f6f1f78bd19f27eed6_1440w.jpg" alt="hunyuan"><br>
+<strong>Hunyuan3D 2.0</strong> (Tencent et al., 2025) proposes a scalable, decoupled paradigm aimed at generating industry-grade, high-fidelity 3D assets. To bridge the quality gap between generative 3D content and traditional hand-sculpted models, this framework first utilizes the Hunyuan3D-DiT (a flow-matching-based diffusion Transformer) with tens of billions of parameters to directly learn 3D geometric priors from massive data. This stage accurately aligns with visual or text conditions to generate high-quality Bare Meshes with smooth surfaces and clean topology, laying an excellent geometric foundation for subsequent underlying surface reconstruction and mesh extraction. Then, the framework introduces the Hunyuan3D-Paint texture synthesis model. Through the deep integration of a multi-view diffusion architecture and geometric priors, it not only achieves high-resolution texture mapping but also supports the direct generation of PBR materials, accurately restoring real-world light-matter interactions (like metallic reflections and sub-surface scattering). This decoupled “separation of form and color” architecture effectively breaks down the optimization difficulty of 3D asset generation, significantly boosting the generation stability of complex geometry while constructing a plug-and-play workflow that seamlessly integrates with existing industry-standard graphics pipelines.</p>
+<p>From relying on 2D vision models for assistance to self-strengthening through native 3D data, 3D generation is developing incredibly fast. Of course, compared to 2D images, the biggest bottleneck in the 3D world right now remains the extreme scarcity of high-quality, large-scale native data. <em>(Note: There are also excellent commercial products on the market like Meshy AI, but because they are closed-source, their specific technical details cannot be verified at the moment.)</em></p>
+<p>[2026 Update] Vincent Sitzmann published a blog post suggesting that explicit 3D representations might not be needed in end-to-end models anymore, and traditional CV is dying out: <a target="_blank" rel="noopener" href="https://www.vincentsitzmann.com/blog/bitter_lesson_of_cv/">https://www.vincentsitzmann.com/blog/bitter_lesson_of_cv/</a>. Whatever, AI will equally erode every industry. Talk is cheap, show me the token. Let’s just use this as the ending lol.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mmwiki.cn">Tomato Tom</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mmwiki.cn/posts/5ca14474.html">http://mmwiki.cn/posts/5ca14474.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://mmwiki.cn" target="_blank">MM's Journal of Technology</a>！</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/ba364564.html" title="A Deep Dive into Low-poly Reconstruction"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">A Deep Dive into Low-poly Reconstruction</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/d5d1f531.html" title="图生三维概览, 从神经渲染、表面重建到万物生成"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-28</div><div class="title">图生三维概览, 从神经渲染、表面重建到万物生成</div></div></a></div><div><a href="/posts/8f2b9157.html" title="GAMES101-现代图形学介绍-写在后面"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-30</div><div class="title">GAMES101-现代图形学介绍-写在后面</div></div></a></div><div><a href="/posts/69ca687e.html" title="GAMES102-几何建模与处理-写在后面"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-31</div><div class="title">GAMES102-几何建模与处理-写在后面</div></div></a></div><div><a href="/posts/c461987d.html" title="中科大-数字几何处理-网格映射"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-31</div><div class="title">中科大-数字几何处理-网格映射</div></div></a></div><div><a href="/posts/705b0bfe.html" title="中科大-数字几何处理-Polycube1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-11-07</div><div class="title">中科大-数字几何处理-Polycube1</div></div></a></div><div><a href="/posts/5547a98d.html" title="中科大-数字几何处理-网格修复1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">中科大-数字几何处理-网格修复1</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Tomato Tom</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">205</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">目录</div><div class="length-num">78</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/TaylorAmy1995"><i></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:mrmatrix@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com" target="_blank" title=""><i class="iconfont icon-bilibili"></i></a><a class="social-icon" href="https://www.zhihu.com" target="_blank" title=""><i class="iconfont icon-zhihu"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这个博客是为了记录自己在科研👨‍🔬、工作👨‍💻和生活👨‍👩‍👧‍👦的过程中捕获到的有价值的课程📺、书籍📗与事件📰，是面向我自己搭建的查漏补缺的备忘录📝和记事本📓✏️。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Prologue"><span class="toc-number">1.</span> <span class="toc-text">Prologue</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Prerequisites"><span class="toc-number">2.</span> <span class="toc-text">1. Prerequisites</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Basic-3D-Representations"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 Basic 3D Representations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Marching-Cubes"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 Marching Cubes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-Mainstream-Model-Paradigms-and-Architectures"><span class="toc-number">2.3.</span> <span class="toc-text">1.3 Mainstream Model Paradigms and Architectures</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Neural-Rendering"><span class="toc-number">3.</span> <span class="toc-text">2. Neural Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-What-exactly-is-NeRF-doing"><span class="toc-number">3.1.</span> <span class="toc-text">2.1. What exactly is NeRF doing?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-How-does-NeRF-do-it"><span class="toc-number">3.2.</span> <span class="toc-text">2.2. How does NeRF do it?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-Neural-Volumetric-Representation"><span class="toc-number">3.3.</span> <span class="toc-text">2.2.1. Neural Volumetric Representation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-Differentiable-Volume-Rendering"><span class="toc-number">3.4.</span> <span class="toc-text">2.2.2. Differentiable Volume Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Detailed-Derivation-of-Volume-Rendering"><span class="toc-number">3.4.1.</span> <span class="toc-text">Detailed Derivation of Volume Rendering</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-Training-Method"><span class="toc-number">3.5.</span> <span class="toc-text">2.2.3. Training Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-How-does-3DGS-do-it"><span class="toc-number">3.6.</span> <span class="toc-text">2.3 How does 3DGS do it?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-3DGS-Training-Process"><span class="toc-number">3.7.</span> <span class="toc-text">2.3.1 3DGS Training Process:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-The-Connection-Between-3DGS-and-NeRF"><span class="toc-number">3.8.</span> <span class="toc-text">2.3.2 The Connection Between 3DGS and NeRF:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-3DGS-Rendering-Steps"><span class="toc-number">3.9.</span> <span class="toc-text">2.3.3 3DGS Rendering Steps:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Surface-Reconstruction"><span class="toc-number">4.</span> <span class="toc-text">3. Surface Reconstruction</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Isosurface-Extraction-Based-on-Volume-Density-Fields"><span class="toc-number">4.1.</span> <span class="toc-text">3.1. Isosurface Extraction Based on Volume Density Fields</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Shifting-from-Density-to-SDF"><span class="toc-number">4.2.</span> <span class="toc-text">3.2. Shifting from Density to SDF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Differentiable-Mesh-Extraction-and-Rasterization"><span class="toc-number">4.3.</span> <span class="toc-text">3.3. Differentiable Mesh Extraction and Rasterization</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Surface-Reconstruction-Based-on-Gaussian-Splatting"><span class="toc-number">4.4.</span> <span class="toc-text">3.4. Surface Reconstruction Based on Gaussian Splatting</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3D-Generative-Models"><span class="toc-number">5.</span> <span class="toc-text">4. 3D Generative Models</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Vision-Models"><span class="toc-number">5.1.</span> <span class="toc-text">4.1 Vision Models</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Early-Attempts-at-Generalization-Few-Shot"><span class="toc-number">5.2.</span> <span class="toc-text">4.2 Early Attempts at Generalization &#x2F; Few-Shot</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-3D-Aware-Generation-Based-on-Adversarial-Learning-3D-aware-GANs"><span class="toc-number">5.3.</span> <span class="toc-text">4.3 3D-Aware Generation Based on Adversarial Learning (3D-aware GANs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Optimization-Generation-Based-on-2D-Priors"><span class="toc-number">5.4.</span> <span class="toc-text">4.3 Optimization Generation Based on 2D Priors</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Multi-View-Diffusion-and-Joint-Denoising"><span class="toc-number">5.5.</span> <span class="toc-text">4.4 Multi-View Diffusion and Joint Denoising</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-Feed-Forward-Large-Reconstruction-Models-LRMs"><span class="toc-number">5.6.</span> <span class="toc-text">4.5 Feed-Forward Large Reconstruction Models (LRMs)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Generative-Models-Based-on-Direct-3D-Supervision"><span class="toc-number">5.7.</span> <span class="toc-text">4.6 Generative Models Based on Direct 3D Supervision</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Combining-3D-Representations-with-Transformers"><span class="toc-number">5.7.1.</span> <span class="toc-text">Combining 3D Representations with Transformers</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Direct-Diffusion-within-Native-3D-Space"><span class="toc-number">5.7.2.</span> <span class="toc-text">Direct Diffusion within Native 3D Space</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Discrete-Mesh-Generation-Based-on-the-Autoregressive-Paradigm"><span class="toc-number">5.7.3.</span> <span class="toc-text">Discrete Mesh Generation Based on the Autoregressive Paradigm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Industry-Grade-Asset-Generation"><span class="toc-number">5.7.4.</span> <span class="toc-text">Industry-Grade Asset Generation</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/5ca14474.html" title="An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation">An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation</a><time datetime="2026-03-30T16:01:00.000Z" title="发表于 2026-03-31 00:01:00">2026-03-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ba364564.html" title="A Deep Dive into Low-poly Reconstruction">A Deep Dive into Low-poly Reconstruction</a><time datetime="2026-03-01T16:01:00.000Z" title="发表于 2026-03-02 00:01:00">2026-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland">The Stanford Bunny in 3D Wonderland</a><time datetime="2026-01-27T16:01:00.000Z" title="发表于 2026-01-28 00:01:00">2026-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d5d1f531.html" title="图生三维概览, 从神经渲染、表面重建到万物生成">图生三维概览, 从神经渲染、表面重建到万物生成</a><time datetime="2025-05-27T16:01:00.000Z" title="发表于 2025-05-28 00:01:00">2025-05-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/6382afc7.html" title="观陶哲轩演讲-AI与数学-后有感">观陶哲轩演讲-AI与数学-后有感</a><time datetime="2024-08-29T16:00:00.000Z" title="发表于 2024-08-30 00:00:00">2024-08-30</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Tomato Tom</div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>浙ICP备2024121111号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.gov.cn/"><img class="icp-icon" src="http://www.beian.gov.cn/img/new/gongan.png"/><span>浙公网安备33010802013618号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div></div><script src="/js/category.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":0,"vOffset":-100},"mobile":{"show":false},"react":{"opacity":0.85},"log":false});</script></body></html>

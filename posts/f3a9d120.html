@@ -1,0 +1,421 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Testing DeepSeek V4 Pro on 3D Geometry Processing | MM's Journal of Technology</title><meta name="author" content="Tomato Tom"><meta name="copyright" content="Tomato Tom"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="I came up with an absolutely brilliant idea. Unfortunately, I do not have many tokens left today, so I will stop writing for now. ------Cyber Fermat  Before We Begin DeepSeek V4 Pro’s coding ability">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Testing DeepSeek V4 Pro on 3D Geometry Processing">
+<meta property="og:url" content="http://mmwiki.cn/posts/f3a9d120.html">
+<meta property="og:site_name" content="MM&#39;s Journal of Technology">
+<meta property="og:description" content="I came up with an absolutely brilliant idea. Unfortunately, I do not have many tokens left today, so I will stop writing for now. ------Cyber Fermat  Before We Begin DeepSeek V4 Pro’s coding ability">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
+<meta property="article:published_time" content="2026-06-02T16:01:00.000Z">
+<meta property="article:modified_time" content="2026-06-03T06:55:27.330Z">
+<meta property="article:author" content="Tomato Tom">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="数字几何处理">
+<meta property="article:tag" content="3D Claw">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://mmwiki.cn/img/sea.jpg"><link rel="shortcut icon" href="/img/m.png"><link rel="canonical" href="http://mmwiki.cn/posts/f3a9d120.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=4.14.0-b3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>(()=>{
+      const saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+      
+      window.btf = {
+        saveToLocal: saveToLocal,
+        getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+          script.src = url
+          script.async = true
+          script.onerror = reject
+          script.onload = script.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            script.onload = script.onreadystatechange = null
+            resolve()
+          }
+
+          Object.keys(attr).forEach(key => {
+            script.setAttribute(key, attr[key])
+          })
+
+          document.head.appendChild(script)
+        }),
+
+        getCSS: (url, id = false) => new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = url
+          if (id) link.id = id
+          link.onerror = reject
+          link.onload = link.onreadystatechange = function() {
+            const loadState = this.readyState
+            if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+            link.onload = link.onreadystatechange = null
+            resolve()
+          }
+          document.head.appendChild(link)
+        }),
+
+        addGlobalFn: (key, fn, name = false, parent = window) => {
+          const pjaxEnable = false
+          if (!pjaxEnable && key.startsWith('pjax')) return
+
+          const globalFn = parent.globalFn || {}
+          const keyObj = globalFn[key] || {}
+    
+          if (name && keyObj[name]) return
+    
+          name = name || Object.keys(keyObj).length
+          keyObj[name] = fn
+          globalFn[key] = keyObj
+          parent.globalFn = globalFn
+        }
+      }
+    
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+      
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })()</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":true,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Testing DeepSeek V4 Pro on 3D Geometry Processing',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-06-03 14:55:27'
+}</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', () => { preloader.initLoading() }, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', () => { preloader.endLoading() }, 'preloader_end')
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/m.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">206</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">78</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/sea.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="MM's Journal of Technology"><img class="site-icon" src="/img/m.png" alt="Logo"/><span class="site-name">MM's Journal of Technology</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Links</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Testing DeepSeek V4 Pro on 3D Geometry Processing</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">Created</span><time datetime="2026-06-02T16:01:00.000Z" title="Created 2026-06-03 00:01:00">2026-06-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word Count:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading Time:</span><span>24mins</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%87%A0%E4%BD%95%E5%A4%84%E7%90%86/">数字几何处理</a><a class="post-meta__tags" href="/tags/3D-Claw/">3D Claw</a></div></div><article class="post-content" id="article-container"><blockquote>
+<p>I came up with an absolutely brilliant idea. Unfortunately, I do not have many tokens left today, so I will stop writing for now.<br>
+------Cyber Fermat</p>
+</blockquote>
+<h2 id="Before-We-Begin">Before We Begin</h2>
+<p>DeepSeek V4 Pro’s coding ability is not really the same thing for every person. A thousand users will raise a thousand little whales. Everyone uses different languages, tasks, requirements, domains, and prompts. Of course, one job of an agent is to smooth out those differences as much as possible, but the differences still exist, and they are not small.</p>
+<p>As a researcher working in 3D geometry, I was naturally very curious about what it could do in 3D data processing. I wanted to probe its ceiling, partly so I could make better use of it later, and partly to build some working chemistry with “Mr. D.” Then May happened to bring another token sale, and I had a bit of free time, so I ran a fairly thorough test. That is where this document came from. I used the last quiet window at the beginning of June to polish it and publish it.</p>
+<h2 id="The-Answer-Sheet">The Answer Sheet</h2>
+<p>First, let us look at what DeepSeek produced. Based on third-party libraries such as Dear ImGui, Easy3D, CGAL, GLFW, and OpenGL, DeepSeek implemented a 3D geometry processing application called <strong>3D Claw</strong>. The name came from Mr. D after 109 seconds of thought. The software can load point clouds and meshes, perform basic geometry processing, run a batch of geometry processing algorithms with process visualization, and integrate AI into the workflow.</p>
+<p>The source code is here: <a href="https://link.zhihu.com/?target=https%3A//github.com/tangtangtang1995/3D-Claw">https://github.com/tangtangtang1995/3D-Claw</a></p>
+<p>I also prebuilt Windows and Linux clients, so they are ready to use after download. Pull requests and issues on GitHub are very welcome, especially bug reports. That gives me another way to test how DeepSeek responds to issues. I am also curious how AI agents trained by different users will read this codebase.</p>
+<h3 id="Software-Interface">Software Interface</h3>
+<p>The default 3D Claw interface has a model tree on the left, a 3D viewport in the middle, properties/logs/health report/history at the bottom, and AI Chat plus AI 3D Generation on the right. AI Chat reads the current model and panel context, including model type, vertex and face counts, bounding box, normals, UVs, algorithm parameters, operation history, and health report information. Before running an algorithm, you can ask for parameter advice. After running it, you can pass result metrics to the AI for evaluation. The current model’s operation history and related information are automatically attached as context.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-d280e0f3c7b63582ab4150f0dc51d49b_r.jpg" alt=""></p>
+<p>Still the bunny.</p>
+<p>At startup, you can also configure the AI Chat key and response language directly. AI Chat shares context with several algorithm panels; it is not an isolated chat box.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-5f5066b5f1d666dd7b10e02e82a348b3_r.jpg" alt=""></p>
+<h3 id="Concrete-Examples">Concrete Examples</h3>
+<ol>
+<li><strong>Region growing algorithm demo.</strong> The region growing implementation in the software makes seeds, region expansion, planar-region coloring, progress state, and result evaluation observable. Based on the current model, current panel parameters, and output results, the AI explains parameter meanings, warns about over-segmentation or under-segmentation risks, and suggests the next round of tuning.</li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-2dde4b4df8ed841b55c3863548f448d0.jpg?source=25ab7b06" alt=""></p>
+<p>01:49</p>
+<p>3D Claw region growing algorithm demo</p>
+<ol start="2">
+<li><strong>Skeleton extraction algorithm demo.</strong> Skeleton extraction takes a long time, and parameter effects are not intuitive. If you only see the final skeleton, it is hard to tell whether the problem came from preprocessing, contraction, topology changes, or final curve extraction. The goal here is to expose as much intermediate state as possible, so users can watch in the viewport as the algorithm gradually converges to a curve skeleton.</li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-e2c1e6af58e63fd04bc6e9d7a3ca13c5.jpg?source=25ab7b06" alt=""></p>
+<p>01:16</p>
+<p>3D Claw skeleton extraction algorithm demo</p>
+<ol start="3">
+<li><strong>Mesh simplification algorithm demo.</strong> Simplification is a good test of AI’s post-processing evaluation ability. The software produces the simplified geometry, and AI can combine face-count changes, shape preservation, visual quality, and potential risks to judge whether the simplification is conservative or aggressive. It can then suggest next steps, such as whether to simplify again, smooth first, or inspect boundaries and normals.</li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-8387305e91decee587a2ab6780cb9b5d.jpg?source=25ab7b06" alt=""></p>
+<p>01:05</p>
+<p>3D Claw mesh simplification algorithm demo</p>
+<ol start="4">
+<li><strong>Mesh smoothing algorithm demo.</strong> In smoothing, displacement, area/volume change, triangle quality, and visual smoothness all matter. Here, the algorithm result and quality metrics are passed to AI, which explains the effect of the operation and warns about possible over-smoothing, detail loss, or follow-up repair needs.</li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-75a313ddc4e48836421453270e40bd58.jpg?source=25ab7b06" alt=""></p>
+<p>01:04</p>
+<p>3D Claw mesh smoothing algorithm demo</p>
+<ol start="5">
+<li><strong>AI 3D generation.</strong> This feature connects to image-to-3D and text-to-3D generation workflows, using <code>hunyuan3d-api</code>. Generated results are imported into 3D Claw, and then the software’s internal tools diagnose non-manifold geometry, floating fragments, UV/texture chaos, local detail collapse, and similar problems. AI evaluation is triggered automatically. As a side complaint: Hunyuan3D’s <code>secret-id</code> and <code>secret-key</code> are hidden way too deep. I spent half an hour finding them.</li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-b01274138c21a768f0ed94ee019449a8.jpg?source=25ab7b06" alt=""></p>
+<p>02:36</p>
+<p>AI 3D generation demo</p>
+<p>There are more visualization effects in the software itself. Download it and play with it. Pull requests and issues on GitHub are welcome.</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/tangtangtang1995/3D-Claw"></a></p>
+<h3 id="Cost">Cost</h3>
+<p>This test round was mainly concentrated in May. DeepSeek’s token cost is shown below. The last two days mostly depended on Codex for emergency refactoring and firefighting, but most of the feature code really was written by DeepSeek.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-5ae1028c5924b959ee28faa97a01c881_r.jpg" alt=""></p>
+<h3 id="What-Else-Is-Inside">What Else Is Inside?</h3>
+<p>Besides the features above and basic geometry processing capabilities, the project also includes AI Chat, context-menu explanations, Health Report, operation history, model selection and measurement, texture/UV diagnosis, Poisson reconstruction, RANSAC primitive extraction, Alpha Wrapping 3D, ACVD, VSA, Planar Patch Remeshing, Geodesic Distance, ARAP Deformation, UV Parameterization, and more.</p>
+<p>Not every feature reached what I would call “product-level completeness,” but as a test of a model’s capability ceiling, reaching this level in about 150 hours is, at least to me, already quite nice.</p>
+<h2 id="The-Assignment">The Assignment</h2>
+<p>This software was not created by AI in one magical leap. I am very curious whether the newly released target mode can do that. In practice, this followed a plain development process: first, give a rough direction, including a brief requirements description, system design, task breakdown, and requirement dispatch; second, move forward and improve step by step, including high-level design, implementation, testing, and review for each module; third, complete system integration, system testing, acceptance, release, and so on.</p>
+<p>Code is cheap, show me the talk. The earliest prompt was roughly like this:</p>
+<blockquote>
+<p>I want to develop a 3D geometry processing application. Something like MeshLab, since CloudCompare feels too old. It should implement basic data processing functions, including but not limited to moving, rotating, selecting, adding and deleting, measuring, distance measurement, sampling, denoising, distance computation, and so on. Then it should include some cutting-edge geometry processing algorithms, such as algorithms added to CGAL in the last five years. To make it differentiated, it needs the following:</p>
+<p><strong>1. Embed AI-assisted functionality into the software:</strong> Many algorithms have many parameters to tune. Even after carefully reading the papers, facing different data does not necessarily tell you how to find the best parameters. Usually, this requires repeated quantitative and qualitative evaluation. Introduce AI assistance so it can explain parameter effects, evaluate output data, and suggest further parameter adjustment directions based on errors. Public papers, documentation, and open-source implementations may already be in large-model training corpora, so the model may be able to provide useful parameter explanations. But its suggestions must be constrained by the current model context and result metrics.</p>
+<p><strong>2. Visualize intermediate algorithm processes:</strong> Many geometry processing algorithms have long-running processes. I hope some intermediate states can also be rendered, such as exposing seeds, candidates, iterations, snapshots, metrics, and worker states, then passing them to the UI for drawing. On one hand, this helps us see early whether the algorithm has gone wrong. On the other, it can show which stage is affected by different parameters. More importantly, it may inspire algorithm improvements.</p>
+<p><strong>3. Real-time interaction with intermediate algorithm processes:</strong> Allow users to adjust scene elements or parameters while the algorithm is running, affecting the final output. Imagine a game cheat tool: essentially, this means transforming a traditional processing algorithm into a runtime system that can be paused, inserted into, replayed, and even intervened in.</p>
+<p><strong>4. Add AI generation features:</strong> There are now many image-to-3D large models. Integrate their APIs into the software as well, and call tools inside the software to evaluate quality.</p>
+</blockquote>
+<p>There is no doubt that AI can quickly produce a runnable GUI geometry processing application, because the corpus is too rich. So to create a meaningful distinction, I added the requirements above. They correspond to:</p>
+<ul>
+<li>Understanding of related geometry processing algorithms: can it combine the current model context and give reasonable parameter suggestions?</li>
+<li>A combination of coding ability and algorithm understanding: intermediate-state rendering requires hacking source code, adding hooks, writing visitors, adding callbacks, coordinating and synchronizing threads, and decoupling frontend and backend architecture.</li>
+<li>The third point was too hard, so I later gave up on it.</li>
+<li>The final point tests external API integration, asynchronous network tasks, credential management, generated-result import, format compatibility, and the ability to feed generated models back into a geometry quality evaluation workflow.</li>
+</ul>
+<p>At the very beginning, I only wanted to run a simple test and make a small demo. I did not plan to publish it on GitHub. Later, I found that the level of completion was decent, so I released it.</p>
+<p>Configuration: OpenCode + DeepSeek V4 Pro. Emergency captain: Codex on x-high.</p>
+<p>Time: May 1 to May 31. I spent about three to five hours per day on this project.</p>
+<h2 id="The-Solution">The Solution</h2>
+<p>I directly asked Mr. D to post its own development log:</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">- 05-02 03: Finished planning discussion, goal alignment, high-level architecture decisions, design-pattern choices, candidate algorithm selection, and third-party library evaluation.</span><br><span class="line">- 05-03 04: Built the initial ImGui docking interface, GLFW main window, FBO-based 3D viewport, menu bar, status bar, and basic dock panels; drafted 16 algorithm dialogs and 6 dock widgets.</span><br><span class="line">- 05-05 06: Fixed the first batch of ImGui/OpenGL issues, including GPU idle-loop problems, VAO destruction errors, Model List ID-stack assertions, Fit Screen behavior, log refresh, and status-bar updates.</span><br><span class="line">- 05-07 08: Implemented asynchronous large-file loading to prevent the UI from freezing when loading large PLY files; introduced the loading/uploading/idle state machine.</span><br><span class="line">- 05-09: Added the AI Chat panel with DeepSeek API integration, SSE streaming, Markdown rendering, copy support, and basic text interaction.</span><br><span class="line">- 05-09: Refined the UI into a CloudCompare-style layout, including model-tree connection lines, selected bounding boxes, and right-docked AI panels.</span><br><span class="line">- 05-10: Implemented the unified selection system, measurement tools, clipping, extraction, and other basic workspace operations.</span><br><span class="line">- 05-11: Converted Poisson reconstruction, simplification, smoothing, hole filling, remeshing, and other algorithms to asynchronous execution to avoid blocking the UI.</span><br><span class="line">- 05-11: Used Poisson reconstruction as the first AI-assisted algorithm prototype, adding parameter explanation, model metadata injection, and an algorithm-specific prompt workflow.</span><br><span class="line">- 05-12: Added quality evaluation for Poisson results, including point-cloud/mesh distance analysis and scalar-field visualization, then passed the result metrics back to AI for tuning suggestions.</span><br><span class="line">- 05-14: Implemented Geodesic / Distance Field tools, including front propagation, exact shortest path, Heat Method, vertex picking, and AI-assisted parameter advice.</span><br><span class="line">- 05-14: Integrated CGAL Alpha Wrapping 3D and established a DLL/POD boundary between the GUI and CGAL runners; investigated why AW3 still stalled the UI despite running in a worker thread, and traced it to Debug CRT heap behavior and CGAL&#x27;s large number of small allocations.</span><br><span class="line">- 05-15: Implemented AW3 process visualization with event logs, timeline replay, Steiner points, gates, surface snapshots, and AI quality analysis; hardened AW3 with error events, async wakeups, large-input guardrails, cancellation, and status feedback.</span><br><span class="line">- 05-15: Started RANSAC Primitive Extraction visualization, adding sampled points, candidate planes, pause/resume, and step-by-step execution.</span><br><span class="line">- 05-16: Improved RANSAC visualization and fixed plane placement, camera jumps, model-tree hierarchy, and CH/AS result display issues.</span><br><span class="line">- 05-16: Started Region Growing visualization, adding seeds, region expansion, plane-region coloring, and AI analysis.</span><br><span class="line">- 05-16: Iteratively fixed Region Growing visual artifacts, including non-smooth color transitions, patch popping, z-fighting, ring-like artifacts, and mouse-interaction refresh issues.</span><br><span class="line">- 05-17: Investigated Region Growing getting stuck at 87.1<span class="comment">% on the barn dataset; added a debug repro, timing dashboard, and comparison against native CGAL behavior.</span></span><br><span class="line">- 05-17: Split part of the dialog code, fixed Region Growing final handoff, and improved AI Chat with movable windows, font scaling, and Ctrl + mouse-wheel zoom.</span><br><span class="line">- 05-18: Integrated CGAL Simplification and ACVD visualization workflows, handling slow mode, cluster overlays, seed display, and related UI details.</span><br><span class="line">- 05-19: Continued visual workflow integration for VSA, Planar Patch Remeshing, and CGAL Smoothing.</span><br><span class="line">- 05-21: Continued ARAP Deformation and Parameterization / UV workflows, including distortion heatmaps and linked 3D/UV point selection.</span><br><span class="line">- 05-22: Integrated 3D AI generation, supporting text/image-to-3D generation, glTF/GLB/textured OBJ loading, and generated-model quality evaluation.</span><br><span class="line">- 05-23: Completed the first project phase and shifted the focus toward an AI-assisted 3D processing workspace; added Health Report, AI Context, and menu-organization improvements.</span><br><span class="line">- 05-24: Added operation history, texture diagnostics, Transform / Point-Pair Align / ICP, and global UI scaling; injected operation history into AI prompt context.</span><br><span class="line">- 05-26: Started systematic source-size and long-function analysis, discovering that MainWindow, dialogs, and overlays had entered an architecture pressure zone.</span><br><span class="line">- 05-26: Performed the first large-scale architecture audit and split major components such as paint canvas, dialogs, widgets, menus, and overlays.</span><br><span class="line">- 05-29: Prepared the public release version, including README, BUILDING, third-party notices, vendor overrides, optional CGAL builds, and public export cleanup.</span><br><span class="line">- 05-30: Continued architecture cleanup in the public tree, adding layering rules and check<span class="built_in">_</span>layering tooling to clarify the app/services/algorithms/common boundaries.</span><br><span class="line">- 05-31: Prepared the GitHub public release with README GIFs, release assets, Ubuntu minimal CI, documentation links, and build instructions.</span><br></pre></td></tr></table></figure>
+<h2 id="Comments">Comments</h2>
+<ol>
+<li>What did I participate in? All research discussions, design reports, action-plan discussions, and reviews. Also manual acceptance: whether intermediate-process visualization looked right, whether point picking felt good, and whether the UI interaction behaved normally.</li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic3.zhimg.com/v2-0a8f082bf2532401efa08a5da7620c54_r.jpg" alt=""></p>
+<p>Some process documents.</p>
+<ol start="2">
+<li>
+<p>How did it actually work? Plain and unglamorous pair programming. Each round usually had three to five terminals: one terminal did research, produced the next plan, and discussed with me how the next step should be implemented, how to break down the task, how to self-test, and what manual acceptance points and final deliverables should be; one terminal reviewed code; one terminal coded the current task. Later I realized that DS probably should not review itself. Codex should have been supervising.</p>
+</li>
+<li>
+<p>Why choose an immediate-mode UI such as ImGui? First, there was a lot of work around visualizing intermediate algorithm processes, so I wanted every frame to refresh. At that time, I was also thinking about interaction during algorithm execution. Second, from the beginning I only wanted a quick test and a small demo. I did not expect Mr. D to produce such an impressive result. Third, Qt was simply too heavy for a small demo.</p>
+</li>
+<li>
+<p>In the early stage, DeepSeek V4 Pro felt very good. The architecture already had a reference: I directly asked it to imitate the architecture of the demo GUI from my paper last year, the last glory of old-school hand-rolled programming. The early tasks were clear, so there was little chance for false consensus. The software code was also still shallow, and honestly it never became that deep in the end. Aside from Mr. D’s rather unconstrained coding style, such as doing almost no input protection, everything else was fine. Most things passed in one shot, which gave me the confidence to keep testing. The early Poisson reconstruction, AW3 wrapping algorithm, and region growing algorithm basically contained the design patterns for all later visualized algorithms. I kept settling architectural details and intervening manually. Once the template was done, integrating the other algorithms became much faster.</p>
+</li>
+<li>
+<p>Why are the logs for the 27th and 28th missing?</p>
+</li>
+</ol>
+<p>Fine, time to complain.</p>
+<p>After the earlier architecture had been settled, I stopped following the code closely. Technical debt always comes due. During code review on Friday night, I found that Mr. D had gone off the rails: five files were over 7,000 lines, more than ten functions were over 200 lines, and the longest function exceeded 2,000 lines. In a project of around 50,000 lines, this is absolutely not acceptable. The earlier code architecture had also been distorted by then. To be fair, ImGui played a role here too. Immediate-mode rendering requires a lot of code. Every component is a code block, and once everything is written serially, it becomes very long.</p>
+<p>The funny part is that when I pointed out to Mr. D that the code was not standard, emphasized returning to the previous Pimpl design pattern, and asked it to preserve the original frontend-middle-backend architecture, Mr. D thought for a long time and then basically gave up: “How about we switch to another problem?” I do not remember the exact wording, but that was roughly the meaning.</p>
+<p>There was no choice. Only two days remained before the May 31 milestone, so I had to ask Mr. O to rescue the situation. Fortunately, Altman resets things every so often, so I still had quota left. I went straight to x-high at 1.5x speed and sprinted through the weekend. Over those two days, Codex roughly pulled the architecture back while I watched it edit. Even so, the code only reached the point of being barely readable. You can imagine how painful it was before. Many parts were still not quite satisfactory. Codex really likes writing defensive code, almost too steady, and it also over-designs in places. The architecture was already messy, and then it added redundant code on top. Those two days alone produced 155 local git commits.</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://pic2.zhimg.com/v2-d106b054f391f5879c60aa1bf4390f2b_r.jpg" alt=""></p>
+<p>Refactoring records.</p>
+<ol start="7">
+<li>How did it feel?</li>
+</ol>
+<p>At first, excitement. In the last few years, a lot of my excitement has come from AI. Looking back at the memorable points in my own large-model usage history: if we exclude models like BERT, I started using OpenAI’s web chat at the end of 2022; in 2024, I hand-built an agent-like tool with a community friend; at the end of 2024, DS R1 was released; in 2025, I began using Codex; and in 2026, I tried OpenCode + DeepSeek V4 Pro. The first experience was not even worse than Codex. I admit I have a filter for DeepSeek.</p>
+<p>Then, exhaustion. May was my first time doing this kind of intensive, extreme programming with multiple AI agents. It felt as if AI had wrung me dry. Whenever a fresh model appears, I always test it immediately. Once I touch its capability ceiling, I can relax. I am looking forward to DS 4.1 and its own code agent. I believe the ability will go up another level, and by then I will probably get that fresh feeling again.</p>
+<p>Then, confusion. Generally speaking, before development begins, product design, research reports, system design, high-level design, detailed design, and all kinds of documents are indispensable. They need layers of approval, alignment, and discussion. If one part is not done well, a landmine gets buried. But today’s agents have completely changed that paradigm. An app can go online in a week, and tens of thousands of lines of code are no big deal. Human review speed cannot keep up at all. It is hard to control the boundary of agent usage, because the agents are developing so quickly. I worry that the tasks assigned to AI are too light and fail to squeeze out its capability, but I also worry that if the tasks are too heavy, the AI will run away.</p>
+<ol start="8">
+<li>So where is DS V4’s ceiling? Disclaimer first: I can only speak about the task of developing GUI visualization software in the 3D vision domain. In this task, Mr. D was already exhausted at around 50,000 lines of code, which was exactly the point when all planned software features had just been implemented. The architecture depth was only about three layers; most of the code volume came from breadth. After 50,000 lines, any modification I asked it to make failed tests, and no matter how I prompted it, it could not solve the problems. Even more absurdly, when I asked it to review the code after Codex refactored it, it would complain and give wrong suggestions.</li>
+</ol>
+<p>Maybe a small project of around 50,000 lines is already close to DS’s current ceiling. It can build a runnable demo, but that is completely different from software that can be released and code that is friendly to human maintainers. The last stretch is often the hardest. Codex really can catch those final ten miles quite steadily. Of course, Codex has also crashed in other projects. I will talk about that when I have time, hhhhh.</p>
+<ol start="9">
+<li>
+<p>Do we really need coding standards? Do we need camelCase and PascalCase, functions shorter than 200 lines, fewer than six parameters, files shorter than 2,000 lines, forbidden <code>goto</code>, and all those other rules? These are human-made constraints, because our five-watt brains can only absorb about half a screen of function body at once. But AI does not have that problem. A one-megabyte function, context aside, would be fine as long as the hardware supported it, even if the function were as long as <em>Dream of the Red Chamber</em>. What limits AI is actually hardware configuration: stack size, Stack Overflow warnings, L1/L2 cache-miss warnings, and, most seriously, compiler optimization capability.</p>
+</li>
+<li>
+<p>My personal view: top-tier large models are a zero-sum game. Right now, Codex is clearly in a class of its own. But in my eyes, the money I pay and the goods it delivers do not quite match; its pricing is a bit high. The most frustrating part is the intelligence swing: sometimes high, sometimes low. Mr. D does not care. DeepSeek’s selling point is making sure there are no expensive tokens under heaven. Its capability is not top-tier, but it is genuinely usable.</p>
+</li>
+</ol>
+<p>At this point, my personal setup is basically Codex plus DeepSeek. Finding chemistry with a large model is not easy. Different agents have very different compatibility. You need to know which tasks you can safely hand over, how much workplace credit the agent has, and that all comes from repeated testing, repeated use, and repeated tasting. I suspect this is also part of large-model stickiness, or sunk cost. It is also why I said earlier that a GPT-5.5 with unstable highs and lows would be so frustrating: it deviates from expectation. Persistent memory is, of course, also an indispensable part of the loop.</p>
+<h2 id="Afterword">Afterword</h2>
+<p>I keep feeling that today’s large models are like computer vision ten years ago: hyped to a height that does not quite belong to them, like the last capital carnival of an economic downturn. As someone who, in a certain sense, benefits from AI and works in a related field, I feel conflicted. I do not know when the sugar coating will melt away, or when the shell underneath will land.</p>
+<p>We are both the cause and the result of this AI wave.</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://mmwiki.cn">Tomato Tom</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://mmwiki.cn/posts/f3a9d120.html">http://mmwiki.cn/posts/f3a9d120.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post_share"><div class="social-share" data-image="/img/sea.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/posts/5ca14474.html" title="An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation"><img class="cover" src="/img/sea.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next</div><div class="next_info">An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-28</div><div class="title">The Stanford Bunny in 3D Wonderland</div></div></a></div><div><a href="/posts/ba364564.html" title="A Deep Dive into Low-poly Reconstruction"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-02</div><div class="title">A Deep Dive into Low-poly Reconstruction</div></div></a></div><div><a href="/posts/d5d1f531.html" title="图生三维概览, 从神经渲染、表面重建到万物生成"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-05-28</div><div class="title">图生三维概览, 从神经渲染、表面重建到万物生成</div></div></a></div><div><a href="/posts/ac1b440a.html" title="MVG-多视图几何-写在前面"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-30</div><div class="title">MVG-多视图几何-写在前面</div></div></a></div><div><a href="/posts/bfc9dac4.html" title="中科大-计算机图形学"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-30</div><div class="title">中科大-计算机图形学</div></div></a></div><div><a href="/posts/5547a98d.html" title="中科大-数字几何处理-网格修复1"><img class="cover" src="/img/sea.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-16</div><div class="title">中科大-数字几何处理-网格修复1</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/m.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Tomato Tom</div><div class="author-info__description">To be a better man.</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">206</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">78</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/TaylorAmy1995"><i></i><span>Github</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:mrmatrix@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com" target="_blank" title=""><i class="iconfont icon-bilibili"></i></a><a class="social-icon" href="https://www.zhihu.com" target="_blank" title=""><i class="iconfont icon-zhihu"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">这个博客是为了记录自己在科研👨‍🔬、工作👨‍💻和生活👨‍👩‍👧‍👦的过程中捕获到的有价值的课程📺、书籍📗与事件📰，是面向我自己搭建的查漏补缺的备忘录📝和记事本📓✏️。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Before-We-Begin"><span class="toc-number">1.</span> <span class="toc-text">Before We Begin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Answer-Sheet"><span class="toc-number">2.</span> <span class="toc-text">The Answer Sheet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Software-Interface"><span class="toc-number">2.1.</span> <span class="toc-text">Software Interface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Concrete-Examples"><span class="toc-number">2.2.</span> <span class="toc-text">Concrete Examples</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cost"><span class="toc-number">2.3.</span> <span class="toc-text">Cost</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-Else-Is-Inside"><span class="toc-number">2.4.</span> <span class="toc-text">What Else Is Inside?</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Assignment"><span class="toc-number">3.</span> <span class="toc-text">The Assignment</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#The-Solution"><span class="toc-number">4.</span> <span class="toc-text">The Solution</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Comments"><span class="toc-number">5.</span> <span class="toc-text">Comments</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Afterword"><span class="toc-number">6.</span> <span class="toc-text">Afterword</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/f3a9d120.html" title="Testing DeepSeek V4 Pro on 3D Geometry Processing">Testing DeepSeek V4 Pro on 3D Geometry Processing</a><time datetime="2026-06-02T16:01:00.000Z" title="Created 2026-06-03 00:01:00">2026-06-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/5ca14474.html" title="An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation">An Overview of Image-to-3D, From Neural Rendering and Surface Reconstruction to Universal Generation</a><time datetime="2026-03-30T16:01:00.000Z" title="Created 2026-03-31 00:01:00">2026-03-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ba364564.html" title="A Deep Dive into Low-poly Reconstruction">A Deep Dive into Low-poly Reconstruction</a><time datetime="2026-03-01T16:01:00.000Z" title="Created 2026-03-02 00:01:00">2026-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/462d3c6b.html" title="The Stanford Bunny in 3D Wonderland">The Stanford Bunny in 3D Wonderland</a><time datetime="2026-01-27T16:01:00.000Z" title="Created 2026-01-28 00:01:00">2026-01-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/d5d1f531.html" title="图生三维概览, 从神经渲染、表面重建到万物生成">图生三维概览, 从神经渲染、表面重建到万物生成</a><time datetime="2025-05-27T16:01:00.000Z" title="Created 2025-05-28 00:01:00">2025-05-28</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sea.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By Tomato Tom</div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><span>浙ICP备2024121111号</span></a></div><div class="icp"><a target="_blank" rel="noopener" href="http://www.beian.gov.cn/"><img class="icp-icon" src="http://www.beian.gov.cn/img/new/gongan.png"/><span>浙公网安备33010802013618号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="Chat"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.14.0-b3"></script><script src="/js/main.js?v=4.14.0-b3"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.35/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.0.5/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'ams'
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script><script>(() => {
+  const runMermaid = (ele) => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from(ele).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+    
+    codeMermaidEle.forEach(ele => {
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.innerHTML = `<pre class="mermaid-src" hidden>${ele.textContent}</pre>`
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+  
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div></div><script src="/js/category.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"left","width":180,"height":360,"hOffset":0,"vOffset":-100},"mobile":{"show":false},"react":{"opacity":0.85},"log":false});</script></body></html>

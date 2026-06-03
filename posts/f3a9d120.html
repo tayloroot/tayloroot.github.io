@@ -7,7 +7,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://mmwiki.cn/img/sea.jpg">
 <meta property="article:published_time" content="2026-06-02T16:01:00.000Z">
-<meta property="article:modified_time" content="2026-06-03T06:55:27.330Z">
+<meta property="article:modified_time" content="2026-06-03T08:11:34.357Z">
 <meta property="article:author" content="Tomato Tom">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="数字几何处理">
@@ -176,7 +176,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2026-06-03 14:55:27'
+  postUpdate: '2026-06-03 16:11:34'
 }</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/bilibili.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/zhihu.css" media="defer" onload="this.media='all'"><!-- 其他 head 内容--><script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>(()=>{
   const $loadingBox = document.getElementById('loading-box')
   const $body = document.body
@@ -216,38 +216,37 @@
 <p>At startup, you can also configure the AI Chat key and response language directly. AI Chat shares context with several algorithm panels; it is not an isolated chat box.</p>
 <p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-5f5066b5f1d666dd7b10e02e82a348b3_r.jpg" alt=""></p>
 <h3 id="Concrete-Examples">Concrete Examples</h3>
+<p>The demo video below collects the main visual workflows: region growing, skeleton extraction, mesh simplification, mesh smoothing, and AI 3D generation. I keep the written examples here as a quick map of what to look for in the video.</p>
+<div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; margin: 1.2rem 0;">
+  <iframe
+    src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1tGVm62EK4&page=1&autoplay=0"
+    scrolling="no"
+    border="0"
+    frameborder="no"
+    framespacing="0"
+    allowfullscreen="true"
+    style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;">
+  </iframe>
+</div>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1tGVm62EK4">Watch the demo on Bilibili</a></p>
 <ol>
-<li><strong>Region growing algorithm demo.</strong> The region growing implementation in the software makes seeds, region expansion, planar-region coloring, progress state, and result evaluation observable. Based on the current model, current panel parameters, and output results, the AI explains parameter meanings, warns about over-segmentation or under-segmentation risks, and suggests the next round of tuning.</li>
+<li>
+<p><strong>Region growing algorithm demo.</strong> The region growing implementation in the software makes seeds, region expansion, planar-region coloring, progress state, and result evaluation observable. Based on the current model, current panel parameters, and output results, the AI explains parameter meanings, warns about over-segmentation or under-segmentation risks, and suggests the next round of tuning.</p>
+</li>
+<li>
+<p><strong>Skeleton extraction algorithm demo.</strong> Skeleton extraction takes a long time, and parameter effects are not intuitive. If you only see the final skeleton, it is hard to tell whether the problem came from preprocessing, contraction, topology changes, or final curve extraction. The goal here is to expose as much intermediate state as possible, so users can watch in the viewport as the algorithm gradually converges to a curve skeleton.</p>
+</li>
+<li>
+<p><strong>Mesh simplification algorithm demo.</strong> Simplification is a good test of AI’s post-processing evaluation ability. The software produces the simplified geometry, and AI can combine face-count changes, shape preservation, visual quality, and potential risks to judge whether the simplification is conservative or aggressive. It can then suggest next steps, such as whether to simplify again, smooth first, or inspect boundaries and normals.</p>
+</li>
+<li>
+<p><strong>Mesh smoothing algorithm demo.</strong> In smoothing, displacement, area/volume change, triangle quality, and visual smoothness all matter. Here, the algorithm result and quality metrics are passed to AI, which explains the effect of the operation and warns about possible over-smoothing, detail loss, or follow-up repair needs.</p>
+</li>
+<li>
+<p><strong>AI 3D generation.</strong> This feature connects to image-to-3D and text-to-3D generation workflows, using <code>hunyuan3d-api</code>. Generated results are imported into 3D Claw, and then the software’s internal tools diagnose non-manifold geometry, floating fragments, UV/texture chaos, local detail collapse, and similar problems. AI evaluation is triggered automatically. As a side complaint: Hunyuan3D’s <code>secret-id</code> and <code>secret-key</code> are hidden way too deep. I spent half an hour finding them.</p>
+</li>
 </ol>
-<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-2dde4b4df8ed841b55c3863548f448d0.jpg?source=25ab7b06" alt=""></p>
-<p>01:49</p>
-<p>3D Claw region growing algorithm demo</p>
-<ol start="2">
-<li><strong>Skeleton extraction algorithm demo.</strong> Skeleton extraction takes a long time, and parameter effects are not intuitive. If you only see the final skeleton, it is hard to tell whether the problem came from preprocessing, contraction, topology changes, or final curve extraction. The goal here is to expose as much intermediate state as possible, so users can watch in the viewport as the algorithm gradually converges to a curve skeleton.</li>
-</ol>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-e2c1e6af58e63fd04bc6e9d7a3ca13c5.jpg?source=25ab7b06" alt=""></p>
-<p>01:16</p>
-<p>3D Claw skeleton extraction algorithm demo</p>
-<ol start="3">
-<li><strong>Mesh simplification algorithm demo.</strong> Simplification is a good test of AI’s post-processing evaluation ability. The software produces the simplified geometry, and AI can combine face-count changes, shape preservation, visual quality, and potential risks to judge whether the simplification is conservative or aggressive. It can then suggest next steps, such as whether to simplify again, smooth first, or inspect boundaries and normals.</li>
-</ol>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pic1.zhimg.com/v2-8387305e91decee587a2ab6780cb9b5d.jpg?source=25ab7b06" alt=""></p>
-<p>01:05</p>
-<p>3D Claw mesh simplification algorithm demo</p>
-<ol start="4">
-<li><strong>Mesh smoothing algorithm demo.</strong> In smoothing, displacement, area/volume change, triangle quality, and visual smoothness all matter. Here, the algorithm result and quality metrics are passed to AI, which explains the effect of the operation and warns about possible over-smoothing, detail loss, or follow-up repair needs.</li>
-</ol>
-<p><img src= "/img/loading.gif" data-lazy-src="https://pica.zhimg.com/v2-75a313ddc4e48836421453270e40bd58.jpg?source=25ab7b06" alt=""></p>
-<p>01:04</p>
-<p>3D Claw mesh smoothing algorithm demo</p>
-<ol start="5">
-<li><strong>AI 3D generation.</strong> This feature connects to image-to-3D and text-to-3D generation workflows, using <code>hunyuan3d-api</code>. Generated results are imported into 3D Claw, and then the software’s internal tools diagnose non-manifold geometry, floating fragments, UV/texture chaos, local detail collapse, and similar problems. AI evaluation is triggered automatically. As a side complaint: Hunyuan3D’s <code>secret-id</code> and <code>secret-key</code> are hidden way too deep. I spent half an hour finding them.</li>
-</ol>
-<p><img src= "/img/loading.gif" data-lazy-src="https://picx.zhimg.com/v2-b01274138c21a768f0ed94ee019449a8.jpg?source=25ab7b06" alt=""></p>
-<p>02:36</p>
-<p>AI 3D generation demo</p>
-<p>There are more visualization effects in the software itself. Download it and play with it. Pull requests and issues on GitHub are welcome.</p>
-<p><a href="https://link.zhihu.com/?target=https%3A//github.com/tangtangtang1995/3D-Claw"></a></p>
+<p>The video gives a compact pass over the main visualization effects. For more details, download the software and play with it directly. Pull requests and issues on GitHub are welcome: <a target="_blank" rel="noopener" href="https://github.com/tangtangtang1995/3D-Claw">https://github.com/tangtangtang1995/3D-Claw</a></p>
 <h3 id="Cost">Cost</h3>
 <p>This test round was mainly concentrated in May. DeepSeek’s token cost is shown below. The last two days mostly depended on Codex for emergency refactoring and firefighting, but most of the feature code really was written by DeepSeek.</p>
 <p><img src= "/img/loading.gif" data-lazy-src="https://pic4.zhimg.com/v2-5ae1028c5924b959ee28faa97a01c881_r.jpg" alt=""></p>

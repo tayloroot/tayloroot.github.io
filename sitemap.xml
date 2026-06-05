@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://mmwiki.cn/posts/8e2b4d6c.html</loc>
+    
+    <lastmod>2026-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://mmwiki.cn/posts/6f47c2a1.html</loc>
+    
+    <lastmod>2026-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://mmwiki.cn/posts/f3a9d120.html</loc>
     
     <lastmod>2026-06-03</lastmod>
@@ -2138,6 +2156,13 @@
   
   <url>
     <loc>http://mmwiki.cn/tags/%E7%82%B9%E4%BA%91%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2026-06-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://mmwiki.cn/tags/Programming/</loc>
     <lastmod>2026-06-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
